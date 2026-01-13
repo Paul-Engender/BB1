@@ -1,0 +1,11 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+ex:NegativeTargetRef_1 a kern:TargetReference ;
+    kern:hasExternalIdentifier ex:ExternalId_GCP_Neg1 .
+
+ex:ExternalId_GCP_Neg1 a kern:ExternalIdentifier ;
+    kern:identifierScheme "gcp-resource-name"^^xsd:anyURI ;
+    kern:identifierValue "projects/my-proj/instances/neg-1" .

@@ -1,0 +1,21 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+
+# A piece of candidate information (e.g., a proposed state)
+ex:CandidateInfo_789 a kern:InformationContent ;
+    rdfs:label "Proposed new state for TargetRef_123" ;
+    ex:proposedValue "new-value" .
+
+# The promotion record that accepts the candidate info
+ex:Promotion_ABC a kern:PromotionRecord ;
+    kern:promotesCandidate ex:CandidateInfo_789 ;
+    kern:producesAcceptedAssertion ex:TruthAssertion_ABC .
+
+# The resulting truth assertion
+# This example assumes that ex:TargetRef_123 is defined in another file
+# and loaded into the same graph for validation.
+ex:TruthAssertion_ABC a kern:TruthAssertion ;
+    kern:isAbout ex:TargetRef_123 ;
+    ex:acceptedValue "new-value" .

@@ -1,0 +1,12 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+# Dummy target reference
+ex:TargetRef_Res a kern:TargetReference ; kern:isAboutEntity ex:EntityRes ; kern:hasExternalIdentifier ex:ExtRes .
+ex:ExtRes a kern:ExternalIdentifier ; kern:identifierScheme "uri"^^xsd:anyURI ; kern:identifierValue "Res" .
+
+ex:NegativeRestrictionStipulation_1 a kern:Stipulation ;
+    kern:hasStipulationNature kern:Restriction ;
+    kern:stipulatesOn ex:TargetRef_Res .
+    # Missing kern:ruleExpression

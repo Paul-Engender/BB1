@@ -1,0 +1,193 @@
+# IMPORTANT: @en language tags are omitted from string literals in this file
+# due to an incompatibility with the rdflib parser (versions 6.3.2 and 7.5.0)
+# on Python 3.12, which causes BadSyntax errors. This is a temporary workaround.
+
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+ @prefix owl:    <http://www.w3.org/2002/07/owl#> .
+ @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+ @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+ @prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+ @prefix dcterms:<http://purl.org/dc/terms/> .
+ @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+ @prefix prov:   <http://www.w3.org/ns/prov#> .
+ @prefix bfo:    <http://purl.obolibrary.org/obo/> .
+ @prefix iao:    <http://purl.obolibrary.org/obo/IAO_> .
+ @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+
+<https://ontology.engender.co.za/kernel>
+  a owl:Ontology ;
+  rdfs:label "ENG Unified Operating Ontology Kernel" ;
+  dcterms:title "Meaning-First Semantic Kernel" ;
+  owl:versionInfo "kernel-vNext" .
+
+### Core classes
+kern:InformationContent a owl:Class ;
+  rdfs:label "Information Content" ;
+  skos:definition "An information artefact that expresses, records, specifies, or describes something, independent of whether it is true." ;
+  rdfs:subClassOf iao:0000030, prov:Entity .
+
+kern:Stipulation a owl:Class ;
+  rdfs:label "Stipulation" ;
+  skos:definition "A formally stated intent rule/constraint/permission/assertion/evaluation that can be evaluated against reality and/or used to control promotion." .
+
+kern:StipulationNature a owl:Class ;
+  rdfs:label "Stipulation Nature" ;
+  skos:definition "A controlled classifier indicating the semantic type of a stipulation." .
+
+kern:TargetReference a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Target Reference" ;
+  skos:definition "A stable, versionable reference node used as the primary target of stipulations, measurements, views, and truth assertions; it bridges to underlying domain entities without being a thin wrapper around live operational objects." .
+
+kern:ExternalIdentifier a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "External Identifier" ;
+  skos:definition "A structured identifier binding (scheme + value) used to map a TargetReference to external identity systems." .
+
+kern:Context a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Context" ;
+  skos:definition "An information artefact describing the conditions under which a stipulation or measurement applies." .
+
+kern:Configuration a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Configuration" ;
+  skos:definition "A versioned bundle of stipulations and associated artefacts asserted together as a coherent set of adopted intent." .
+
+kern:ConfigurationRequirement a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Configuration Requirement" ;
+  skos:definition "A structural requirement over a Configuration to ensure well-formedness." .
+
+kern:ArtifactLifecycleState a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Artifact Lifecycle State" ;
+  skos:definition "A controlled lifecycle state for normative/representational artefacts (e.g., Draft, Registered, Effective); not a statement about reality." .
+
+kern:EnforcementModality a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Enforcement Modality" ;
+  skos:definition "A controlled classifier describing how strongly a stipulation/configuration is enforced (e.g., Mandatory, Normative, Advisory)." .
+
+kern:Plan a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Plan" ;
+  skos:definition "Information content describing an intended future action or arrangement, without asserting it occurred." .
+
+kern:EvidenceActivity a owl:Class ;
+  rdfs:label "Evidence Activity" ;
+  skos:definition "An activity/event that occurred in the world and may be evidenced." ;
+  rdfs:subClassOf prov:Activity .
+
+kern:EvidenceRecord a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Evidence Record" ;
+  skos:definition "An information artefact recording something about an EvidenceActivity with provenance." .
+
+kern:MeasurementSpecification a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Measurement Specification" ;
+  skos:definition "A specification defining how a metric is computed/interpreted, including formula semantics and inclusion/exclusion semantics where provided." .
+
+kern:MeasurementRecord a owl:Class ;
+  rdfs:subClassOf kern:EvidenceRecord ;
+  rdfs:label "Measurement Record" ;
+  skos:definition "A specialized evidence record capturing an observed metric value, unit, time, and provenance." .
+
+kern:ViewProfile a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "View Profile" ;
+  skos:definition "A declared completeness contract for a view, including required fields, tolerances, and severity thresholds." .
+
+kern:PromotionRecord a owl:Class ;
+  rdfs:subClassOf kern:EvidenceRecord ;
+  rdfs:label "Promotion Record" ;
+  skos:definition "A record of a controlled decision that promotes candidate content into accepted truth under defined gates and validations." .
+
+kern:TruthAssertion a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Truth Assertion" ;
+  skos:definition "An information artefact that asserts accepted claims about a TargetReference; acceptance is established via PromotionRecord." .
+
+kern:Agent a owl:Class ;
+  rdfs:label "Agent" ;
+  skos:definition "A responsible actor capable of bearing roles and being accountable (human or system)." ;
+  rdfs:subClassOf prov:Agent, foaf:Agent .
+
+kern:Role a owl:Class ;
+  rdfs:label "Role" ;
+  skos:definition "A responsibility function borne by an Agent over an interval." ;
+  rdfs:subClassOf bfo:BFO_0000023 .
+
+kern:RoleAssignment a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Role Assignment" ;
+  skos:definition "A persistent assignment record that links an Agent to a Role with temporal validity, enabling 'who is responsible now' queries." .
+
+### Nature individuals (controlled set)
+kern:Restriction a kern:StipulationNature ; rdfs:label "Restriction" .
+kern:Grant       a kern:StipulationNature ; rdfs:label "Grant" .
+kern:Evaluator   a kern:StipulationNature ; rdfs:label "Evaluator" .
+kern:Assertion   a kern:StipulationNature ; rdfs:label "Assertion" .
+
+### Canonical properties (minimal kernel set)
+kern:isAbout a owl:ObjectProperty ;
+  rdfs:domain kern:InformationContent ;
+  rdfs:range  kern:TargetReference ;
+  rdfs:label "is about" .
+
+kern:isAboutEntity a owl:ObjectProperty ;
+  rdfs:domain kern:TargetReference ;
+  rdfs:range  owl:Thing ;
+  rdfs:label "is about entity" .
+
+kern:hasExternalIdentifier a owl:ObjectProperty ;
+  rdfs:domain kern:TargetReference ;
+  rdfs:range  kern:ExternalIdentifier ;
+  rdfs:label "has external identifier" .
+
+kern:identifierScheme a owl:DatatypeProperty ;
+  rdfs:domain kern:ExternalIdentifier ;
+  rdfs:range  xsd:anyURI ;
+  rdfs:label "identifier scheme" .
+
+kern:identifierValue a owl:DatatypeProperty ;
+  rdfs:domain kern:ExternalIdentifier ;
+  rdfs:range  xsd:string ;
+  rdfs:label "identifier value" .
+
+kern:hasStipulationNature a owl:ObjectProperty ;
+  rdfs:domain kern:Stipulation ;
+  rdfs:range  kern:StipulationNature ;
+  rdfs:label "has stipulation nature" .
+
+kern:stipulatesOn a owl:ObjectProperty ;
+  rdfs:domain kern:Stipulation ;
+  rdfs:range  kern:TargetReference ;
+  rdfs:label "stipulates on" .
+
+kern:usesMeasurementSpecification a owl:ObjectProperty ;
+  rdfs:domain kern:Stipulation ;
+  rdfs:range  kern:MeasurementSpecification ;
+  rdfs:label "uses measurement specification" .
+
+kern:ruleExpression a owl:DatatypeProperty ;
+  rdfs:domain kern:Stipulation ;
+  rdfs:range  xsd:string ;
+  rdfs:label "rule expression" .
+
+kern:promotesCandidate a owl:ObjectProperty ;
+  rdfs:domain kern:PromotionRecord ;
+  rdfs:range  kern:InformationContent ;
+  rdfs:label "promotes candidate" .
+
+kern:producesAcceptedAssertion a owl:ObjectProperty ;
+  rdfs:domain kern:PromotionRecord ;
+  rdfs:range  kern:TruthAssertion ;
+  rdfs:label "produces accepted assertion" .
+
+kern:acceptedByPromotion a owl:ObjectProperty ;
+  rdfs:domain kern:TruthAssertion ;
+  rdfs:range  kern:PromotionRecord ;
+  rdfs:label "accepted by promotion" ;
+  owl:inverseOf kern:producesAcceptedAssertion .

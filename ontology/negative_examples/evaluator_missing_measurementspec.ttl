@@ -1,0 +1,12 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+# Dummy target reference
+ex:TargetRef_Eval a kern:TargetReference ; kern:isAboutEntity ex:EntityEval ; kern:hasExternalIdentifier ex:ExtEval .
+ex:ExtEval a kern:ExternalIdentifier ; kern:identifierScheme "uri"^^xsd:anyURI ; kern:identifierValue "Eval" .
+
+ex:NegativeEvaluatorStipulation_1 a kern:Stipulation ;
+    kern:hasStipulationNature kern:Evaluator ;
+    kern:stipulatesOn ex:TargetRef_Eval .
+    # Missing kern:usesMeasurementSpecification
