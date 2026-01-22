@@ -46,7 +46,7 @@ def write_decision(cls_uri: str, status: str, label: str):
     write_client.query()
 
 def get_next_class(read_client, skipped_uris: set):
-    query_text = Path("select_next.rq").read_text()
+    query_text = (Path(__file__).parent / "select_next.rq").read_text()
     excluded_str = ", ".join(f"<{u}>" for u in skipped_uris) or "<urn:noop>"
     query_text = query_text.replace("params_excluded_uris", excluded_str)
     
@@ -56,7 +56,7 @@ def get_next_class(read_client, skipped_uris: set):
     return bindings[0]["cls"]["value"] if bindings else None
 
 def print_dossier(read_client, cls_uri):
-    query_text = Path("fetch_dossier.rq").read_text()
+    query_text = (Path(__file__).parent / "fetch_dossier.rq").read_text()
     query_text = query_text.replace("<params_cls_uri>", f"<{cls_uri}>")
     
     read_client.setQuery(query_text)
