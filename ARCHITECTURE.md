@@ -3,6 +3,7 @@
 This repository is organized as a small monorepo with clearly bounded components. The primary goal is to keep reusable services (like the LLM transport gateway) intentionally "dumb" and stable, while allowing the ontology work to evolve quickly until it is mature enough to move into a governed space.
 
 ## Boundary Map
+These components are top-level directories within the repository root.
 
 ### Core Ontology Kernel (TBox + SHACL)
 - **Location:** `ontology/`
