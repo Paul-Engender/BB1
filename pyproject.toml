@@ -1,21 +1,13 @@
 [tool.poetry]
-name = "unified-ontology-kernel"
+name = "root-project"
 version = "0.1.0"
-description = "Kernel Gate service for the Unified Operating Ontology"
-authors = ["Gemini"]
-package-mode = false
+description = ""
+authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-fastapi = "==0.111.1"
-uvicorn = {extras = ["standard"], version = "^0.29.0"}
-rdflib = "==6.3.2" # Downgrading rdflib for testing
-pyshacl = "==0.27.0"
-pytest = "^8.2.0"
+python = "^3.11" # Assuming Python 3.11 based on ai_gateway's pyproject.toml
+ai_gateway = { path = "gateways/ai_gateway", develop = true }
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.pytest.ini_options]
-pythonpath = ["."]

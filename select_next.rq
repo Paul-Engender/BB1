@@ -1,0 +1,31 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+
+SELECT ?cls (COUNT(DISTINCT ?child) AS ?directChildCount)
+WHERE {
+  GRAPH <http://my-org/ontology/u0> {
+    ?cls rdf:type owl:Class .
+    OPTIONAL { ?child rdfs:subClassOf ?cls }
+  }
+
+  # 1. Unreviewed (No status in Review Graph)
+  FILTER NOT EXISTS {
+    GRAPH <http://my-org/ontology/review> { ?cls <http://my-org/status> ?s }
+  }
+
+  # 2. Top-Down Gate: No unreviewed ancestors
+  #    If ?cls has a parent ?anc, that parent MUST have a status in Review Graph.
+  FILTER NOT EXISTS {
+    GRAPH <http://my-org/ontology/u0> { ?cls rdfs:subClassOf+ ?anc }
+    FILTER NOT EXISTS {
+      GRAPH <http://my-org/ontology/review> { ?anc <http://my-org/status> ?as }
+    }
+  }
+  
+  # 3. Session Skip Filter (Placeholder replaced by Python)
+  FILTER (?cls NOT IN (params_excluded_uris))
+}
+GROUP BY ?cls
+ORDER BY DESC(?directChildCount) ASC(STR(?cls))
+LIMIT 1
