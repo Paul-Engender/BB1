@@ -2,7 +2,7 @@ name: repo-skeleton-check
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
 
 permissions:
@@ -16,17 +16,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Verify skeleton contract file exists
-        run: |
-          test -f tools/repo_skeleton_paths.txt
+        run: test -f tools/repo_skeleton_paths.txt
 
       - name: Verify required directories exist
         shell: bash
         run: |
           set -euo pipefail
           while IFS= read -r p; do
-            # Reject empty lines
             test -n "$p"
-            # Verify directory exists
             test -d "$p"
           done < tools/repo_skeleton_paths.txt
 
@@ -36,7 +33,6 @@ jobs:
           set -euo pipefail
           mkdir -p repo-skeleton-proof
           git rev-parse HEAD > repo-skeleton-proof/commit.txt
-          # Deterministic directory listing (only required roots; stable order)
           find docs schemas fixtures tools src tests -maxdepth 2 -type d | sort > repo-skeleton-proof/tree.txt
           sha256sum repo-skeleton-proof/commit.txt repo-skeleton-proof/tree.txt | tee repo-skeleton-proof/sha256sums.txt
 
