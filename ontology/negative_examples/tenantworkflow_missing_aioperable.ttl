@@ -1,0 +1,68 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+
+ex:ActionKind_Provision a kern:ActionKind .
+ex:EffectKind_Update a kern:EffectKind .
+ex:DomainEntity_123 a <http://www.w3.org/2002/07/owl#Thing> .
+
+ex:TargetRef_123 a kern:TargetReference ;
+    kern:isAboutEntity ex:DomainEntity_123 ;
+    kern:hasExternalIdentifier ex:ExternalId_123 .
+
+ex:ExternalId_123 a kern:ExternalIdentifier ;
+    kern:identifierScheme "tenant-resource"^^<http://www.w3.org/2001/XMLSchema#anyURI> ;
+    kern:identifierValue "resource-123" .
+
+ex:TargetSet_001 a kern:TargetSet ;
+    kern:targetSetId "ts-001" ;
+    kern:targetSelectionBasis "explicit-membership" ;
+    kern:hasTargetMember ex:TargetRef_123 .
+
+ex:Scope_001 a kern:ScopeBoundary ;
+    kern:scopeId "scope-tenant-core" ;
+    kern:targetSetRef ex:TargetSet_001 .
+
+ex:Action_001 a kern:ActionSpecification ;
+    kern:actionId "action-001" ;
+    kern:actionKindRef ex:ActionKind_Provision .
+
+ex:Effect_001 a kern:EffectSpecification ;
+    kern:effectId "effect-001" ;
+    kern:effectKindRef ex:EffectKind_Update .
+
+ex:Binding_001 a kern:ActionEffectBinding ;
+    kern:actionEffectBindingId "binding-001" ;
+    kern:actionRef ex:Action_001 ;
+    kern:effectRef ex:Effect_001 .
+
+ex:AuthorizationSemantic_001 a kern:AuthorizationSemantic ;
+    kern:actionRef ex:Action_001 ;
+    kern:targetSetRef ex:TargetSet_001 ;
+    kern:authorizationDecisionKindRef kern:AuthorizationAllow .
+
+ex:EligibilitySemantic_001 a kern:EligibilitySemantic ;
+    kern:actionRef ex:Action_001 ;
+    kern:eligibilityStatusRef kern:EligibilityEligible .
+
+ex:DenialSemantic_001 a kern:DenialSemantic ;
+    kern:denialKindRef kern:DenialAuthorization .
+
+ex:ControlStateSemantic_001 a kern:ControlStateSemantic ;
+    kern:actionRef ex:Action_001 ;
+    kern:controlStateKindRef kern:ControlStateHardStop .
+
+ex:WorkflowInput_Invalid a kern:TenantWorkflowInput ;
+    kern:tenantId "tenant-001" ;
+    kern:workflowId "workflow-001" ;
+    kern:workflowVersion "1.0.0" ;
+    kern:domainId "domain-ops" ;
+    kern:routingPolicyId "routing-default" ;
+    kern:targetSetRef ex:TargetSet_001 ;
+    kern:scopeRef ex:Scope_001 ;
+    kern:actionRef ex:Action_001 ;
+    kern:effectRef ex:Effect_001 ;
+    kern:actionEffectBindingRef ex:Binding_001 ;
+    kern:authorizationSemanticsRef ex:AuthorizationSemantic_001 ;
+    kern:eligibilitySemanticsRef ex:EligibilitySemantic_001 ;
+    kern:denialSemanticsRef ex:DenialSemantic_001 ;
+    kern:controlStateSemanticsRef ex:ControlStateSemantic_001 .

@@ -1,0 +1,13 @@
+{
+  "archive_path": "C:\\Users\\PaulWeber\\Documents\\BB1\\dist\\SupportOntologyRelease-v0.2.0\\SupportOntologyRelease-v0.2.0.tar.gz",
+  "archive_sha256": "98d6d7d18535407c5cb0f2d707fb46dfafb62fef5ab24dbaccaf07988757c260",
+  "candidate_accepted": true,
+  "decision": "APPROVED",
+  "decision_type": "Runtime1PromotionDecision",
+  "generated_at": "2026-03-07T13:28:02.699752+00:00",
+  "loader_verification_message": "Package verified and loaded successfully into C:\\Users\\PaulWeber\\Documents\\BB1\\dist\\SupportOntologyRelease-v0.2.0\\_promotion_verify",
+  "loader_verification_ok": true,
+  "manifest_path": "C:\\Users\\PaulWeber\\Documents\\BB1\\dist\\SupportOntologyRelease-v0.2.0\\release_manifest.json",
+  "manifest_sha256": "aca50c5688b63acb61a41a8c2dd24ae0a4796d47096ad14a45038d3ccee6966a",
+  "release_id": "SupportOntologyRelease-v0.2.0"
+}

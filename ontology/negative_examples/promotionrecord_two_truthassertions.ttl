@@ -1,0 +1,21 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+# Dummy InformationContent
+ex:CandidateInfo_Neg a kern:InformationContent .
+
+# Dummy TargetReferences (needed for TruthAssertions)
+ex:TargetRef_TA_A a kern:TargetReference ; kern:isAboutEntity ex:EntityTAA ; kern:hasExternalIdentifier ex:ExtTAA .
+ex:ExtTAA a kern:ExternalIdentifier ; kern:identifierScheme "uri"^^xsd:anyURI ; kern:identifierValue "TAA" .
+ex:TargetRef_TA_B a kern:TargetReference ; kern:isAboutEntity ex:EntityTAB ; kern:hasExternalIdentifier ex:ExtTAB .
+ex:ExtTAB a kern:ExternalIdentifier ; kern:identifierScheme "uri"^^xsd:anyURI ; kern:identifierValue "TAB" .
+
+# Dummy TruthAssertions (need to be about a TargetReference)
+ex:TruthAssertion_A a kern:TruthAssertion ; kern:isAbout ex:TargetRef_TA_A .
+ex:TruthAssertion_B a kern:TruthAssertion ; kern:isAbout ex:TargetRef_TA_B .
+
+ex:NegativePromotionRecord_1 a kern:PromotionRecord ;
+    kern:promotesCandidate ex:CandidateInfo_Neg ;
+    kern:producesAcceptedAssertion ex:TruthAssertion_A ;
+    kern:producesAcceptedAssertion ex:TruthAssertion_B .

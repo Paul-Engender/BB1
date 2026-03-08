@@ -1,0 +1,13 @@
+{
+  "manifest_version": "1.0",
+  "release_id": "SCR_TBox_Release-v0.1.0",
+  "issued_at": "2026-03-06T12:07:14.219901+00:00",
+  "contents": [
+    {
+      "path": "ontology/scr_tbox.ttl",
+      "cid": "cid:019cc30b-762c-7084-8651-fa8a8b76151f-7f32233121d882d4f48aa9dc1a0e172da3d4c7369fe4de672bac6d7224ce92a6",
+      "mime_type": "application/octet-stream"
+    }
+  ],
+  "release_cid": "cid:019cc30b-762c-7439-b28d-3fcfb6459460-8f092e9058f4dc9d98f39b285df6e3d06e804828a638a5407b3f12625730d36d"
+}

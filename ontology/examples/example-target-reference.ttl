@@ -1,0 +1,17 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+# The actual domain entity being referenced
+ex:DomainEntity_123 a owl:Thing .
+
+# The stable TargetReference for that entity
+ex:TargetRef_123 a kern:TargetReference ;
+    kern:isAboutEntity ex:DomainEntity_123 ;
+    kern:hasExternalIdentifier ex:ExternalId_GCP_123 .
+
+# The external identifier mapping
+ex:ExternalId_GCP_123 a kern:ExternalIdentifier ;
+    kern:identifierScheme "gcp-resource-name"^^xsd:anyURI ;
+    kern:identifierValue "projects/my-proj/instances/vm-123" .

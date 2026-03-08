@@ -1,0 +1,44 @@
+name: repo-skeleton-check
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  repo-skeleton-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify skeleton contract file exists
+        run: test -f tools/repo_skeleton_paths.txt
+
+      - name: Verify required directories exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r p; do
+            test -n "$p"
+            test -d "$p"
+          done < tools/repo_skeleton_paths.txt
+
+      - name: Generate proof artifact-of-record
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p repo-skeleton-proof
+          git rev-parse HEAD > repo-skeleton-proof/commit.txt
+          find docs schemas fixtures tools src tests -maxdepth 2 -type d | sort > repo-skeleton-proof/tree.txt
+          sha256sum repo-skeleton-proof/commit.txt repo-skeleton-proof/tree.txt | tee repo-skeleton-proof/sha256sums.txt
+
+      - name: Upload proof artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-skeleton-proof
+          path: repo-skeleton-proof/
+          retention-days: 30

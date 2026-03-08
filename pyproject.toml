@@ -1,0 +1,15 @@
+﻿[tool.poetry]
+name = "root-project"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+rdflib = "^7.6.0"
+pyshacl = "^0.31.0"
+llm-transport-gateway = { path = "llm_transport_gateway", develop = true }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

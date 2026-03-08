@@ -1,0 +1,34 @@
+﻿name: bootstrap-integrity
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate bootstrap ledgers
+        run: |
+          python tools/bootstrap_validate.py
+
+      - name: Regenerate daily snapshot
+        run: |
+          python tools/bootstrap_snapshot.py
+
+      - name: Ensure snapshot is committed
+        run: |
+          git diff -- bootstrap/reports/daily_state_snapshot.md
+          git diff --quiet -- bootstrap/reports/daily_state_snapshot.md

@@ -1,0 +1,98 @@
+﻿:root {
+  color-scheme: light;
+  font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #f4f4f4;
+  color: #222;
+}
+
+.app {
+  width: min(92vw, 520px);
+  padding: 1rem;
+}
+
+h1 {
+  margin: 0 0 0.75rem;
+  font-size: 1.6rem;
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.hud p {
+  margin: 0;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  gap: 1px;
+  width: min(92vw, 520px);
+  aspect-ratio: 1 / 1;
+  border: 1px solid #bbb;
+  background: #bbb;
+}
+
+.cell {
+  background: #fff;
+}
+
+.cell.snake {
+  background: #1a7f37;
+}
+
+.cell.food {
+  background: #c62828;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+button {
+  border: 1px solid #555;
+  background: #fff;
+  color: inherit;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.touch-controls {
+  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.help {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 800px) {
+  .touch-controls {
+    max-width: 240px;
+  }
+}

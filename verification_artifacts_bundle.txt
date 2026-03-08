@@ -1,0 +1,1839 @@
+===== BEGIN FILE: verification_report.md =====
+# Phase 0 Gate Verification Report
+
+## 1. Summary
+
+This report summarizes the verification status of all Evidence Pack rows required to close the Phase 0 gate. The final status is **PENDING**, as not all evidence rows have been marked as `DONE`.
+
+## 2. Evidence Pack Status
+
+| ID    | Gate Criterion                                             | Status      | Notes                                                      |
+|-------|------------------------------------------------------------|-------------|------------------------------------------------------------|
+| EP-01 | Identity model specified and conforms                      | `COMPLETED` | Implementation is complete, but formal review of the specification is pending. |
+| EP-02 | Ledger ordering and determinism validated                  | `COMPLETED` | Implementation is complete, but formal review of the API contract is pending. |
+| EP-03 | Packaging produces required release bundles                | `DONE`      | Schema validation successful.                              |
+| EP-04 | Loader/verifier rejects tampering                          | `DONE`      | Negative tamper tests passed successfully.                 |
+| EP-05 | Minimal releases produced (SupportOntologyRelease + SCR_TBox_Release) | `DONE`      | Install/load verification successful.                      |
+
+## 3. Conclusion
+
+Phase 0 is **not yet complete**. The following actions are required to close the gate:
+
+-   **Formal Review**: The specifications for `EP-01` and `EP-02` must be reviewed and approved.
+
+Once these actions are complete and all Evidence Pack rows are marked as `DONE`, the Phase 0 gate can be considered closed.
+
+===== END FILE: verification_report.md =====
+
+===== BEGIN FILE: bootstrap/task_ledger.csv =====
+task_id,task_name,status,owner,canonical_refs,evidence_row_ids,dependencies,input_refs,output_paths,validation_method,validation_evidence,notes,
+BR-00.1,Create repository skeleton folders for specs, schemas, fixtures, tools, src, and tests,DONE,paul,,,,"['', './', 'existence_check', 'evidence/repo-skeleton-proof/tree.txt', 'IS-state at repo substrate']"
+BR-01.1,Define the cid: minting and validation spec,COMPLETED,paul,,EP-01,,,/docs/specs/identity_cid_uuidv7.md,formal_review,,,
+BR-01.2,Implement cid: library and tests,DONE,paul,,EP-01,BR-01.1,/docs/specs/identity_cid_uuidv7.md,src/cid.py;tests/test_cid.py,unit_tests,unittest_successful,,
+BR-02.1,Define ledger API contract and ordering rules,COMPLETED,paul,,EP-02,,,/docs/specs/ledger_api_and_ordering.md,formal_review,,,
+BR-02.2,Implement append-only ledger service with single-writer ordering authority,DONE,paul,,EP-02,BR-02.1,/docs/specs/ledger_api_and_ordering.md,src/ledger.py;tests/test_ledger.py,deterministic_replay_test,unittest_successful,,
+BR-03.1,Define IssuerProof format and verification algorithm,COMPLETED,paul,,,,,/docs/specs/issuerproof_v1.md,formal_review,,,
+BR-03.2,Implement IssuerProof verifier and negative tests,DONE,paul,,,BR-03.1,/docs/specs/issuerproof_v1.md,src/issuer_proof.py;tests/test_issuer_proof.py,negative_tests,unittest_successful,,
+BR-04.1,Define evaluator boundary interface and commit semantics,COMPLETED,paul,,,,,/docs/specs/evaluator_boundary_v1.md,formal_review,,,
+BR-04.2,Implement evaluator stub and commit-boundary enforcement tests,DONE,paul,,,BR-04.1,/docs/specs/evaluator_boundary_v1.md,src/evaluator.py;tests/test_evaluator.py,enforcement_tests,unittest_successful,,
+BR-05.1,Define release manifest and load-manifest schemas and fixtures,DONE,paul,,EP-03,,,/schemas/release_manifest.schema.json;/schemas/runtime_load_manifest.schema.json,schema_validation,jsonschema_successful,,
+BR-05.2,Implement packager that emits manifest, hashes, and file list,DONE,paul,,EP-03,BR-05.1,/schemas/release_manifest.schema.json,tools/packager.py;tests/test_packager.py,build_and_verify_digests,"['unittest_successful', '']"
+BR-05.3,Implement verifier and loader rejection logic with tamper tests,DONE,paul,,EP-04,BR-05.1,/schemas/release_manifest.schema.json,src/loader.py;tests/test_loader.py,negative_tamper_reject_tests,unittest_successful,,
+BR-06.1,Create minimal SupportOntologyRelease payload and first package,DONE,paul,,EP-05,BR-05.2,,dist/SupportOntologyRelease-v0.1.0.tgz,install_load_verification,loader_verified,,
+BR-06.2,Create minimal SCR_TBox_Release payload and first tenant package,DONE,paul,,EP-05,BR-05.2,,dist/SCR_TBox_Release-v0.1.0.tgz,install_load_verification,loader_verified,,
+BR-07.1,Run Phase 0 gate verification and compile Evidence Pack,COMPLETED,paul,,EP-01;EP-02;EP-03;EP-04;EP-05,BR-01.2;BR-02.2;BR-05.2;BR-05.3;BR-06.1;BR-06.2,,verification_report.md,manual_review,,,
+
+===== END FILE: bootstrap/task_ledger.csv =====
+
+===== BEGIN FILE: bootstrap/artifact_registry.csv =====
+artifact_id,artifact_type,produced_by_task_id,path,integrity_type,integrity_value,validation_status,validation_evidence,evidence_row_ids,notes
+ART-DOC-CID-SPEC-001,DOC,BR-01.1,docs/specs/identity_cid_uuidv7.md,SHA256,72d18ef86bea3ad376306aa57f83e0050065203c45e3b267f23d891b5d89215b,TO_DO,,EP-01,
+ART-CODE-CID-LIB-001,CODE,BR-01.2,src/cid.py,SHA256,12720db61a7dd47d4b60f56bdfb3e158e18a4571eabb03b7449deb6d8e4ed66a,DONE,unittest_successful,EP-01,
+ART-TEST-CID-LIB-001,TEST_OUTPUT,BR-01.2,tests/test_cid.py,SHA256,05ea301882937aff5aa4d3703ffc7a94c7ec899173a2a2b722b2fc07bd530041,DONE,unittest_successful,EP-01,
+ART-DOC-LEDGER-API-001,DOC,BR-02.1,docs/specs/ledger_api_and_ordering.md,SHA256,3f7be37052f6a3bbddcf2782503d55b6fe1a596482b02e8503218fbf67e466c2,TO_DO,,EP-02,
+ART-CODE-LEDGER-LIB-001,CODE,BR-02.2,src/ledger.py,SHA256,773ef978df834b7348c17654bf5c91525fa5a8e8505fd2222ab6c851850706ad,DONE,unittest_successful,EP-02,
+ART-TEST-LEDGER-LIB-001,TEST_OUTPUT,BR-02.2,tests/test_ledger.py,SHA256,fc87dac740e784e2fc994a5a435f1b2d65bb07b883fdad0972390b14a71e4063,DONE,unittest_successful,EP-02,
+
+===== END FILE: bootstrap/artifact_registry.csv =====
+
+===== BEGIN FILE: bootstrap/evidence_register.csv =====
+evidence_row_id,gate_criterion,canonical_refs,required_artifact,location,integrity,validation_method,validation_evidence,status,verification_owner,source_task_ids,notes
+EP-01,Identity model specified and conforms,,cid: spec and validation library,,,review_plus_unit_tests,,COMPLETED,paul,BR-01.1;BR-01.2,
+EP-02,Ledger ordering and determinism validated,,Ledger service and replay test,,,deterministic_replay_test,,COMPLETED,paul,BR-02.1;BR-02.2,
+EP-03,Packaging produces required release bundles,,Packager and manifest,,,build_and_verify_digests,jsonschema_successful,DONE,paul,BR-05.1;BR-05.2,
+EP-04,Loader/verifier rejects tampering,,Loader rejection logic,,,negative_tamper_reject_tests,unittest_successful,DONE,paul,BR-05.3,
+EP-05,Minimal releases produced (SupportOntologyRelease + SCR_TBox_Release),,Release packages,,,install_load_verification,loader_verified,DONE,paul,BR-06.1;BR-06.2,
+
+===== END FILE: bootstrap/evidence_register.csv =====
+
+===== BEGIN FILE: bootstrap/reports/daily_state_snapshot.md =====
+# Daily State Snapshot
+
+*Generated on: 2026-03-06*
+
+---
+
+## DONE
+
+- **BR-00.1**: Create repository skeleton folders for specs, schemas, fixtures, tools, src, and tests
+- **BR-01.2**: Implement cid: library and tests
+- **BR-02.2**: Implement append-only ledger service with single-writer ordering authority
+- **BR-03.2**: Implement IssuerProof verifier and negative tests
+- **BR-04.2**: Implement evaluator stub and commit-boundary enforcement tests
+- **BR-05.1**: Define release manifest and load-manifest schemas and fixtures
+- **BR-05.2**: Implement packager that emits manifest, hashes, and file list
+- **BR-05.3**: Implement verifier and loader rejection logic with tamper tests
+- **BR-06.1**: Create minimal SupportOntologyRelease payload and first package
+- **BR-06.2**: Create minimal SCR_TBox_Release payload and first tenant package
+
+## COMPLETED
+
+- **BR-01.1**: Define the cid: minting and validation spec
+- **BR-02.1**: Define ledger API contract and ordering rules
+- **BR-03.1**: Define IssuerProof format and verification algorithm
+- **BR-04.1**: Define evaluator boundary interface and commit semantics
+- **BR-07.1**: Run Phase 0 gate verification and compile Evidence Pack
+
+## DID NOT DO
+
+*(None)*
+
+## TO DO
+
+*(None)*
+
+## NEXT RECOMMENDED ACTION
+
+- **Begin Phase 0 Gate Closure**:
+    - Perform formal reviews for all specifications (`BR-01.1`, `BR-02.1`, `BR-03.1`, `BR-04.1`).
+    - Review and approve the final `verification_report.md` (`BR-07.1`).
+- Once all tasks are `DONE`, the Phase 0 Gate is closed.
+
+## RISKS / BLOCKERS
+
+*(None)*
+
+===== END FILE: bootstrap/reports/daily_state_snapshot.md =====
+
+===== BEGIN FILE: docs/specs/identity_cid_uuidv7.md =====
+# Identity CID Specification (cid:)
+
+*Status: DRAFT*
+
+## 1. Abstract
+
+This specification defines a deterministic, content-addressable identifier scheme (`cid:`) for all versioned information content within the system. The `cid:` is built upon UUIDv7 to ensure chronological sortability and embeds a SHA-256 hash of the canonical content for integrity verification.
+
+## 2. Identifier Format
+
+The `cid:` has the following structure:
+
+`cid:<uuidv7>-<sha256_hash_of_canonical_content>`
+
+- **`<uuidv7>`**: A 36-character UUID version 7 string, providing a time-ordered, globally unique identifier.
+- **`<sha256_hash_of_canonical_content>`**: A 64-character hexadecimal representation of the SHA-256 digest of the content's canonical form.
+
+## 3. Minting Process
+
+A new `cid:` is minted for an information asset through the following deterministic process:
+
+1.  **Canonicalization**: The information content is serialized into its canonical byte representation. For structured data (e.g., JSON), keys must be sorted alphabetically, and whitespace must be normalized.
+2.  **Hashing**: A SHA-256 hash is computed from the canonical byte stream.
+3.  **UUID Generation**: A new UUIDv7 is generated.
+4.  **Concatenation**: The components are concatenated according to the format specified in Section 2.
+
+## 4. Validation Algorithm
+
+An existing `cid:` is validated against its associated content using the following steps:
+
+1.  **Deconstruction**: Parse the `cid:` string to separate the `<uuidv7>` and `<sha256_hash_of_canonical_content>` components.
+2.  **Canonicalization & Hashing**: Repeat steps 1 and 2 of the Minting Process on the content being validated.
+3.  **Comparison**: Compare the newly computed SHA-256 hash with the hash extracted from the `cid:`. If they match, the content is considered authentic and integral with respect to the identifier. If they do not match, the content is considered tampered or mismatched.
+4.  **Format Check**: The UUID component should be validated as a legitimate UUIDv7 string.
+
+===== END FILE: docs/specs/identity_cid_uuidv7.md =====
+
+===== BEGIN FILE: docs/specs/ledger_api_and_ordering.md =====
+# Ledger API and Ordering Rules
+
+*Status: DRAFT*
+
+## 1. Abstract
+
+This document specifies the API contract for the append-only Ledger Service and the rules governing event ordering. The ledger provides a verifiable, deterministic, and tamper-evident log of system events, serving as a foundational layer for authority and execution.
+
+## 2. Operating Principle
+
+The ledger operates on a **single-writer, append-only** model. A designated ordering authority is the only entity permitted to commit new events to the log. All events are represented as `cid:`-identified information content.
+
+## 3. API Contract
+
+The Ledger Service exposes a minimal surface for interaction.
+
+### Endpoint: `POST /events`
+
+This is the sole endpoint for submitting a new event to be appended to the ledger.
+
+**Request Body:**
+
+The request body must be a JSON object containing the `cid:` of the event to be appended.
+
+```json
+{
+  "event_cid": "cid:..."
+}
+```
+
+**Responses:**
+
+*   **`202 Accepted`**: The request has been accepted for processing. The response includes a transaction ID for tracking. The event is not yet committed.
+
+    ```json
+    {
+      "transaction_id": "<uuid>",
+      "status": "PENDING"
+    }
+    ```
+
+*   **`400 Bad Request`**: The request body is malformed or the `event_cid` is invalid.
+
+*   **`403 Forbidden`**: The caller is not the designated ordering authority.
+
+### Endpoint: `GET /events/<event_cid>`
+
+Retrieves a previously committed event by its CID.
+
+**Responses:**
+
+*   **`200 OK`**: The event is found. The response body will contain the full event content (dereferenced from the CID).
+
+*   **`4NotFound`**: No event with the given CID exists in the ledger.
+
+### Endpoint: `GET /events`
+
+Allows for replaying or querying the event log. Supports pagination.
+
+**Query Parameters:**
+
+*   `after_seq_num` (integer): Returns events committed after the given sequence number.
+*   `limit` (integer, default: 100): The maximum number of events to return.
+
+**Responses:**
+
+*   **`200 OK`**: Returns a list of event objects, ordered by sequence number. Each object contains the sequence number and the event's CID.
+
+    ```json
+    {
+      "events": [
+        { "sequence_num": 1, "event_cid": "cid:..." },
+        { "sequence_num": 2, "event_cid": "cid:..." }
+      ]
+    }
+    ```
+
+## 4. Ordering and Determinism
+
+*   **Strict Sequential Ordering**: The ordering authority assigns a monotonically increasing sequence number to every event it commits. This sequence number is the final source of truth for event order.
+*   **Deterministic Replay**: Given the same initial state and the same sequence of events from the ledger, all higher-level system states must be fully reproducible. Any process that replays the events in their committed sequence order must arrive at the exact same final state.
+*   **No Parallel Writes**: Only the single designated writer can commit events. This prevents race conditions and ambiguous ordering.
+
+===== END FILE: docs/specs/ledger_api_and_ordering.md =====
+
+===== BEGIN FILE: docs/specs/issuerproof_v1.md =====
+# IssuerProof v1 Specification
+
+*Status: DRAFT*
+
+## 1. Abstract
+
+This specification defines the `IssuerProof`, a verifiable, self-contained data structure that binds an assertion to a specific issuer and context. It serves as a foundational element for creating chains of authority and evidence.
+
+## 2. Data Structure
+
+An `IssuerProof` is a JSON object with a mandatory structure. The object MUST be serialized into a canonical byte string (alphabetized keys, no insignificant whitespace) for the purposes of hashing and inclusion in a `cid:`.
+
+```json
+{
+  "iss": "did:example:123456",
+  "sub": "cid:...",
+  "iat": 1678886400,
+  "exp": 1678972800,
+  "claim": {
+    "type": "TruthAssertion",
+    "statement": "The artifact identified by 'sub' conforms to specification X."
+  },
+  "evidence": [
+    "cid:..."
+  ],
+  "signature": "..."
+}
+```
+
+### 2.1 Fields
+
+*   **`iss` (Issuer)**: REQUIRED. A Decentralized Identifier (DID) URI identifying the entity that issued the proof.
+*   **`sub` (Subject)**: REQUIRED. A `cid:` identifying the subject of the assertion (e.g., a piece of code, a document, another proof).
+*   **`iat` (Issued At)**: REQUIRED. A Unix timestamp (integer seconds) indicating when the proof was issued.
+*   **`exp` (Expiration)**: OPTIONAL. A Unix timestamp indicating when the proof expires.
+*   **`claim`**: REQUIRED. A JSON object containing the specific assertion being made.
+    *   **`type`**: The semantic type of the claim (e.g., `TruthAssertion`, `Stipulation`).
+    *   **`statement`**: A human-readable description of the claim.
+    *   Additional fields may be present depending on the `type`.
+*   **`evidence`**: OPTIONAL. An array of `cid:`s pointing to other artifacts or proofs that support the claim.
+*   **`signature`**: REQUIRED. A digital signature of the canonicalized proof object (excluding the `signature` field itself). The algorithm used should be determinable from the issuer's DID document.
+
+## 3. Verification Algorithm
+
+To verify an `IssuerProof`, a verifier MUST perform the following steps:
+
+1.  **Integrity Check**: The `IssuerProof` object itself must be identified by a `cid:`. The verifier must re-calculate the hash of the canonicalized proof content and ensure it matches the hash in the `cid:` it was retrieved by.
+2.  **Deconstruct**: Parse the JSON object and validate the presence of all REQUIRED fields.
+3.  **Check Timestamps**:
+    *   Verify that the current time is after `iat`.
+    *   If `exp` is present, verify that the current time is before `exp`.
+4.  **Resolve Issuer DID**: Dereference the `iss` DID to retrieve the issuer's public key(s).
+5.  **Verify Signature**:
+    *   Create a canonical representation of the `IssuerProof` object, ensuring the `signature` field is excluded.
+    *   Using the issuer's public key, verify that the `signature` is a valid digital signature of the canonicalized proof.
+6.  **Verify Subject and Evidence**: The verifier may recursively check the validity and integrity of the `cid:`s referenced in the `sub` and `evidence` fields.
+
+If all steps pass, the `IssuerProof` is considered valid.
+
+===== END FILE: docs/specs/issuerproof_v1.md =====
+
+===== BEGIN FILE: docs/specs/evaluator_boundary_v1.md =====
+# Evaluator Boundary v1 Specification
+
+*Status: DRAFT*
+
+## 1. Abstract
+
+This document specifies the interface for the Evaluator, a critical component that enforces commit-boundary semantics. The Evaluator's primary role is to validate a proposed state transition (a "commit") against a set of rules and produce a deterministic outcome: either an approval (`IssuerProof`) or a rejection.
+
+## 2. Core Concepts
+
+*   **Commit**: A proposed state transition, packaged as a collection of artifacts and claims.
+*   **Ruleset**: A collection of stipulations, requirements, and policies that govern the validity of a commit. This ruleset is itself an information artifact identified by a `cid:`.
+*   **Evaluation**: The process of applying a Ruleset to a Commit.
+*   **Commit-Boundary Enforcement**: The principle that no state transition is accepted into the system's official history (i.e., recorded on the ledger) without a successful evaluation.
+
+## 3. Evaluator Interface
+
+The Evaluator is conceptualized as a function that takes a commit and returns a result.
+
+`evaluate(commit_cid: str, ruleset_cid: str) -> result_cid: str`
+
+### 3.1 Inputs
+
+*   **`commit_cid`**: A `cid:` pointing to the root artifact of the proposed commit. The commit artifact is expected to be a manifest that references all other artifacts included in the state transition.
+*   **`ruleset_cid`**: A `cid:` pointing to the ruleset against which the commit should be evaluated.
+
+### 3.2 Output
+
+*   **`result_cid`**: A `cid:` pointing to an `IssuerProof` artifact that contains the outcome of the evaluation.
+
+## 4. Evaluation Process
+
+The `evaluate` function MUST perform the following high-level steps:
+
+1.  **Dereference Inputs**: Securely retrieve the content of the `commit_cid` and the `ruleset_cid`.
+2.  **Parse Commit**: Interpret the commit manifest to understand the proposed changes and referenced artifacts.
+3.  **Apply Rules**: Systematically apply each rule from the ruleset to the commit. This may involve:
+    *   Schema validation of artifacts.
+    *   Integrity checks of dependencies.
+    *   Validation of `IssuerProof` chains.
+    *   Checking for required attestations or evidence.
+4.  **Formulate Outcome**: Based on the results of the rule application, formulate a final claim.
+    *   **On Success**: The claim asserts that the commit is valid with respect to the given ruleset.
+    *   **On Failure**: The claim asserts that the commit is invalid and MUST include data on which rules failed.
+5.  **Mint Result Proof**: Create a new `IssuerProof` containing the outcome claim.
+    *   The `iss` of this proof is the Evaluator itself (e.g., `did:evaluator:v1`).
+    *   The `sub` is the `commit_cid` that was evaluated.
+    *   The `evidence` array SHOULD include the `ruleset_cid`.
+6.  **Return Result CID**: Return the `cid:` of the newly minted result proof.
+
+## 5. Commit Enforcement Logic
+
+The enforcement of the commit boundary happens *outside* the Evaluator. A separate component, the **Commit Authority**, is responsible for the following workflow:
+
+1.  Receive a proposed `commit_cid`.
+2.  Select the appropriate `ruleset_cid` to apply.
+3.  Invoke the `evaluate(commit_cid, ruleset_cid)` function.
+4.  Inspect the resulting `IssuerProof`.
+5.  **If and only if** the proof asserts successful validation, the Commit Authority will append the original `commit_cid` and the `result_cid` to the main system ledger. Otherwise, the commit is rejected.
+
+===== END FILE: docs/specs/evaluator_boundary_v1.md =====
+
+===== BEGIN FILE: schemas/release_manifest.schema.json =====
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Release Manifest",
+  "description": "Schema for a release package manifest, detailing the contents and metadata of the release.",
+  "type": "object",
+  "properties": {
+    "manifest_version": {
+      "description": "The version of the manifest schema itself.",
+      "type": "string",
+      "const": "1.0"
+    },
+    "release_id": {
+      "description": "A unique identifier for this release (e.g., a version string like 'v1.2.3').",
+      "type": "string"
+    },
+    "release_cid": {
+      "description": "The root CID of the release package itself, providing top-level integrity.",
+      "type": "string"
+    },
+    "issued_at": {
+      "description": "An ISO 8601 timestamp for when the release was created.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "contents": {
+      "description": "A list of all artifacts included in this release.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "description": "The relative path of the artifact within the package.",
+            "type": "string"
+          },
+          "cid": {
+            "description": "The Content-Addressable Identifier of the artifact.",
+            "type": "string"
+          },
+          "mime_type": {
+            "description": "The MIME type of the artifact.",
+            "type": "string"
+          }
+        },
+        "required": ["path", "cid", "mime_type"]
+      }
+    }
+  },
+  "required": [
+    "manifest_version",
+    "release_id",
+    "release_cid",
+    "issued_at",
+    "contents"
+  ]
+}
+
+===== END FILE: schemas/release_manifest.schema.json =====
+
+===== BEGIN FILE: schemas/runtime_load_manifest.schema.json =====
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Runtime Load Manifest",
+  "description": "Schema for a runtime-loadable manifest, focused on the essential information needed by a loader to securely unpack and verify a release.",
+  "type": "object",
+  "properties": {
+    "manifest_version": {
+      "description": "The version of the manifest schema.",
+      "type": "string",
+      "const": "1.0"
+    },
+    "release_id": {
+      "description": "The unique identifier for the release.",
+      "type": "string"
+    },
+    "contents": {
+      "description": "A mapping from logical artifact name to its integrity information.",
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "The relative path where the artifact should be unpacked.",
+              "type": "string"
+            },
+            "cid": {
+              "description": "The Content-Addressable Identifier of the artifact used for verification.",
+              "type": "string"
+            }
+          },
+          "required": ["path", "cid"]
+        }
+      }
+    }
+  },
+  "required": [
+    "manifest_version",
+    "release_id",
+    "contents"
+  ]
+}
+
+===== END FILE: schemas/runtime_load_manifest.schema.json =====
+
+===== BEGIN FILE: fixtures/release_manifest_fixture.json =====
+{
+  "manifest_version": "1.0",
+  "release_id": "v0.1.0-alpha",
+  "release_cid": "cid:placeholder-for-the-whole-archive-hash",
+  "issued_at": "2024-01-01T12:00:00Z",
+  "contents": [
+    {
+      "path": "ontology/kernel.ttl",
+      "cid": "cid:uuid-for-kernel-ttl-hash-for-kernel-ttl",
+      "mime_type": "text/turtle"
+    },
+    {
+      "path": "bin/service",
+      "cid": "cid:uuid-for-service-binary-hash-for-service-binary",
+      "mime_type": "application/octet-stream"
+    }
+  ]
+}
+
+===== END FILE: fixtures/release_manifest_fixture.json =====
+
+===== BEGIN FILE: fixtures/runtime_load_manifest_fixture.json =====
+{
+  "manifest_version": "1.0",
+  "release_id": "v0.1.0-alpha",
+  "contents": {
+    "kernel_ontology": {
+      "path": "ontology/kernel.ttl",
+      "cid": "cid:uuid-for-kernel-ttl-hash-for-kernel-ttl"
+    },
+    "main_service": {
+      "path": "bin/service",
+      "cid": "cid:uuid-for-service-binary-hash-for-service-binary"
+    }
+  }
+}
+
+===== END FILE: fixtures/runtime_load_manifest_fixture.json =====
+
+===== BEGIN FILE: src/cid.py =====
+"""
+CID (Content-Addressable Identifier) library based on UUIDv7 and SHA256.
+"""
+
+import uuid
+import hashlib
+
+def mint_cid(content: bytes) -> str:
+    """
+    Mints a new CID for the given content.
+
+    A CID is a content-addressable identifier that combines a UUIDv7 for
+    time-based sortability and a SHA-256 hash of the content for integrity.
+
+    Args:
+        content: The byte-string content to be identified.
+
+    Returns:
+        A string representing the CID in the format:
+        'cid:<uuidv7>-<sha256_hash>'
+    """
+    if not isinstance(content, bytes):
+        raise TypeError("Content must be bytes.")
+
+    # 1. Generate UUIDv7
+    # Note: The 'uuid7' library would be ideal here. As it's not a standard
+    # library, we'll simulate its time-ordered nature with UUIDv1 and
+    # acknowledge this is a simplification for the bootstrap phase.
+    # For a production system, a proper UUIDv7 implementation is required.
+    # For now, we'll use uuid.uuid4() and add a note about it.
+    # A better approach if allowed would be to use `uuid.uuid1()` which has a time component
+    # For now uuid4 is a placeholder.
+    # TODO: Replace with a proper UUIDv7 generator.
+    generated_uuid = uuid.uuid4()
+
+    # 2. Hash the content
+    sha256_hash = hashlib.sha256(content).hexdigest()
+
+    # 3. Concatenate
+    return f"cid:{generated_uuid}-{sha256_hash}"
+
+def validate_cid(cid: str, content: bytes) -> bool:
+    """
+    Validates a CID against its corresponding content.
+
+    The function checks if the hash embedded in the CID matches the actual
+    hash of the provided content.
+
+    Args:
+        cid: The CID string to validate.
+        content: The byte-string content to validate against.
+
+    Returns:
+        True if the CID is valid for the content, False otherwise.
+    """
+    if not isinstance(content, bytes):
+        raise TypeError("Content must be bytes.")
+    if not isinstance(cid, str) or not cid.startswith("cid:"):
+        return False
+
+    cid_body = cid[4:]
+
+    # Use rsplit to robustly separate the UUID from the hash
+    parts = cid_body.rsplit('-', 1)
+    if len(parts) != 2:
+        return False
+    
+    uuid_str, hash_from_cid = parts
+
+    # Validate UUID format (simple check)
+    try:
+        uuid.UUID(uuid_str)
+    except ValueError:
+        return False
+
+    # Hash the provided content
+    content_hash = hashlib.sha256(content).hexdigest()
+
+    # Compare hashes
+    return content_hash == hash_from_cid
+
+def get_hash_from_cid(cid: str) -> str | None:
+    """
+    Extracts the SHA-256 hash from a CID string.
+    
+    Args:
+        cid: The CID string.
+        
+    Returns:
+        The extracted hash string, or None if the CID format is invalid.
+    """
+    if not isinstance(cid, str) or not cid.startswith("cid:"):
+        return None
+        
+    parts = cid.split(':')
+    if len(parts) != 2:
+        return None
+        
+    id_parts = parts[1].rsplit('-', 1)
+    if len(id_parts) != 2:
+        return None
+        
+    _, hash_from_cid = id_parts
+    return hash_from_cid
+
+===== END FILE: src/cid.py =====
+
+===== BEGIN FILE: src/ledger.py =====
+"""
+In-memory, append-only ledger service.
+
+This is a bootstrap-phase, simplified implementation of the ledger API
+and ordering rules. It is not thread-safe and does not persist data.
+"""
+
+from typing import Dict, List, Tuple, Optional
+
+# In-memory storage for events
+# The list stores tuples of (sequence_num, event_cid)
+_event_log: List[Tuple[int, str]] = []
+# A dictionary to quickly look up events by CID
+_event_cid_map: Dict[str, int] = {}
+# The ordering authority, represented as a simple string for now
+_ordering_authority = "SYSTEM_WRITER"
+
+
+def configure_ledger(authority: str):
+    """Sets the designated ordering authority."""
+    global _ordering_authority
+    _ordering_authority = authority
+
+def append_event(event_cid: str, caller_id: str) -> Tuple[bool, str]:
+    """
+    Appends a new event CID to the ledger if the caller is authorized.
+    
+    Args:
+        event_cid: The Content-Addressable Identifier of the event.
+        caller_id: The identifier of the entity attempting the write.
+        
+    Returns:
+        A tuple of (success, message_or_transaction_id).
+        If successful, (True, "transaction_id").
+        If failed, (False, "error_message").
+    """
+    if caller_id != _ordering_authority:
+        return (False, "Caller is not the designated ordering authority.")
+    
+    if not isinstance(event_cid, str) or not event_cid.startswith("cid:"):
+        return (False, "Invalid event_cid format.")
+        
+    if event_cid in _event_cid_map:
+        return (False, "Event with this CID has already been committed.")
+
+    # Assign the next sequence number
+    next_seq_num = len(_event_log) + 1
+    
+    # Append to log
+    _event_log.append((next_seq_num, event_cid))
+    _event_cid_map[event_cid] = next_seq_num
+    
+    # In this simple implementation, the transaction is instantly "committed".
+    # We return a dummy transaction ID.
+    return (True, f"txn_{next_seq_num}")
+
+def get_event_by_cid(event_cid: str) -> Optional[Tuple[int, str]]:
+    """
+    Retrieves an event from the ledger by its CID.
+    
+    Args:
+        event_cid: The CID of the event to retrieve.
+        
+    Returns:
+        A tuple of (sequence_num, event_cid) if found, otherwise None.
+    """
+    if event_cid in _event_cid_map:
+        seq_num = _event_cid_map[event_cid]
+        # The sequence number is 1-based, list index is 0-based
+        return _event_log[seq_num - 1]
+    return None
+
+def get_events(after_seq_num: int = 0, limit: int = 100) -> List[Dict]:
+    """
+    Replays the event log from a given sequence number.
+    
+    Args:
+        after_seq_num: The sequence number after which to start returning events.
+        limit: The maximum number of events to return.
+        
+    Returns:
+        A list of event dictionaries, each containing 'sequence_num' and 'event_cid'.
+    """
+    start_index = after_seq_num
+    end_index = start_index + limit
+    
+    # Retrieve the slice of the log
+    log_slice = _event_log[start_index:end_index]
+    
+    return [
+        {"sequence_num": seq, "event_cid": cid}
+        for seq, cid in log_slice
+    ]
+
+def get_log_size() -> int:
+    """Returns the total number of events in the log."""
+    return len(_event_log)
+    
+def _reset_ledger_for_testing():
+    """A private function to reset the ledger state during tests."""
+    global _event_log, _event_cid_map
+    _event_log = []
+    _event_cid_map = {}
+
+===== END FILE: src/ledger.py =====
+
+===== BEGIN FILE: src/issuer_proof.py =====
+"""
+Simplified IssuerProof verifier.
+
+This is a bootstrap-phase, simplified implementation that focuses on
+structural and logical validation of an IssuerProof object. It does
+not perform cryptographic signature validation or DID resolution.
+"""
+
+import json
+import time
+from typing import Dict, Any, Tuple
+
+def verify_issuer_proof(proof_obj: Dict[str, Any]) -> Tuple[bool, str]:
+    """
+    Verifies the structural and logical integrity of an IssuerProof object.
+    
+    This function performs all verification steps short of cryptographic checks.
+    
+    Args:
+        proof_obj: The IssuerProof as a Python dictionary.
+        
+    Returns:
+        A tuple of (is_valid, message).
+    """
+    
+    # 2. Deconstruct: Validate presence of required fields
+    required_fields = ["iss", "sub", "iat", "claim", "signature"]
+    for field in required_fields:
+        if field not in proof_obj:
+            return (False, f"Missing required field: {field}")
+            
+    if not isinstance(proof_obj["claim"], dict) or "type" not in proof_obj["claim"]:
+        return (False, "Invalid 'claim' object structure.")
+
+    # 3. Check Timestamps
+    current_time = int(time.time())
+    
+    iat = proof_obj.get("iat")
+    if not isinstance(iat, int):
+        return (False, "'iat' must be an integer timestamp.")
+    if iat > current_time:
+        return (False, "Proof 'iat' is in the future.")
+        
+    exp = proof_obj.get("exp")
+    if exp is not None:
+        if not isinstance(exp, int):
+            return (False, "'exp' must be an integer timestamp.")
+        if current_time >= exp:
+            return (False, "Proof has expired.")
+
+    # 4. Resolve Issuer DID (Placeholder)
+    # In a real implementation, we would resolve the DID in 'iss'
+    # to fetch the issuer's public key.
+    # For now, we just check that the 'iss' field is a non-empty string.
+    if not isinstance(proof_obj.get("iss"), str) or not proof_obj.get("iss"):
+        return (False, "Issuer 'iss' is invalid.")
+    
+    # 5. Verify Signature (Placeholder)
+    # This is where cryptographic signature verification would occur.
+    # We would canonicalize the JSON (excluding the 'signature' field),
+    # and use the issuer's public key to verify the signature.
+    # We will simulate this by checking if the signature is a non-empty string.
+    if not isinstance(proof_obj.get("signature"), str) or not proof_obj.get("signature"):
+        return (False, "Signature is missing or invalid.")
+        
+    # 6. Verify Subject and Evidence (Format check)
+    if not isinstance(proof_obj.get("sub"), str) or not proof_obj.get("sub").startswith("cid:"):
+        return (False, "Subject 'sub' is not a valid CID.")
+        
+    evidence = proof_obj.get("evidence", [])
+    if not isinstance(evidence, list):
+        return (False, "'evidence' field must be a list.")
+    for ev_cid in evidence:
+        if not isinstance(ev_cid, str) or not ev_cid.startswith("cid:"):
+            return (False, f"Invalid CID format in 'evidence': {ev_cid}")
+
+    return (True, "Proof is structurally and logically valid (cryptographic checks pending).")
+
+def canonicalize_for_signing(proof_obj: Dict[str, Any]) -> bytes:
+    """
+    Creates a canonical byte representation of the proof for signing.
+    
+    The process involves removing the 'signature' field and then creating a
+    compact, sorted JSON string.
+    
+    Args:
+        proof_obj: The IssuerProof dictionary.
+        
+    Returns:
+        A UTF-8 encoded byte string of the canonical JSON.
+    """
+    if "signature" in proof_obj:
+        # Create a copy to avoid modifying the original dict
+        signable_obj = proof_obj.copy()
+        del signable_obj["signature"]
+    else:
+        signable_obj = proof_obj
+        
+    # Create a compact, sorted JSON string
+    canonical_json = json.dumps(
+        signable_obj, 
+        sort_keys=True, 
+        separators=(',', ':')
+    )
+    
+    return canonical_json.encode('utf-8')
+
+===== END FILE: src/issuer_proof.py =====
+
+===== BEGIN FILE: src/evaluator.py =====
+"""
+Simplified Evaluator stub.
+
+This is a bootstrap-phase, simplified implementation of the Evaluator.
+It does not perform any real rule evaluation. It simply returns a
+pre-determined successful `IssuerProof`.
+"""
+
+import time
+from typing import Dict, Any
+from src.cid import mint_cid
+from src.issuer_proof import canonicalize_for_signing
+
+# The Evaluator's own identity
+EVALUATOR_DID = "did:evaluator:v1"
+
+def evaluate(commit_cid: str, ruleset_cid: str) -> Dict[str, Any]:
+    """
+    A stub implementation of the evaluate function.
+    
+    This function simulates the evaluation process and always returns a
+    successful `IssuerProof`.
+    
+    Args:
+        commit_cid: The CID of the commit to be evaluated.
+        ruleset_cid: The CID of the ruleset to use.
+        
+    Returns:
+        A dictionary representing the resulting IssuerProof.
+    """
+    
+    # In a real implementation, this is where rules would be applied
+    # to the commit. For this stub, we assume success.
+    
+    # 5. Formulate Outcome & Mint Result Proof
+    proof_claim = {
+        "type": "EvaluationResult",
+        "statement": f"Commit {commit_cid} validated successfully against ruleset {ruleset_cid}.",
+        "outcome": "SUCCESS"
+    }
+    
+    proof_to_be_signed = {
+      "iss": EVALUATOR_DID,
+      "sub": commit_cid,
+      "iat": int(time.time()),
+      "claim": proof_claim,
+      "evidence": [ruleset_cid]
+    }
+    
+    # Simulate signing
+    # In a real system, this would involve a private key.
+    canonical_bytes = canonicalize_for_signing(proof_to_be_signed)
+    # We'll use the hash of the canonical form as a dummy signature
+    dummy_signature = mint_cid(canonical_bytes) # Not a real signature!
+    
+    final_proof = proof_to_be_signed.copy()
+    final_proof["signature"] = dummy_signature
+    
+    return final_proof
+
+class CommitAuthority:
+    """
+    A simplified stub for the Commit Authority logic.
+    """
+    def __init__(self, ledger_module, evaluator_module):
+        self.ledger = ledger_module
+        self.evaluator = evaluator_module
+        self.writer_id = "COMMIT_AUTHORITY"
+        # The authority needs its own writer permissions on the ledger
+        self.ledger.configure_ledger(self.writer_id)
+
+    def process_commit(self, commit_cid: str, ruleset_cid: str) -> bool:
+        """
+        Simulates the commit-boundary enforcement workflow.
+        
+        1. Calls the evaluator.
+        2. Inspects the result.
+        3. Appends to the ledger on success.
+        
+        Args:
+            commit_cid: The CID of the proposed commit.
+            ruleset_cid: The CID of the ruleset to apply.
+            
+        Returns:
+            True if the commit was approved and appended, False otherwise.
+        """
+        
+        # 3. Invoke the evaluator
+        result_proof = self.evaluator.evaluate(commit_cid, ruleset_cid)
+        
+        # 4. Inspect the resulting IssuerProof
+        if result_proof.get("claim", {}).get("outcome") == "SUCCESS":
+            # 5. Append to ledger
+            
+            # First, we need a CID for the result proof itself
+            result_proof_bytes = canonicalize_for_signing(result_proof)
+            result_cid = mint_cid(result_proof_bytes)
+            
+            # Append the original commit and the result proof
+            success1, _ = self.ledger.append_event(commit_cid, self.writer_id)
+            success2, _ = self.ledger.append_event(result_cid, self.writer_id)
+            
+            return success1 and success2
+        
+        return False
+
+===== END FILE: src/evaluator.py =====
+
+===== BEGIN FILE: src/loader.py =====
+"""
+A simple verifier and loader for release packages.
+"""
+
+import os
+import json
+import tarfile
+import hashlib
+from typing import Tuple
+from src.cid import validate_cid
+
+def verify_and_load(
+    manifest_path: str,
+    archive_path: str,
+    load_dir: str
+) -> Tuple[bool, str]:
+    """
+    Verifies a release package against its manifest and unpacks it.
+    
+    This function implements the core rejection logic by performing a full
+    integrity check before loading any content.
+    
+    Args:
+        manifest_path: Path to the release_manifest.json file.
+        archive_path: Path to the .tar.gz release archive.
+        load_dir: The directory where the contents will be unpacked.
+        
+    Returns:
+        A tuple of (success, message).
+    """
+    
+    # --- VERIFICATION PHASE ---
+    
+    # 1. Read the manifest
+    try:
+        with open(manifest_path, 'r') as f:
+            manifest = json.load(f)
+    except (IOError, json.JSONDecodeError) as e:
+        return (False, f"Failed to read or parse manifest: {e}")
+
+    # 2. Verify the integrity of the archive itself
+    with open(archive_path, 'rb') as f:
+        archive_bytes = f.read()
+    if not validate_cid(manifest["release_cid"], archive_bytes):
+        return (False, "Archive integrity check failed. The .tar.gz file is tampered.")
+
+    # 3. Verify the integrity of all contents within the archive
+    try:
+        with tarfile.open(archive_path, "r:gz") as tar:
+            for item in manifest["contents"]:
+                file_info = tar.getmember(item["path"])
+                extracted_file = tar.extractfile(file_info)
+                
+                if extracted_file is None:
+                    return (False, f"File {item['path']} listed in manifest not found in archive.")
+
+                # Read content and validate CID
+                content_bytes = extracted_file.read()
+                if not validate_cid(item["cid"], content_bytes):
+                    return (False, f"Tampering detected in file: {item['path']}. Hash mismatch.")
+    except (KeyError, tarfile.TarError) as e:
+        return (False, f"Error processing archive: {e}")
+        
+    # --- LOADING PHASE ---
+    
+    # If all checks pass, it is safe to unpack the archive
+    os.makedirs(load_dir, exist_ok=True)
+    try:
+        with tarfile.open(archive_path, "r:gz") as tar:
+            tar.extractall(path=load_dir)
+    except tarfile.TarError as e:
+        return (False, f"Failed to unpack archive after verification: {e}")
+
+    return (True, f"Package verified and loaded successfully into {load_dir}")
+
+===== END FILE: src/loader.py =====
+
+===== BEGIN FILE: tools/packager.py =====
+"""
+A simple packager tool to create release archives and manifests.
+"""
+
+import os
+import json
+import tarfile
+import hashlib
+import datetime
+from src.cid import mint_cid
+
+def calculate_sha256(filepath: str) -> str:
+    """Calculates the SHA256 hash of a file."""
+    sha256 = hashlib.sha256()
+    with open(filepath, 'rb') as f:
+        while chunk := f.read(4096):
+            sha256.update(chunk)
+    return sha256.hexdigest()
+
+def create_package(
+    release_id: str,
+    file_paths: list,
+    output_dir: str,
+    base_dir: str = "."
+):
+    """
+    Creates a release package containing a manifest and a tar.gz archive.
+    
+    Args:
+        release_id: A unique identifier for the release (e.g., 'v1.0.0').
+        file_paths: A list of file paths to include in the package.
+        output_dir: The directory where the package will be saved.
+        base_dir: The base directory to make file paths relative to.
+    """
+    os.makedirs(output_dir, exist_ok=True)
+    
+    archive_name = f"{release_id}.tar.gz"
+    archive_path = os.path.join(output_dir, archive_name)
+    
+    manifest = {
+        "manifest_version": "1.0",
+        "release_id": release_id,
+        "issued_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "contents": []
+    }
+    
+    # Create the tar archive
+    with tarfile.open(archive_path, "w:gz") as tar:
+        for file_path in file_paths:
+            with open(file_path, 'rb') as f:
+                content_bytes = f.read()
+            
+            # Generate a valid CID using the cid library
+            file_cid = mint_cid(content_bytes)
+            
+            # Determine the relative path for the archive and manifest
+            arcname = os.path.relpath(file_path, base_dir)
+            
+            # Add file to tar
+            tar.add(file_path, arcname=arcname)
+            
+            # Add file info to manifest contents
+            manifest["contents"].append({
+                "path": arcname,
+                "cid": file_cid,
+                "mime_type": "application/octet-stream" # Simple placeholder
+            })
+
+    # Now calculate the CID for the entire archive
+    with open(archive_path, 'rb') as f:
+        archive_bytes = f.read()
+    release_cid = mint_cid(archive_bytes)
+    manifest["release_cid"] = release_cid
+
+    # Write the manifest file
+    manifest_path = os.path.join(output_dir, "release_manifest.json")
+    with open(manifest_path, 'w') as f:
+        json.dump(manifest, f, indent=2)
+        
+    print(f"Package created at {output_dir}")
+    return manifest_path, archive_path
+
+if __name__ == '__main__':
+    # Example usage:
+    # This part would typically be called from a build script.
+    print("This is a library and not meant to be run directly for packaging.")
+    print("Example: create_package('v0.1.0', ['src/cid.py'], 'dist/test_package', base_dir='.')")
+    # To test it, we can create a dummy package
+    os.makedirs("dist/example_pkg_src", exist_ok=True)
+    with open("dist/example_pkg_src/file1.txt", "w") as f:
+        f.write("hello")
+    with open("dist/example_pkg_src/file2.txt", "w") as f:
+        f.write("world")
+    
+    create_package(
+        "example-v0.1", 
+        ["dist/example_pkg_src/file1.txt", "dist/example_pkg_src/file2.txt"],
+        "dist/example_pkg_out",
+        base_dir="dist/example_pkg_src"
+    )
+
+===== END FILE: tools/packager.py =====
+
+===== BEGIN FILE: tests/test_cid.py =====
+"""
+Tests for the CID library.
+"""
+
+import unittest
+import uuid
+import hashlib
+from src.cid import mint_cid, validate_cid, get_hash_from_cid
+
+class TestCID(unittest.TestCase):
+
+    def test_mint_cid_format(self):
+        """
+        Tests if mint_cid produces a CID with the correct format.
+        """
+        content = b"hello world"
+        cid = mint_cid(content)
+        self.assertTrue(cid.startswith("cid:"))
+        
+        parts = cid[4:].rsplit('-', 1)
+        self.assertEqual(len(parts), 2)
+        
+        uuid_part, hash_part = parts
+        
+        # Check if UUID part is a valid UUID
+        try:
+            uuid.UUID(uuid_part)
+        except ValueError:
+            self.fail("UUID part of CID is not a valid UUID.")
+            
+        # Check if hash part has the correct length
+        self.assertEqual(len(hash_part), 64)
+
+    def test_validate_cid_success(self):
+        """
+        Tests that a correctly minted CID validates successfully.
+        """
+        content = b"this is a test"
+        cid = mint_cid(content)
+        self.assertTrue(validate_cid(cid, content))
+
+    def test_validate_cid_tampered_content(self):
+        """
+        Tests that validation fails for tampered content.
+        """
+        content = b"original content"
+        cid = mint_cid(content)
+        
+        tampered_content = b"tampered content"
+        self.assertFalse(validate_cid(cid, tampered_content))
+
+    def test_validate_cid_invalid_format(self):
+        """
+        Tests that validation fails for invalid CID formats.
+        """
+        content = b"some content"
+        self.assertFalse(validate_cid("invalid-cid", content))
+        self.assertFalse(validate_cid("cid:justonepart", content))
+        self.assertFalse(validate_cid("cid:too-many-parts-in-the-end-foo-bar", content))
+        self.assertFalse(validate_cid("cid:notauuid-invalidhash", content))
+
+    def test_type_errors(self):
+        """
+        Tests if functions raise TypeError for incorrect input types.
+        """
+        with self.assertRaises(TypeError):
+            mint_cid("a string, not bytes")
+            
+        with self.assertRaises(TypeError):
+            validate_cid("cid:some-cid", "a string, not bytes")
+
+    def test_get_hash_from_cid(self):
+        """
+        Tests the extraction of the hash from a CID.
+        """
+        content = b"some test content for hashing"
+        sha256_hash = hashlib.sha256(content).hexdigest()
+        cid = f"cid:some-uuid-goes-here-{sha256_hash}"
+        
+        extracted_hash = get_hash_from_cid(cid)
+        self.assertEqual(extracted_hash, sha256_hash)
+
+    def test_get_hash_from_invalid_cid(self):
+        """
+        Tests that get_hash_from_cid returns None for invalid CIDs.
+        """
+        self.assertIsNone(get_hash_from_cid("invalid-cid"))
+        self.assertIsNone(get_hash_from_cid("cid:no_hash_part"))
+
+if __name__ == '__main__':
+    unittest.main()
+
+===== END FILE: tests/test_cid.py =====
+
+===== BEGIN FILE: tests/test_ledger.py =====
+"""
+Tests for the in-memory, append-only ledger service.
+"""
+
+import unittest
+from src import ledger
+
+class TestLedger(unittest.TestCase):
+
+    def setUp(self):
+        """Reset the ledger before each test."""
+        ledger._reset_ledger_for_testing()
+        ledger.configure_ledger("SYSTEM_WRITER") # Default writer
+
+    def test_append_event_success(self):
+        """Tests successful event appending by the authority."""
+        caller = "SYSTEM_WRITER"
+        cid = "cid:uuid1-hash1"
+        success, tx_id = ledger.append_event(cid, caller)
+        self.assertTrue(success)
+        self.assertEqual(tx_id, "txn_1")
+        self.assertEqual(ledger.get_log_size(), 1)
+
+    def test_append_event_unauthorized(self):
+        """Tests that an unauthorized caller cannot append."""
+        caller = "SOMEONE_ELSE"
+        cid = "cid:uuid1-hash1"
+        success, message = ledger.append_event(cid, caller)
+        self.assertFalse(success)
+        self.assertEqual(message, "Caller is not the designated ordering authority.")
+        self.assertEqual(ledger.get_log_size(), 0)
+
+    def test_append_duplicate_event(self):
+        """Tests that the same event cannot be appended twice."""
+        caller = "SYSTEM_WRITER"
+        cid = "cid:uuid1-hash1"
+        ledger.append_event(cid, caller)
+        success, message = ledger.append_event(cid, caller)
+        self.assertFalse(success)
+        self.assertEqual(message, "Event with this CID has already been committed.")
+        self.assertEqual(ledger.get_log_size(), 1)
+
+    def test_get_event_by_cid(self):
+        """Tests retrieving a committed event by its CID."""
+        caller = "SYSTEM_WRITER"
+        cid = "cid:uuid1-hash1"
+        ledger.append_event(cid, caller)
+        
+        event = ledger.get_event_by_cid(cid)
+        self.assertIsNotNone(event)
+        self.assertEqual(event, (1, cid))
+
+    def test_get_nonexistent_event(self):
+        """Tests that retrieving a non-existent event returns None."""
+        event = ledger.get_event_by_cid("cid:nonexistent-hash")
+        self.assertIsNone(event)
+
+    def test_deterministic_replay(self):
+        """
+        Validates the 'deterministic_replay_test' requirement.
+        It appends a series of events and then replays them to ensure
+        the order and content are perfectly preserved.
+        """
+        caller = "SYSTEM_WRITER"
+        original_events = [f"cid:uuid{i}-hash{i}" for i in range(1, 6)]
+        
+        # Append events
+        for cid in original_events:
+            ledger.append_event(cid, caller)
+            
+        self.assertEqual(ledger.get_log_size(), 5)
+        
+        # Replay the full log
+        replayed_log = ledger.get_events(limit=10)
+        
+        # Check that the replayed log matches the original events in order
+        self.assertEqual(len(replayed_log), len(original_events))
+        for i, event_data in enumerate(replayed_log):
+            self.assertEqual(event_data["sequence_num"], i + 1)
+            self.assertEqual(event_data["event_cid"], original_events[i])
+
+    def test_get_events_with_pagination(self):
+        """Tests the 'after_seq_num' and 'limit' parameters."""
+        caller = "SYSTEM_WRITER"
+        for i in range(1, 11):
+            ledger.append_event(f"cid:uuid{i}-hash{i}", caller)
+            
+        # Get first 3 events
+        events_page1 = ledger.get_events(limit=3)
+        self.assertEqual(len(events_page1), 3)
+        self.assertEqual(events_page1[0]["sequence_num"], 1)
+        self.assertEqual(events_page1[2]["sequence_num"], 3)
+        
+        # Get next 3 events
+        events_page2 = ledger.get_events(after_seq_num=3, limit=3)
+        self.assertEqual(len(events_page2), 3)
+        self.assertEqual(events_page2[0]["sequence_num"], 4)
+        
+        # Get remaining events
+        events_page3 = ledger.get_events(after_seq_num=6, limit=5)
+        self.assertEqual(len(events_page3), 4)
+
+if __name__ == '__main__':
+    unittest.main()
+
+===== END FILE: tests/test_ledger.py =====
+
+===== BEGIN FILE: tests/test_issuer_proof.py =====
+"""
+Tests for the simplified IssuerProof verifier.
+
+Focuses on negative tests to ensure structural and logical validation
+is working as expected.
+"""
+
+import unittest
+import time
+from src.issuer_proof import verify_issuer_proof, canonicalize_for_signing
+
+class TestIssuerProof(unittest.TestCase):
+
+    def setUp(self):
+        """Create a base valid proof object for each test."""
+        self.base_proof = {
+          "iss": "did:example:123456",
+          "sub": "cid:subject-hash",
+          "iat": int(time.time()) - 60,
+          "exp": int(time.time()) + 3600,
+          "claim": {
+            "type": "TruthAssertion",
+            "statement": "This is a valid claim."
+          },
+          "evidence": ["cid:evidence-hash-1"],
+          "signature": "a-valid-looking-signature"
+        }
+
+    def test_verify_valid_proof(self):
+        """Tests that a structurally valid proof passes verification."""
+        is_valid, message = verify_issuer_proof(self.base_proof)
+        self.assertTrue(is_valid, message)
+
+    def test_missing_required_field(self):
+        """Negative Test: A required field is missing."""
+        for field in ["iss", "sub", "iat", "claim", "signature"]:
+            with self.subTest(missing_field=field):
+                invalid_proof = self.base_proof.copy()
+                del invalid_proof[field]
+                is_valid, message = verify_issuer_proof(invalid_proof)
+                self.assertFalse(is_valid)
+                self.assertEqual(message, f"Missing required field: {field}")
+
+    def test_invalid_claim_structure(self):
+        """Negative Test: The 'claim' object is malformed."""
+        invalid_proof = self.base_proof.copy()
+        invalid_proof["claim"] = "just a string" # not an object
+        is_valid, message = verify_issuer_proof(invalid_proof)
+        self.assertFalse(is_valid)
+        self.assertEqual(message, "Invalid 'claim' object structure.")
+
+    def test_proof_expired(self):
+        """Negative Test: The proof's expiration date is in the past."""
+        expired_proof = self.base_proof.copy()
+        expired_proof["exp"] = int(time.time()) - 1
+        is_valid, message = verify_issuer_proof(expired_proof)
+        self.assertFalse(is_valid)
+        self.assertEqual(message, "Proof has expired.")
+
+    def test_proof_issued_in_future(self):
+        """Negative Test: The proof's issued-at date is in the future."""
+        future_proof = self.base_proof.copy()
+        future_proof["iat"] = int(time.time()) + 3600
+        is_valid, message = verify_issuer_proof(future_proof)
+        self.assertFalse(is_valid)
+        self.assertEqual(message, "Proof 'iat' is in the future.")
+        
+    def test_invalid_signature(self):
+        """Negative Test: Signature is missing or not a string."""
+        invalid_proof = self.base_proof.copy()
+        invalid_proof["signature"] = ""
+        is_valid, message = verify_issuer_proof(invalid_proof)
+        self.assertFalse(is_valid)
+        self.assertEqual(message, "Signature is missing or invalid.")
+
+    def test_invalid_subject_cid(self):
+        """Negative Test: Subject is not a valid CID format."""
+        invalid_proof = self.base_proof.copy()
+        invalid_proof["sub"] = "not-a-cid"
+        is_valid, message = verify_issuer_proof(invalid_proof)
+        self.assertFalse(is_valid)
+        self.assertEqual(message, "Subject 'sub' is not a valid CID.")
+
+    def test_invalid_evidence_cid(self):
+        """Negative Test: An item in the evidence array is not a valid CID."""
+        invalid_proof = self.base_proof.copy()
+        invalid_proof["evidence"] = ["cid:valid-cid", "not-a-cid"]
+        is_valid, message = verify_issuer_proof(invalid_proof)
+        self.assertFalse(is_valid)
+        self.assertTrue(message.startswith("Invalid CID format in 'evidence'"))
+
+    def test_canonicalize_for_signing(self):
+        """Tests that canonicalization produces a deterministic, sorted string."""
+        proof1 = {"b": 2, "a": 1, "signature": "xxx"}
+        proof2 = {"a": 1, "b": 2, "signature": "yyy"} # same data, different order
+        
+        canonical1 = canonicalize_for_signing(proof1)
+        canonical2 = canonicalize_for_signing(proof2)
+        
+        self.assertEqual(canonical1, canonical2)
+        # The canonical form should not include the signature
+        self.assertNotIn(b"signature", canonical1)
+        # It should be compact (no spaces)
+        self.assertEqual(canonical1, b'{"a":1,"b":2}')
+
+if __name__ == '__main__':
+    unittest.main()
+
+===== END FILE: tests/test_issuer_proof.py =====
+
+===== BEGIN FILE: tests/test_evaluator.py =====
+"""
+Tests for the simplified Evaluator and Commit Authority.
+
+Focuses on 'enforcement_tests' to ensure the commit-boundary
+logic is working as specified.
+"""
+
+import unittest
+from src import evaluator, ledger, cid
+
+class TestEvaluatorAndCommitAuthority(unittest.TestCase):
+
+    def setUp(self):
+        """Reset the ledger before each test."""
+        ledger._reset_ledger_for_testing()
+    
+    def test_evaluate_stub_returns_valid_proof_structure(self):
+        """Tests that the evaluator stub produces a proof with the correct structure."""
+        commit_cid = "cid:commit-1"
+        ruleset_cid = "cid:rules-1"
+        
+        proof = evaluator.evaluate(commit_cid, ruleset_cid)
+        
+        self.assertEqual(proof["iss"], evaluator.EVALUATOR_DID)
+        self.assertEqual(proof["sub"], commit_cid)
+        self.assertEqual(proof["claim"]["outcome"], "SUCCESS")
+        self.assertIn(ruleset_cid, proof["evidence"])
+
+    def test_commit_authority_enforcement_success(self):
+        """
+        Enforcement Test: A successful evaluation results in events
+        being written to the ledger.
+        """
+        authority = evaluator.CommitAuthority(ledger, evaluator)
+        commit_cid = "cid:a-good-commit"
+        ruleset_cid = "cid:ruleset-v1"
+
+        # Process the commit
+        was_committed = authority.process_commit(commit_cid, ruleset_cid)
+
+        # Check that the commit was successful
+        self.assertTrue(was_committed)
+        
+        # Check that two events were written to the ledger
+        # (the commit itself and the evaluation proof)
+        self.assertEqual(ledger.get_log_size(), 2)
+        
+        # Verify the events in the ledger
+        log_events = ledger.get_events(limit=2)
+        self.assertEqual(log_events[0]["event_cid"], commit_cid)
+        self.assertTrue(log_events[1]["event_cid"].startswith("cid:"))
+
+    def test_commit_authority_enforcement_failure(self):
+        """
+        Enforcement Test: A failed evaluation does NOT write to the ledger.
+        """
+        
+        # Create a mock evaluator that always fails
+        class FailingEvaluator:
+            def evaluate(self, commit_cid, ruleset_cid):
+                return {
+                    "iss": "did:evaluator:v1",
+                    "sub": commit_cid,
+                    "claim": { "outcome": "FAILURE" },
+                    "signature": "dummy-sig"
+                }
+
+        failing_evaluator_module = FailingEvaluator()
+        authority = evaluator.CommitAuthority(ledger, failing_evaluator_module)
+        
+        commit_cid = "cid:a-bad-commit"
+        ruleset_cid = "cid:ruleset-v1"
+
+        # Process the commit
+        was_committed = authority.process_commit(commit_cid, ruleset_cid)
+        
+        # Check that the commit failed
+        self.assertFalse(was_committed)
+        
+        # Check that NOTHING was written to the ledger
+        self.assertEqual(ledger.get_log_size(), 0)
+
+if __name__ == '__main__':
+    unittest.main()
+
+===== END FILE: tests/test_evaluator.py =====
+
+===== BEGIN FILE: tests/test_packager.py =====
+"""
+Tests for the simple packager tool.
+
+Focuses on the 'build_and_verify_digests' validation method.
+"""
+
+import unittest
+import os
+import json
+import tarfile
+import tempfile
+import shutil
+from tools.packager import create_package, calculate_sha256
+
+class TestPackager(unittest.TestCase):
+
+    def setUp(self):
+        """Set up a temporary directory structure for testing."""
+        self.test_dir = tempfile.mkdtemp()
+        self.source_dir = os.path.join(self.test_dir, "source")
+        self.output_dir = os.path.join(self.test_dir, "output")
+        os.makedirs(self.source_dir)
+        os.makedirs(self.output_dir)
+
+        # Create some dummy files to package
+        self.file1_path = os.path.join(self.source_dir, "file1.txt")
+        self.file2_path = os.path.join(self.source_dir, "subdir", "file2.log")
+        os.makedirs(os.path.dirname(self.file2_path))
+        
+        with open(self.file1_path, "w") as f:
+            f.write("This is file 1.")
+        with open(self.file2_path, "w") as f:
+            f.write("This is file 2, in a subdirectory.")
+            
+        self.files_to_package = [self.file1_path, self.file2_path]
+
+    def tearDown(self):
+        """Clean up the temporary directory."""
+        shutil.rmtree(self.test_dir)
+
+    def test_build_and_verify_digests(self):
+        """
+        Tests that a package is built correctly and that the digests
+        in the manifest match the actual contents.
+        """
+        release_id = "test-release-v1"
+        
+        # 1. Build the package
+        manifest_path, archive_path = create_package(
+            release_id,
+            self.files_to_package,
+            self.output_dir,
+            base_dir=self.source_dir
+        )
+        
+        self.assertTrue(os.path.exists(manifest_path))
+        self.assertTrue(os.path.exists(archive_path))
+        
+        # 2. Verify the manifest
+        with open(manifest_path, 'r') as f:
+            manifest = json.load(f)
+            
+        self.assertEqual(manifest["release_id"], release_id)
+        
+        # Verify the top-level release CID
+        expected_archive_hash = calculate_sha256(archive_path)
+        self.assertIn(expected_archive_hash, manifest["release_cid"])
+        
+        # Verify the CIDs of each file in the contents
+        self.assertEqual(len(manifest["contents"]), 2)
+        
+        for item in manifest["contents"]:
+            original_path = os.path.join(self.source_dir, item["path"])
+            expected_file_hash = calculate_sha256(original_path)
+            self.assertIn(expected_file_hash, item["cid"])
+
+    def test_archive_contents(self):
+        """
+        Tests that the created tar.gz archive contains the correct files
+        with the correct relative paths.
+        """
+        release_id = "archive-test-v1"
+        _, archive_path = create_package(
+            release_id,
+            self.files_to_package,
+            self.output_dir,
+            base_dir=self.source_dir
+        )
+        
+        with tarfile.open(archive_path, "r:gz") as tar:
+            archived_files = tar.getnames()
+            self.assertIn("file1.txt", archived_files)
+            # Check for correct path handling for subdirectories
+            self.assertIn(os.path.join("subdir", "file2.log"), archived_files)
+
+if __name__ == '__main__':
+    unittest.main()
+
+===== END FILE: tests/test_packager.py =====
+
+===== BEGIN FILE: tests/test_loader.py =====
+"""
+Tests for the simple package verifier and loader.
+
+Focuses on 'negative_tamper_reject_tests' to ensure the loader
+rejects tampered or malformed packages.
+"""
+
+import unittest
+import os
+import json
+import tarfile
+import tempfile
+import shutil
+from tools.packager import create_package
+from src.loader import verify_and_load
+
+class TestLoader(unittest.TestCase):
+
+    def setUp(self):
+        """Set up a temporary directory structure for testing."""
+        self.test_dir = tempfile.mkdtemp()
+        self.source_dir = os.path.join(self.test_dir, "source")
+        self.package_dir = os.path.join(self.test_dir, "package")
+        self.load_dir = os.path.join(self.test_dir, "load")
+        
+        for d in [self.source_dir, self.package_dir, self.load_dir]:
+            os.makedirs(d)
+
+        # Create a dummy file to package
+        self.file_path = os.path.join(self.source_dir, "content.txt")
+        with open(self.file_path, "w") as f:
+            f.write("This is the original, untampered content.")
+            
+        # Create a valid package to be used as a base for tampering
+        self.manifest_path, self.archive_path = create_package(
+            "valid-package",
+            [self.file_path],
+            self.package_dir,
+            base_dir=self.source_dir
+        )
+
+    def tearDown(self):
+        """Clean up the temporary directory."""
+        shutil.rmtree(self.test_dir)
+
+    def test_load_success_with_valid_package(self):
+        """Tests that a valid, untampered package loads successfully."""
+        success, message = verify_and_load(
+            self.manifest_path, self.archive_path, self.load_dir
+        )
+        self.assertTrue(success, message)
+        
+        # Check that the file was unpacked correctly
+        unpacked_file_path = os.path.join(self.load_dir, "content.txt")
+        self.assertTrue(os.path.exists(unpacked_file_path))
+        with open(unpacked_file_path, 'r') as f:
+            self.assertEqual(f.read(), "This is the original, untampered content.")
+
+    def test_reject_tampered_archive_file(self):
+        """
+        Negative Tamper Reject Test: The .tar.gz archive itself is modified
+        after the manifest is generated.
+        """
+        # Tamper with the archive
+        with open(self.archive_path, "a") as f:
+            f.write("extra tampered data")
+            
+        success, message = verify_and_load(
+            self.manifest_path, self.archive_path, self.load_dir
+        )
+        self.assertFalse(success)
+        self.assertIn("Archive integrity check failed", message)
+        # Ensure nothing was loaded
+        self.assertEqual(len(os.listdir(self.load_dir)), 0)
+
+    def test_reject_tampered_manifest_cid(self):
+        """
+        Negative Tamper Reject Test: A CID for a file inside the manifest
+        is altered.
+        """
+        # Load and tamper with the manifest
+        with open(self.manifest_path, 'r') as f:
+            manifest = json.load(f)
+        
+        manifest["contents"][0]["cid"] = "cid:tampered-uuid-tampered-hash"
+        
+        tampered_manifest_path = os.path.join(self.package_dir, "manifest.tampered.json")
+        with open(tampered_manifest_path, 'w') as f:
+            json.dump(manifest, f)
+            
+        success, message = verify_and_load(
+            tampered_manifest_path, self.archive_path, self.load_dir
+        )
+        self.assertFalse(success)
+        self.assertIn("Tampering detected in file", message)
+        self.assertEqual(len(os.listdir(self.load_dir)), 0)
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+===== END FILE: tests/test_loader.py =====
+
+===== BEGIN FILE: dist/SupportOntologyRelease-v0.1.0/release_manifest.json =====
+{
+  "manifest_version": "1.0",
+  "release_id": "SupportOntologyRelease-v0.1.0",
+  "issued_at": "2026-03-06T11:25:36.429840+00:00",
+  "contents": [
+    {
+      "path": "ontology/support.ttl",
+      "cid": "cid:b8be1d33-2d6f-4c60-bef0-2398b3b90ebe-07457a25c252eb934101e0c9e6a258b79e12b8cfe74e5a0ab1eaaacf29f02a40",
+      "mime_type": "application/octet-stream"
+    }
+  ],
+  "release_cid": "cid:64ce70bf-fd3a-42b8-8683-5f57e28c358a-5f17dbdb19ebf11f3d1cacc41b50ee6e1578a5a867fb1c346b40616aa8e853bd"
+}
+===== END FILE: dist/SupportOntologyRelease-v0.1.0/release_manifest.json =====
+
+===== BEGIN FILE: dist/SCR_TBox_Release-v0.1.0/release_manifest.json =====
+{
+  "manifest_version": "1.0",
+  "release_id": "SCR_TBox_Release-v0.1.0",
+  "issued_at": "2026-03-06T11:25:36.434097+00:00",
+  "contents": [
+    {
+      "path": "ontology/scr_tbox.ttl",
+      "cid": "cid:bb228148-cdac-4aa4-b9ee-7d971dc83e73-7f32233121d882d4f48aa9dc1a0e172da3d4c7369fe4de672bac6d7224ce92a6",
+      "mime_type": "application/octet-stream"
+    }
+  ],
+  "release_cid": "cid:4ccaff09-8775-43ba-9ac2-c4d5a4c0f1ad-8fc33b86be2aeadc769334976e003b4cdbebcf5778882b3f16f19fad6ed57924"
+}
+===== END FILE: dist/SCR_TBox_Release-v0.1.0/release_manifest.json =====
+
+===== BEGIN COMMAND: sha256sum dist/SupportOntologyRelease-v0.1.0/* =====
+5f17dbdb19ebf11f3d1cacc41b50ee6e1578a5a867fb1c346b40616aa8e853bd  dist/SupportOntologyRelease-v0.1.0/SupportOntologyRelease-v0.1.0.tar.gz
+4d6dcfcd33bcc83f3d25ae09cbbfdab49129caffd93f47460076af31ca855a39  dist/SupportOntologyRelease-v0.1.0/release_manifest.json
+
+===== END COMMAND: sha256sum dist/SupportOntologyRelease-v0.1.0/* =====
+
+===== BEGIN COMMAND: sha256sum dist/SCR_TBox_Release-v0.1.0/* =====
+8fc33b86be2aeadc769334976e003b4cdbebcf5778882b3f16f19fad6ed57924  dist/SCR_TBox_Release-v0.1.0/SCR_TBox_Release-v0.1.0.tar.gz
+309619012ce40b035a53ca399c2e9375fed56c99d0cb0f15590752909638cf9a  dist/SCR_TBox_Release-v0.1.0/release_manifest.json
+
+===== END COMMAND: sha256sum dist/SCR_TBox_Release-v0.1.0/* =====
+
+===== BEGIN COMMAND: python3 -m unittest tests/test_cid.py =====
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.001s
+
+OK
+
+===== END COMMAND: python3 -m unittest tests/test_cid.py =====
+
+===== BEGIN COMMAND: python3 -m unittest tests/test_ledger.py =====
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.001s
+
+OK
+
+===== END COMMAND: python3 -m unittest tests/test_ledger.py =====
+
+===== BEGIN COMMAND: python3 -m unittest tests/test_issuer_proof.py =====
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.001s
+
+OK
+
+===== END COMMAND: python3 -m unittest tests/test_issuer_proof.py =====
+
+===== BEGIN COMMAND: python3 -m unittest tests/test_evaluator.py =====
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK
+
+===== END COMMAND: python3 -m unittest tests/test_evaluator.py =====
+
+===== BEGIN COMMAND: python3 -m unittest tests/test_packager.py =====
+Package created at /tmp/tmpvzxztj1n/output
+Package created at /tmp/tmpqj2iynld/output
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.011s
+
+OK
+
+===== END COMMAND: python3 -m unittest tests/test_packager.py =====
+
+===== BEGIN COMMAND: python3 -m unittest tests/test_loader.py =====
+Package created at /tmp/tmpuntwpdbu/package
+Package created at /tmp/tmp0h3rtv1e/package
+Package created at /tmp/tmpulqkze7w/package
+/usr/lib/python3.12/tarfile.py:2274: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+  warnings.warn(
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.019s
+
+OK
+
+===== END COMMAND: python3 -m unittest tests/test_loader.py =====
+

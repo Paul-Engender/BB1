@@ -1,0 +1,118 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Runtime Load Manifest",
+  "description": "Schema for runtime load declarations. Supports legacy v1.0 and tenant-boundary v2.0.",
+  "type": "object",
+  "properties": {
+    "manifest_version": {
+      "description": "Manifest schema version.",
+      "type": "string",
+      "enum": ["1.0", "2.0"]
+    },
+    "release_id": {
+      "description": "Legacy release identifier (v1.0 compatibility).",
+      "type": "string"
+    },
+    "contents": {
+      "description": "Legacy runtime content map (v1.0 compatibility).",
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "cid": {
+              "type": "string",
+              "pattern": "^cid:.+"
+            }
+          },
+          "required": ["path", "cid"]
+        }
+      }
+    },
+    "manifest_id": {
+      "description": "Identifier for this runtime load declaration.",
+      "type": "string",
+      "pattern": "^cid:.+"
+    },
+    "runtime_instance_id": {
+      "description": "Stable runtime instance identifier.",
+      "type": "string",
+      "minLength": 1
+    },
+    "tenant_id": {
+      "description": "Tenant this load declaration applies to.",
+      "type": "string",
+      "pattern": "^cid:.+"
+    },
+    "tbox_release_id": {
+      "description": "Exact SCR_TBox_Release artifact_id to load.",
+      "type": "string",
+      "pattern": "^cid:.+"
+    },
+    "tbox_release_version": {
+      "description": "Exact SCR_TBox_Release version to load.",
+      "type": "string",
+      "minLength": 1
+    },
+    "support_release_id": {
+      "description": "Expected upstream SupportOntologyRelease dependency artifact_id.",
+      "type": "string",
+      "pattern": "^cid:.+"
+    },
+    "load_mode": {
+      "description": "Operational load mode for runtime behavior.",
+      "type": "string",
+      "enum": ["active", "safe", "hold"]
+    },
+    "declared_at": {
+      "description": "Timestamp for manifest declaration.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "declared_by": {
+      "description": "Identity of issuer of load declaration.",
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": ["manifest_version"],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "manifest_version": {
+            "const": "1.0"
+          }
+        }
+      },
+      "then": {
+        "required": ["release_id", "contents"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "manifest_version": {
+            "const": "2.0"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "manifest_id",
+          "runtime_instance_id",
+          "tenant_id",
+          "tbox_release_id",
+          "tbox_release_version",
+          "support_release_id",
+          "load_mode",
+          "declared_at",
+          "declared_by"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+
+ex:ActionKind_Provision a kern:ActionKind .
+
+ex:Action_001 a kern:ActionSpecification ;
+    kern:actionId "action-001" ;
+    kern:actionKindRef ex:ActionKind_Provision .
+
+ex:Binding_Invalid a kern:ActionEffectBinding ;
+    kern:actionEffectBindingId "binding-invalid" ;
+    kern:actionRef ex:Action_001 .

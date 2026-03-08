@@ -1,0 +1,259 @@
+### 1. Full contents of files ###
+# Phase 0 Gate Verification Report
+
+## 1. Summary
+
+This report summarizes the verification status of all Evidence Pack rows required to close the Phase 0 gate. The final status is **PENDING**, as not all evidence rows have been marked as `DONE`.
+
+## 2. Evidence Pack Status
+
+| ID    | Gate Criterion                                             | Status      | Notes                                                      |
+|-------|------------------------------------------------------------|-------------|------------------------------------------------------------|
+| EP-01 | Identity model specified and conforms                      | `COMPLETED` | Implementation is complete, but formal review of the specification is pending. |
+| EP-02 | Ledger ordering and determinism validated                  | `COMPLETED` | Implementation is complete, but formal review of the API contract is pending. |
+| EP-03 | Packaging produces required release bundles                | `COMPLETED` | Implementation is complete, but schema validation has not been formally run. |
+| EP-04 | Loader/verifier rejects tampering                          | `DONE`      | Negative tamper tests passed successfully.                 |
+| EP-05 | Minimal releases produced (SupportOntologyRelease + SCR_TBox_Release) | `COMPLETED` | Packages have been created, but `install_load_verification` is pending. |
+
+## 3. Conclusion
+
+Phase 0 is **not yet complete**. The following actions are required to close the gate:
+
+-   **Formal Review**: The specifications for `EP-01` and `EP-02` must be reviewed and approved.
+-   **Schema Validation**: The schemas for `EP-03` must be validated.
+-   **Install/Load Verification**: The packages for `EP-05` must be verified by the loader.
+
+Once these actions are complete and all Evidence Pack rows are marked as `DONE`, the Phase 0 gate can be considered closed.
+\n---
+task_id,task_name,status,owner,canonical_refs,evidence_row_ids,dependencies,input_refs,output_paths,validation_method,validation_evidence,notes
+BR-00.1,Create repository skeleton folders for specs, schemas, fixtures, tools, src, and tests,DONE,paul,,,,,./,existence_check,evidence/repo-skeleton-proof/tree.txt,IS-state at repo substrate
+BR-01.1,Define the cid: minting and validation spec,COMPLETED,paul,,EP-01,,,/docs/specs/identity_cid_uuidv7.md,formal_review,,""
+BR-01.2,Implement cid: library and tests,DONE,paul,,EP-01,BR-01.1,"/docs/specs/identity_cid_uuidv7.md",src/cid.py;tests/test_cid.py,unit_tests,"unittest_successful",""
+BR-02.1,Define ledger API contract and ordering rules,COMPLETED,paul,,EP-02,,,/docs/specs/ledger_api_and_ordering.md,formal_review,,""
+BR-02.2,Implement append-only ledger service with single-writer ordering authority,DONE,paul,,EP-02,BR-02.1,"/docs/specs/ledger_api_and_ordering.md",src/ledger.py;tests/test_ledger.py,deterministic_replay_test,"unittest_successful",""
+BR-03.1,Define IssuerProof format and verification algorithm,COMPLETED,paul,,,,,/docs/specs/issuerproof_v1.md,formal_review,,""
+BR-03.2,Implement IssuerProof verifier and negative tests,DONE,paul,,,"BR-03.1","/docs/specs/issuerproof_v1.md",src/issuer_proof.py;tests/test_issuer_proof.py,negative_tests,"unittest_successful",""
+BR-04.1,Define evaluator boundary interface and commit semantics,COMPLETED,paul,,,,,/docs/specs/evaluator_boundary_v1.md,formal_review,,""
+BR-04.2,Implement evaluator stub and commit-boundary enforcement tests,DONE,paul,,,"BR-04.1","/docs/specs/evaluator_boundary_v1.md",src/evaluator.py;tests/test_evaluator.py,enforcement_tests,"unittest_successful",""
+BR-05.1,Define release manifest and load-manifest schemas and fixtures,COMPLETED,paul,,EP-03,,,/schemas/release_manifest.schema.json;/schemas/runtime_load_manifest.schema.json,schema_validation,,""
+BR-05.2,Implement packager that emits manifest, hashes, and file list,DONE,paul,,EP-03,"BR-05.1","/schemas/release_manifest.schema.json",tools/packager.py;tests/test_packager.py,build_and_verify_digests,"unittest_successful",""
+BR-05.3,Implement verifier and loader rejection logic with tamper tests,DONE,paul,,EP-04,"BR-05.1","/schemas/release_manifest.schema.json",src/loader.py;tests/test_loader.py,negative_tamper_reject_tests,"unittest_successful",""
+BR-06.1,Create minimal SupportOntologyRelease payload and first package,COMPLETED,paul,,EP-05,"BR-05.2",,dist/SupportOntologyRelease-v0.1.0.tgz,install_load_verification,,""
+BR-06.2,Create minimal SCR_TBox_Release payload and first tenant package,COMPLETED,paul,,EP-05,"BR-05.2",,dist/SCR_TBox_Release-v0.1.0.tgz,install_load_verification,,""
+BR-07.1,Run Phase 0 gate verification and compile Evidence Pack,COMPLETED,paul,,"EP-01;EP-02;EP-03;EP-04;EP-05","BR-01.2;BR-02.2;BR-05.2;BR-05.3;BR-06.1;BR-06.2",,verification_report.md,manual_review,,""
+\n---
+artifact_id,artifact_type,produced_by_task_id,path,integrity_type,integrity_value,validation_status,validation_evidence,evidence_row_ids,notes
+ART-DOC-CID-SPEC-001,DOC,BR-01.1,docs/specs/identity_cid_uuidv7.md,SHA256,72d18ef86bea3ad376306aa57f83e0050065203c45e3b267f23d891b5d89215b,TO_DO,,EP-01,
+ART-CODE-CID-LIB-001,CODE,BR-01.2,src/cid.py,SHA256,12720db61a7dd47d4b60f56bdfb3e158e18a4571eabb03b7449deb6d8e4ed66a,DONE,unittest_successful,EP-01,
+ART-TEST-CID-LIB-001,TEST_OUTPUT,BR-01.2,tests/test_cid.py,SHA256,05ea301882937aff5aa4d3703ffc7a94c7ec899173a2a2b722b2fc07bd530041,DONE,unittest_successful,EP-01,
+ART-DOC-LEDGER-API-001,DOC,BR-02.1,docs/specs/ledger_api_and_ordering.md,SHA256,3f7be37052f6a3bbddcf2782503d55b6fe1a596482b02e8503218fbf67e466c2,TO_DO,,EP-02,
+ART-CODE-LEDGER-LIB-001,CODE,BR-02.2,src/ledger.py,SHA256,773ef978df834b7348c17654bf5c91525fa5a8e8505fd2222ab6c851850706ad,DONE,unittest_successful,EP-02,
+ART-TEST-LEDGER-LIB-001,TEST_OUTPUT,BR-02.2,tests/test_ledger.py,SHA256,fc87dac740e784e2fc994a5a435f1b2d65bb07b883fdad0972390b14a71e4063,DONE,unittest_successful,EP-02,
+ART-DOC-ISSUER-PROOF-001,DOC,BR-03.1,docs/specs/issuerproof_v1.md,SHA256,d9b4d4ea7ffb68600d0f6997aef3eb4028a0ad66bf1ab6ed3fc378f883e1e7c7,TO_DO,,,,
+ART-CODE-ISSUER-PROOF-LIB-001,CODE,BR-03.2,src/issuer_proof.py,SHA256,bd3bda9e605902ae0b0f4d862a66e66e0e39477b5941862435545d842594518c,DONE,unittest_successful,,
+ART-TEST-ISSUER-PROOF-LIB-001,TEST_OUTPUT,BR-03.2,tests/test_issuer_proof.py,SHA256,11c78876752075403c1f1e58f5ca9f00b422349175c5c74d9cc00b5ad4dcb3c8,DONE,unittest_successful,,
+ART-DOC-EVALUATOR-SPEC-001,DOC,BR-04.1,docs/specs/evaluator_boundary_v1.md,SHA256,7803361836b777fe71d238b832cc15768398ffc2f07b7f93f19a746318b151d5,TO_DO,,,,
+ART-CODE-EVALUATOR-LIB-001,CODE,BR-04.2,src/evaluator.py,SHA256,2840d5632e6bfccc11498798b9948c9e3a9424db4cd09aac9e7c51d223c64eff,DONE,unittest_successful,,
+ART-TEST-EVALUATOR-LIB-001,TEST_OUTPUT,BR-04.2,tests/test_evaluator.py,SHA256,cd7c171a7cd1862b8b6c57b1c3dae247cf2ccd460e7fa9b26eed97b7f794e076,DONE,unittest_successful,,
+ART-SCHEMA-RELEASE-MANIFEST-001,SCHEMA,BR-05.1,schemas/release_manifest.schema.json,SHA256,c23686416ecaece6a14af7224a29d4b2e6a430b168f6c79552d1429812c68fe8,TO_DO,,EP-03,
+ART-SCHEMA-LOAD-MANIFEST-001,SCHEMA,BR-05.1,schemas/runtime_load_manifest.schema.json,SHA256,f5161908995c239fd06f0bbd0ee1c44910ac20f35d43905bd162ed7d9288c7c6,TO_DO,,EP-03,
+ART-FIXTURE-RELEASE-MANIFEST-001,SCHEMA,BR-05.1,fixtures/release_manifest_fixture.json,SHA256,71b61b7a61a253bd9f065e3528258937423a839fdd9deaea32472c3dee144872,TO_DO,,EP-03,
+ART-FIXTURE-LOAD-MANIFEST-001,SCHEMA,BR-05.1,fixtures/runtime_load_manifest_fixture.json,SHA256,558ae6ab4793feb6df82d38ff8dcde03e4d6b584760116cc41df9cb981d6d5ad,TO_DO,,EP-03,
+ART-CODE-PACKAGER-TOOL-001,CODE,BR-05.2,tools/packager.py,SHA256,64e1371fcb812a8033b11805733edeb6db4edf949b660c75f389729aac214eab,DONE,unittest_successful,EP-03,
+ART-TEST-PACKAGER-TOOL-001,TEST_OUTPUT,BR-05.2,tests/test_packager.py,SHA256,b747a8029e3cb7893a381573a0cdb18ed16432354aaddb1a427b24ce0e5daf4e,DONE,unittest_successful,EP-03,
+ART-CODE-LOADER-LIB-001,CODE,BR-05.3,src/loader.py,SHA256,d51369ae94ef6dae3cafe0a3aa49edb92b327dc8b12de8c16f1639cfee6eca85,DONE,unittest_successful,EP-04,
+ART-TEST-LOADER-LIB-001,TEST_OUTPUT,BR-05.3,tests/test_loader.py,SHA256,a85db32d7c7d384eff300241620e2b729634e4148f5dc878343e2617f02d28a4,DONE,unittest_successful,EP-04,
+ART-ONTOLOGY-SUPPORT-001,CODE,BR-06.1,ontology/support.ttl,SHA256,07457a25c252eb934101e0c9e6a258b79e12b8cfe74e5a0ab1eaaacf29f02a40,TO_DO,,EP-05,
+ART-MANIFEST-SUPPORT-ONTOLOGY-001,DOC,BR-06.1,dist/SupportOntologyRelease-v0.1.0/release_manifest.json,SHA256,d6df64c194fdffa28785091e2b9e0090c143f533e1a53765d93330f03e5fd1e9,TO_DO,,EP-05,
+ART-RELEASE-SUPPORT-ONTOLOGY-001,RELEASE,BR-06.1,dist/SupportOntologyRelease-v0.1.0/SupportOntologyRelease-v0.1.0.tar.gz,SHA256,2a555fed18fefa9660e4296dacfac96d06dbc5bae2feebfc17131cfe5fa1583a,TO_DO,,EP-05,
+ART-ONTOLOGY-SCR-TBOX-001,CODE,BR-06.2,ontology/scr_tbox.ttl,SHA256,7f32233121d882d4f48aa9dc1a0e172da3d4c7369fe4de672bac6d7224ce92a6,TO_DO,,EP-05,
+ART-MANIFEST-SCR-TBOX-001,DOC,BR-06.2,dist/SCR_TBox_Release-v0.1.0/release_manifest.json,SHA256,c1fa18bc9edd20e8c9cbd2f875e61d22e3a6e764acaa371ee991592ea9b8e1f6,TO_DO,,EP-05,
+ART-RELEASE-SCR-TBOX-001,RELEASE,BR-06.2,dist/SCR_TBox_Release-v0.1.0/SCR_TBox_Release-v0.1.0.tar.gz,SHA256,3c6f153e6b5b5a4c5ebde29aaf4d5eb379b73d6425d16fdb890fc95b30d7d37e,TO_DO,,EP-05,
+ART-REPORT-VERIFICATION-001,REPORT,BR-07.1,verification_report.md,SHA256,42deabebf2d8b91db0adeb87e71d1a57e28ad224a332558d31225c88d58d1cb6,TO_DO,,,
+\n---
+evidence_row_id,gate_criterion,canonical_refs,required_artifact,location,integrity,validation_method,validation_evidence,status,verification_owner,source_task_ids,notes
+EP-01,Identity model specified and conforms,,cid: spec and validation library,,,review_plus_unit_tests,,COMPLETED,paul,"BR-01.1;BR-01.2",
+EP-02,Ledger ordering and determinism validated,,Ledger service and replay test,,,deterministic_replay_test,,COMPLETED,paul,"BR-02.1;BR-02.2",
+EP-03,Packaging produces required release bundles,,Packager and manifest,,,build_and_verify_digests,,COMPLETED,paul,"BR-05.1;BR-05.2",
+EP-04,Loader/verifier rejects tampering,,Loader rejection logic,,,negative_tamper_reject_tests,unittest_successful,DONE,paul,BR-05.3,
+EP-05,"Minimal releases produced (SupportOntologyRelease + SCR_TBox_Release)",,Release packages,,,install_load_verification,,COMPLETED,paul,"BR-06.1;BR-06.2",
+\n\n### 2. Integrity evidence ###
+d6df64c194fdffa28785091e2b9e0090c143f533e1a53765d93330f03e5fd1e9  dist/SupportOntologyRelease-v0.1.0/release_manifest.json
+2a555fed18fefa9660e4296dacfac96d06dbc5bae2feebfc17131cfe5fa1583a  dist/SupportOntologyRelease-v0.1.0/SupportOntologyRelease-v0.1.0.tar.gz
+c1fa18bc9edd20e8c9cbd2f875e61d22e3a6e764acaa371ee991592ea9b8e1f6  dist/SCR_TBox_Release-v0.1.0/release_manifest.json
+3c6f153e6b5b5a4c5ebde29aaf4d5eb379b73d6425d16fdb890fc95b30d7d37e  dist/SCR_TBox_Release-v0.1.0/SCR_TBox_Release-v0.1.0.tar.gz
+\n\n### 3. Build artifact manifests ###
+\n--- SupportOntologyRelease Manifest ---
+{
+  "manifest_version": "1.0",
+  "release_id": "SupportOntologyRelease-v0.1.0",
+  "issued_at": "2026-03-06T10:47:16.550215+00:00",
+  "contents": [
+    {
+      "path": "ontology/support.ttl",
+      "cid": "cid:dummy-uuid-for-07457a25c252eb934101e0c9e6a258b79e12b8cfe74e5a0ab1eaaacf29f02a40",
+      "mime_type": "application/octet-stream"
+    }
+  ],
+  "release_cid": "cid:dummy-uuid-for-archive-2a555fed18fefa9660e4296dacfac96d06dbc5bae2feebfc17131cfe5fa1583a"
+}\n--- SCR_TBox_Release Manifest ---
+{
+  "manifest_version": "1.0",
+  "release_id": "SCR_TBox_Release-v0.1.0",
+  "issued_at": "2026-03-06T10:48:32.393647+00:00",
+  "contents": [
+    {
+      "path": "ontology/scr_tbox.ttl",
+      "cid": "cid:dummy-uuid-for-7f32233121d882d4f48aa9dc1a0e172da3d4c7369fe4de672bac6d7224ce92a6",
+      "mime_type": "application/octet-stream"
+    }
+  ],
+  "release_cid": "cid:dummy-uuid-for-archive-3c6f153e6b5b5a4c5ebde29aaf4d5eb379b73d6425d16fdb890fc95b30d7d37e"
+}\n\n### 4. Schema validation proof ###
+\n--- Validation for release_manifest.schema.json ---
+Command: /home/user/.local/bin/jsonschema -i fixtures/release_manifest_fixture.json schemas/release_manifest.schema.json
+Output:
+/home/user/.local/bin/jsonschema:5: DeprecationWarning: The jsonschema CLI is deprecated and will be removed in a future version. Please use check-jsonschema instead, which can be installed from https://pypi.org/project/check-jsonschema/
+  from jsonschema.cli import main
+\n--- Validation for runtime_load_manifest.schema.json ---
+Note: The schema file schemas/runtime_load_manifest.schema.json was corrected to fix a regex parsing error before this command was run.
+Command: /home/user/.local/bin/jsonschema -i fixtures/runtime_load_manifest_fixture.json schemas/runtime_load_manifest.schema.json
+Output:
+/home/user/.local/bin/jsonschema:5: DeprecationWarning: The jsonschema CLI is deprecated and will be removed in a future version. Please use check-jsonschema instead, which can be installed from https://pypi.org/project/check-jsonschema/
+  from jsonschema.cli import main
+\n\n### 5. Loader/install verification proof ###
+Command: python3 tmp_verify_loader.py
+Output:
+  File "/home/user/BB1/tmp_verify_loader.py", line 18
+    print("
+          ^
+SyntaxError: unterminated string literal (detected at line 18)
+\n\n### 5. Loader/install verification proof ###
+Command: python3 tmp_verify_loader.py
+Output:
+  File "/home/user/BB1/tmp_verify_loader.py", line 18
+    print("
+          ^
+SyntaxError: unterminated string literal (detected at line 18)
+\n\n### 5. Loader/install verification proof ###
+Command: python3 tmp_verify_loader.py
+Output:
+--- Verifying SupportOntologyRelease ---
+Success: True
+Message: Package verified and loaded successfully into dist/tmp_load_so
+
+--- Verifying SCR_TBox_Release ---
+Success: True
+Message: Package verified and loaded successfully into dist/tmp_load_scr
+\n\n### 6. Tamper rejection proof ###
+\nTest names: tests.test_loader.TestLoader.test_reject_tampered_archive_file, tests.test_loader.TestLoader.test_reject_tampered_manifest_cid
+Command: python3 -m unittest tests.test_loader.TestLoader.test_reject_tampered_archive_file tests.test_loader.TestLoader.test_reject_tampered_manifest_cid
+Output:
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.014s
+
+OK
+Package created at /tmp/tmpax9xpq92/package
+Package created at /tmp/tmpgarzq3ls/package
+\n\n### 7. Daily snapshot ###
+# Daily State Snapshot
+
+*Generated on: 2026-03-06*
+
+---
+
+## DONE
+
+- **BR-00.1**: Create repository skeleton folders for specs, schemas, fixtures, tools, src, and tests
+- **BR-01.2**: Implement cid: library and tests
+- **BR-02.2**: Implement append-only ledger service with single-writer ordering authority
+- **BR-03.2**: Implement IssuerProof verifier and negative tests
+- **BR-04.2**: Implement evaluator stub and commit-boundary enforcement tests
+- **BR-05.2**: Implement packager that emits manifest, hashes, and file list
+- **BR-05.3**: Implement verifier and loader rejection logic with tamper tests
+
+## COMPLETED
+
+- **BR-01.1**: Define the cid: minting and validation spec
+- **BR-02.1**: Define ledger API contract and ordering rules
+- **BR-03.1**: Define IssuerProof format and verification algorithm
+- **BR-04.1**: Define evaluator boundary interface and commit semantics
+- **BR-05.1**: Define release manifest and load-manifest schemas and fixtures
+- **BR-06.1**: Create minimal SupportOntologyRelease payload and first package
+- **BR-06.2**: Create minimal SCR_TBox_Release payload and first tenant package
+- **BR-07.1**: Run Phase 0 gate verification and compile Evidence Pack
+
+## DID NOT DO
+
+*(None)*
+
+## TO DO
+
+*(None)*
+
+## NEXT RECOMMENDED ACTION
+
+- **Begin Phase 0 Gate Closure**:
+    - Perform formal reviews for all specifications (`BR-01.1`, `BR-02.1`, `BR-03.1`, `BR-04.1`).
+    - Run schema validation for `BR-05.1`.
+    - Perform install/load verification for `BR-06.1` and `BR-06.2`.
+    - Review and approve the final `verification_report.md` (`BR-07.1`).
+- Once all tasks are `DONE`, the Phase 0 Gate is closed.
+
+## RISKS / BLOCKERS
+
+*(None)*
+\n\n### 8. Canonical task outputs ###
+- task_id: BR-01.1
+  actual output file paths created: /docs/specs/identity_cid_uuidv7.md
+  status: COMPLETED
+  validation evidence path: 
+- task_id: BR-01.2
+  actual output file paths created: src/cid.py;tests/test_cid.py
+  status: DONE
+  validation evidence path: unittest_successful
+- task_id: BR-02.1
+  actual output file paths created: /docs/specs/ledger_api_and_ordering.md
+  status: COMPLETED
+  validation evidence path: 
+- task_id: BR-02.2
+  actual output file paths created: src/ledger.py;tests/test_ledger.py
+  status: DONE
+  validation evidence path: unittest_successful
+- task_id: BR-03.1
+  actual output file paths created: /docs/specs/issuerproof_v1.md
+  status: COMPLETED
+  validation evidence path: 
+- task_id: BR-03.2
+  actual output file paths created: src/issuer_proof.py;tests/test_issuer_proof.py
+  status: DONE
+  validation evidence path: unittest_successful
+- task_id: BR-04.1
+  actual output file paths created: /docs/specs/evaluator_boundary_v1.md
+  status: COMPLETED
+  validation evidence path: 
+- task_id: BR-04.2
+  actual output file paths created: src/evaluator.py;tests/test_evaluator.py
+  status: DONE
+  validation evidence path: unittest_successful
+- task_id: BR-05.1
+  actual output file paths created: /schemas/release_manifest.schema.json;/schemas/runtime_load_manifest.schema.json
+  status: COMPLETED
+  validation evidence path: 
+- task_id: BR-05.2
+  actual output file paths created: tools/packager.py;tests/test_packager.py
+  status: DONE
+  validation evidence path: unittest_successful
+- task_id: BR-05.3
+  actual output file paths created: src/loader.py;tests/test_loader.py
+  status: DONE
+  validation evidence path: unittest_successful
+- task_id: BR-06.1
+  actual output file paths created: dist/SupportOntologyRelease-v0.1.0.tgz
+  status: COMPLETED
+  validation evidence path: 
+- task_id: BR-06.2
+  actual output file paths created: dist/SCR_TBox_Release-v0.1.0.tgz
+  status: COMPLETED
+  validation evidence path: 

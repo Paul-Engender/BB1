@@ -1,0 +1,18 @@
+{
+  "manifest_version": "1.0",
+  "release_id": "v0.1.0-alpha",
+  "release_cid": "cid:placeholder-for-the-whole-archive-hash",
+  "issued_at": "2024-01-01T12:00:00Z",
+  "contents": [
+    {
+      "path": "ontology/kernel.ttl",
+      "cid": "cid:uuid-for-kernel-ttl-hash-for-kernel-ttl",
+      "mime_type": "text/turtle"
+    },
+    {
+      "path": "bin/service",
+      "cid": "cid:uuid-for-service-binary-hash-for-service-binary",
+      "mime_type": "application/octet-stream"
+    }
+  ]
+}

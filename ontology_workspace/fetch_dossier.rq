@@ -1,0 +1,114 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sh:   <http://www.w3.org/ns/shacl#>
+
+# FIX: Added ?pLabel to surface Property Names
+SELECT DISTINCT ?section ?p ?pLabel ?o ?oLabel ?min ?max
+WHERE {
+  VALUES ?C { <params_cls_uri> }
+
+  GRAPH <http://my-org/ontology/u0> {
+
+    # 1. IDENTITY
+    {
+      BIND("1. IDENTITY" AS ?section)
+      ?C ?p ?o .
+      FILTER(?p IN (skos:prefLabel, rdfs:label, skos:notation, skos:definition, rdfs:comment))
+      BIND("" AS ?min) BIND("" AS ?max)
+      BIND(?o AS ?oLabel)
+      BIND("" AS ?pLabel)
+    }
+    UNION
+    # 2. PARENTS
+    {
+      BIND("2. PARENTS" AS ?section)
+      BIND(rdfs:subClassOf AS ?p)
+      ?C rdfs:subClassOf ?o .
+      BIND("" AS ?min) BIND("" AS ?max)
+      
+      OPTIONAL { ?o skos:prefLabel ?l1 }
+      OPTIONAL { ?o rdfs:label ?l2 }
+      BIND(COALESCE(?l1, ?l2, "") AS ?oLabel)
+      BIND("" AS ?pLabel)
+    }
+    UNION
+    # 3. CHILDREN
+    {
+      BIND("3. CHILDREN" AS ?section)
+      BIND(rdfs:subClassOf AS ?p)
+      ?o rdfs:subClassOf ?C .
+      BIND("" AS ?min) BIND("" AS ?max)
+      
+      OPTIONAL { ?o skos:prefLabel ?l3 }
+      OPTIONAL { ?o rdfs:label ?l4 }
+      BIND(COALESCE(?l3, ?l4, "") AS ?oLabel)
+      BIND("" AS ?pLabel)
+    }
+    UNION
+    # 4. SHACL TARGETS
+    {
+      BIND("4. SHACL:TARGET" AS ?section)
+      BIND(sh:targetClass AS ?p)
+      ?shape a sh:NodeShape ; sh:targetClass ?C .
+      BIND(?shape AS ?o)
+      BIND("" AS ?min) BIND("" AS ?max)
+      BIND("Shape" AS ?oLabel)
+      BIND("" AS ?pLabel)
+    }
+    UNION
+    # 5. SHACL PROPERTY CONSTRAINTS
+    {
+      BIND("5. SHACL:PROPS" AS ?section)
+      ?shape a sh:NodeShape ; sh:targetClass ?C ; sh:property ?ps .
+      ?ps sh:path ?p .
+      
+      # Fetch Label for the Property Path (?p)
+      OPTIONAL { ?p skos:prefLabel ?pl1 }
+      OPTIONAL { ?p rdfs:label ?pl2 }
+      BIND(COALESCE(?pl1, ?pl2, "") AS ?pLabel)
+
+      OPTIONAL { ?ps sh:class ?o }
+      OPTIONAL { ?ps sh:datatype ?o }
+      OPTIONAL { ?ps sh:minCount ?_min }
+      OPTIONAL { ?ps sh:maxCount ?_max }
+      
+      BIND(COALESCE(STR(?_min), "") AS ?min)
+      BIND(COALESCE(STR(?_max), "") AS ?max)
+      
+      # Fetch Label for the Constraint Class/Datatype (?o)
+      OPTIONAL { ?o skos:prefLabel ?l5 }
+      OPTIONAL { ?o rdfs:label ?l6 }
+      BIND(COALESCE(?l5, ?l6, "") AS ?oLabel)
+    }
+    UNION
+    # 6. INCOMING LINKS (Usage Context)
+    {
+      BIND("6. INCOMING (USED BY)" AS ?section)
+      ?p rdfs:range ?C .
+      BIND("RangeOf" AS ?o) # Placeholder
+      BIND("" AS ?min) BIND("" AS ?max)
+      BIND("" AS ?oLabel)
+
+      # Fetch Label for the Incoming Property (?p)
+      OPTIONAL { ?p skos:prefLabel ?pl3 }
+      OPTIONAL { ?p rdfs:label ?pl4 }
+      BIND(COALESCE(?pl3, ?pl4, "") AS ?pLabel)
+    }
+    UNION
+    # 7. LOGIC (Disjoints)
+    {
+      BIND("7. LOGIC (DISJOINTS)" AS ?section)
+      BIND(owl:disjointWith AS ?p)
+      ?C owl:disjointWith ?o .
+      BIND("" AS ?min) BIND("" AS ?max)
+      BIND("" AS ?pLabel)
+
+      OPTIONAL { ?o skos:prefLabel ?l7 }
+      OPTIONAL { ?o rdfs:label ?l8 }
+      BIND(COALESCE(?l7, ?l8, "") AS ?oLabel)
+    }
+  }
+}
+ORDER BY ?section STR(?p) STR(?o)

@@ -1,0 +1,222 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Release Manifest",
+  "description": "Schema for release packages crossing runtime boundaries. Supports legacy v1.0 and product-boundary v2.0.",
+  "type": "object",
+  "properties": {
+    "manifest_version": {
+      "description": "Manifest schema version.",
+      "type": "string",
+      "enum": ["1.0", "2.0"]
+    },
+    "release_id": {
+      "description": "Release identifier.",
+      "type": "string",
+      "minLength": 1
+    },
+    "release_cid": {
+      "description": "Archive CID used for top-level archive integrity checks.",
+      "type": "string",
+      "pattern": "^cid:.+"
+    },
+    "issued_at": {
+      "description": "Legacy release timestamp (v1.0).",
+      "type": "string",
+      "format": "date-time"
+    },
+    "artifact_id": {
+      "description": "Canonical release artifact ID.",
+      "type": "string",
+      "pattern": "^cid:.+"
+    },
+    "artifact_type": {
+      "description": "Boundary object type.",
+      "type": "string",
+      "enum": ["SupportOntologyRelease", "SCR_TBox_Release"]
+    },
+    "artifact_version": {
+      "description": "Semantic version of the release artifact.",
+      "type": "string",
+      "minLength": 1
+    },
+    "tenant_scope": {
+      "description": "Scope of release ownership.",
+      "type": "string",
+      "enum": ["global", "tenant"]
+    },
+    "tenant_id": {
+      "description": "Tenant identifier; required when tenant_scope=tenant.",
+      "type": "string",
+      "pattern": "^cid:.+"
+    },
+    "released_at": {
+      "description": "Release timestamp for v2.0 manifests.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "primary_file": {
+      "description": "Primary payload path inside archive.",
+      "type": "string",
+      "minLength": 1
+    },
+    "dependencies": {
+      "description": "Exact upstream dependency bindings.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dependency_artifact_id": {
+            "type": "string",
+            "pattern": "^cid:.+"
+          },
+          "dependency_artifact_type": {
+            "type": "string",
+            "enum": ["SupportOntologyRelease", "SCR_TBox_Release"]
+          },
+          "dependency_artifact_version": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "dependency_artifact_id",
+          "dependency_artifact_type",
+          "dependency_artifact_version"
+        ]
+      }
+    },
+    "contents": {
+      "description": "Legacy per-file CID list (v1.0 compatibility).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cid": {
+            "type": "string",
+            "pattern": "^cid:.+"
+          },
+          "mime_type": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["path", "cid", "mime_type"]
+      }
+    },
+    "files": {
+      "description": "Canonical per-file digest list (v2.0).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "cid": {
+            "type": "string",
+            "pattern": "^cid:.+"
+          },
+          "mime_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "enum": ["payload", "compiled", "evidence", "manifest", "signature"]
+          },
+          "size_bytes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": ["path", "sha256", "role"]
+      }
+    }
+  },
+  "required": ["manifest_version", "release_id", "release_cid"],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "manifest_version": {
+            "const": "1.0"
+          }
+        }
+      },
+      "then": {
+        "required": ["issued_at", "contents"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "manifest_version": {
+            "const": "2.0"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "artifact_id",
+          "artifact_type",
+          "artifact_version",
+          "tenant_scope",
+          "released_at",
+          "primary_file",
+          "dependencies",
+          "files"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tenant_scope": {
+            "const": "tenant"
+          }
+        }
+      },
+      "then": {
+        "required": ["tenant_id"]
+      },
+      "else": {
+        "not": {
+          "required": ["tenant_id"]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "artifact_type": {
+            "const": "SCR_TBox_Release"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "files": {
+            "contains": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "const": "evidence"
+                }
+              },
+              "required": ["role"]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

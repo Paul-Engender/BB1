@@ -1,0 +1,13 @@
+{
+  "manifest_version": "1.0",
+  "release_id": "SupportOntologyRelease-v0.1.0",
+  "issued_at": "2026-03-06T12:07:14.215737+00:00",
+  "contents": [
+    {
+      "path": "ontology/support.ttl",
+      "cid": "cid:019cc30b-7629-7009-bd1a-515ebffc3955-07457a25c252eb934101e0c9e6a258b79e12b8cfe74e5a0ab1eaaacf29f02a40",
+      "mime_type": "application/octet-stream"
+    }
+  ],
+  "release_cid": "cid:019cc30b-762b-7ac6-8cf9-b96d3523a63d-6b22c0a9c9318eb69dc48bb8caf040d06165b10d24b6f435a612be45ed90151d"
+}

@@ -1,0 +1,583 @@
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+ @prefix kern:   <https://ontology.engender.co.za/kernel#> .
+ @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+kern:TargetReferenceShape a sh:NodeShape ;
+  sh:targetClass kern:TargetReference ;
+  sh:property [
+    sh:path kern:isAboutEntity ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path kern:hasExternalIdentifier ;
+    sh:minCount 1 ;
+    sh:class kern:ExternalIdentifier ;
+  ] .
+
+kern:ExternalIdentifierShape a sh:NodeShape ;
+  sh:targetClass kern:ExternalIdentifier ;
+  sh:property [
+    sh:path kern:identifierScheme ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:anyURI ;
+  ] ;
+  sh:property [
+    sh:path kern:identifierValue ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] .
+
+kern:StipulationShape a sh:NodeShape ;
+  sh:targetClass kern:Stipulation ;
+  sh:property [
+    sh:path kern:hasStipulationNature ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in (kern:Restriction kern:Grant kern:Evaluator kern:Assertion) ;
+  ] ;
+  sh:property [
+    sh:path kern:stipulatesOn ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TargetReference ;
+  ] .
+
+kern:EvaluatorStipulationShape a sh:NodeShape;
+  sh:targetClass kern:Stipulation ;
+  sh:or (
+    # Condition 1: The stipulation is NOT an evaluator
+    [
+      sh:not [
+        sh:property [
+          sh:path kern:hasStipulationNature ;
+          sh:hasValue kern:Evaluator ;
+        ]
+      ]
+    ]
+    # Condition 2: The stipulation IS an evaluator AND has the required property
+    [
+      sh:property [
+        sh:path kern:hasStipulationNature ;
+        sh:hasValue kern:Evaluator ;
+      ] ;
+      sh:property [
+        sh:path kern:usesMeasurementSpecification ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class kern:MeasurementSpecification ;
+      ]
+    ]
+  ) .
+
+kern:RestrictionGrantExpressionShape a sh:NodeShape ;
+  sh:targetClass kern:Stipulation ;
+  sh:or (
+    [
+      sh:not [
+        sh:property [
+          sh:path kern:hasStipulationNature ;
+          sh:in (kern:Restriction kern:Grant) ;
+        ]
+      ]
+    ]
+    [
+      sh:property [
+        sh:path kern:hasStipulationNature ;
+        sh:in (kern:Restriction kern:Grant) ;
+        sh:minCount 1 ;
+      ] ;
+      sh:property [
+        sh:path kern:ruleExpression ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+      ]
+    ]
+  ) .
+
+kern:PromotionRecordShape a sh:NodeShape ;
+  sh:targetClass kern:PromotionRecord ;
+  sh:property [
+    sh:path kern:promotesCandidate ;
+    sh:minCount 1 ;
+    sh:class kern:InformationContent ;
+  ] ;
+  sh:property [
+    sh:path kern:producesAcceptedAssertion ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TruthAssertion ;
+  ] .
+
+kern:TruthAssertionShape a sh:NodeShape ;
+  sh:targetClass kern:TruthAssertion ;
+  sh:property [
+    sh:path kern:isAbout ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TargetReference ;
+  ] .
+
+kern:TargetSetShape a sh:NodeShape ;
+  sh:targetClass kern:TargetSet ;
+  sh:property [
+    sh:path kern:targetSetId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:targetSelectionBasis ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] .
+
+kern:ScopeBoundaryShape a sh:NodeShape ;
+  sh:targetClass kern:ScopeBoundary ;
+  sh:property [
+    sh:path kern:scopeId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:targetSetRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TargetSet ;
+  ] .
+
+kern:ActionSpecificationShape a sh:NodeShape ;
+  sh:targetClass kern:ActionSpecification ;
+  sh:property [
+    sh:path kern:actionId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:actionKindRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ActionKind ;
+  ] .
+
+kern:EffectSpecificationShape a sh:NodeShape ;
+  sh:targetClass kern:EffectSpecification ;
+  sh:property [
+    sh:path kern:effectId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:effectKindRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:EffectKind ;
+  ] .
+
+kern:ActionEffectBindingShape a sh:NodeShape ;
+  sh:targetClass kern:ActionEffectBinding ;
+  sh:property [
+    sh:path kern:actionEffectBindingId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:actionRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ActionSpecification ;
+  ] ;
+  sh:property [
+    sh:path kern:effectRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:EffectSpecification ;
+  ] .
+
+kern:AuthorizationSemanticShape a sh:NodeShape ;
+  sh:targetClass kern:AuthorizationSemantic ;
+  sh:property [
+    sh:path kern:actionRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ActionSpecification ;
+  ] ;
+  sh:property [
+    sh:path kern:targetSetRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TargetSet ;
+  ] ;
+  sh:property [
+    sh:path kern:authorizationDecisionKindRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in (kern:AuthorizationAllow kern:AuthorizationDeny) ;
+  ] .
+
+kern:EligibilitySemanticShape a sh:NodeShape ;
+  sh:targetClass kern:EligibilitySemantic ;
+  sh:property [
+    sh:path kern:actionRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ActionSpecification ;
+  ] ;
+  sh:property [
+    sh:path kern:eligibilityStatusRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in (kern:EligibilityEligible kern:EligibilityIneligible kern:EligibilityUnknown) ;
+  ] .
+
+kern:DenialSemanticShape a sh:NodeShape ;
+  sh:targetClass kern:DenialSemantic ;
+  sh:property [
+    sh:path kern:denialKindRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in (kern:DenialAuthorization kern:DenialEligibility kern:DenialQuarantine kern:DenialAbort) ;
+  ] .
+
+kern:ControlStateSemanticShape a sh:NodeShape ;
+  sh:targetClass kern:ControlStateSemantic ;
+  sh:property [
+    sh:path kern:actionRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ActionSpecification ;
+  ] ;
+  sh:property [
+    sh:path kern:controlStateKindRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in (kern:ControlStateHardStop kern:ControlStateResume kern:ControlStateModeTransition) ;
+  ] .
+
+kern:TenantWorkflowInputShape a sh:NodeShape ;
+  sh:targetClass kern:TenantWorkflowInput ;
+  sh:property [
+    sh:path kern:tenantId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:workflowId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:workflowVersion ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:domainId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:routingPolicyId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:targetSetRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TargetSet ;
+  ] ;
+  sh:property [
+    sh:path kern:scopeRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ScopeBoundary ;
+  ] ;
+  sh:property [
+    sh:path kern:actionRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ActionSpecification ;
+  ] ;
+  sh:property [
+    sh:path kern:effectRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:EffectSpecification ;
+  ] ;
+  sh:property [
+    sh:path kern:actionEffectBindingRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ActionEffectBinding ;
+  ] ;
+  sh:property [
+    sh:path kern:authorizationSemanticsRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:AuthorizationSemantic ;
+  ] ;
+  sh:property [
+    sh:path kern:eligibilitySemanticsRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:EligibilitySemantic ;
+  ] ;
+  sh:property [
+    sh:path kern:denialSemanticsRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:DenialSemantic ;
+  ] ;
+  sh:property [
+    sh:path kern:controlStateSemanticsRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ControlStateSemantic ;
+  ] ;
+  sh:property [
+    sh:path kern:aiOperable ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:boolean ;
+  ] .
+
+kern:TenantWorkflowInputNoConstraintsShape a sh:NodeShape ;
+  sh:targetClass kern:TenantWorkflowInput ;
+  sh:property [
+    sh:path kern:constraints ;
+    sh:maxCount 0 ;
+  ] .
+
+kern:SupportReleaseReferenceShape a sh:NodeShape ;
+  sh:targetClass kern:SupportReleaseReference ;
+  sh:property [
+    sh:path kern:compileTraceId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:releaseArtifactId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:releaseVersion ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:constraints ;
+    sh:maxCount 0 ;
+  ] .
+
+kern:DependencyBindingRecordShape a sh:NodeShape ;
+  sh:targetClass kern:DependencyBindingRecord ;
+  sh:property [
+    sh:path kern:compileTraceId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:supportReleaseRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:SupportReleaseReference ;
+  ] ;
+  sh:property [
+    sh:path kern:constraints ;
+    sh:maxCount 0 ;
+  ] .
+
+kern:GateExecutionRecordShape a sh:NodeShape ;
+  sh:targetClass kern:GateExecutionRecord ;
+  sh:property [
+    sh:path kern:compileTraceId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:sourceInputRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TenantWorkflowInput ;
+  ] ;
+  sh:property [
+    sh:path kern:constraints ;
+    sh:maxCount 0 ;
+  ] .
+
+kern:CompileDecisionRecordShape a sh:NodeShape ;
+  sh:targetClass kern:CompileDecisionRecord ;
+  sh:property [
+    sh:path kern:compileTraceId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:sourceInputRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TenantWorkflowInput ;
+  ] ;
+  sh:property [
+    sh:path kern:constraints ;
+    sh:maxCount 0 ;
+  ] .
+
+kern:EvidenceDigestRecordShape a sh:NodeShape ;
+  sh:targetClass kern:EvidenceDigestRecord ;
+  sh:property [
+    sh:path kern:compileTraceId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:constraints ;
+    sh:maxCount 0 ;
+  ] .
+
+kern:CompileOutcomeSummaryShape a sh:NodeShape ;
+  sh:targetClass kern:CompileOutcomeSummary ;
+  sh:property [
+    sh:path kern:compileTraceId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:constraints ;
+    sh:maxCount 0 ;
+  ] .
+
+kern:CompileTraceReferenceShape a sh:NodeShape ;
+  sh:targetClass kern:CompileTraceReference ;
+  sh:property [
+    sh:path kern:compileTraceId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:sourceInputRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TenantWorkflowInput ;
+  ] ;
+  sh:property [
+    sh:path kern:dependencyBindingRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:DependencyBindingRecord ;
+  ] ;
+  sh:property [
+    sh:path kern:gateExecutionRecordRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:GateExecutionRecord ;
+  ] ;
+  sh:property [
+    sh:path kern:compileDecisionRecordRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:CompileDecisionRecord ;
+  ] ;
+  sh:property [
+    sh:path kern:evidenceDigestRecordRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:EvidenceDigestRecord ;
+  ] ;
+  sh:property [
+    sh:path kern:compileOutcomeSummaryRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:CompileOutcomeSummary ;
+  ] ;
+  sh:property [
+    sh:path kern:constraints ;
+    sh:maxCount 0 ;
+  ] .
+
+kern:CompileReasonCodePolicyShape a sh:NodeShape ;
+  sh:targetClass kern:CompileReasonCodePolicy ;
+  sh:property [
+    sh:path kern:policyId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:reasonCodePattern ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:reasonCodeDetailToken ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:reasonCodeCategoryRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ReasonCodeCategory ;
+  ] ;
+  sh:property [
+    sh:path kern:constraints ;
+    sh:maxCount 0 ;
+  ] .
+
+kern:CompiledControlPrimitiveShape a sh:NodeShape ;
+  sh:targetClass kern:CompiledControlPrimitive ;
+  sh:property [
+    sh:path kern:primitiveId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:primitiveTypeRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in (
+      kern:TargetScopePrimitiveType
+      kern:ActionEffectPrimitiveType
+      kern:AuthorizationPrimitiveType
+      kern:EligibilityPrimitiveType
+      kern:DenialPrimitiveType
+      kern:ControlStatePrimitiveType
+      kern:TracePrimitiveType
+    ) ;
+  ] ;
+  sh:property [
+    sh:path kern:tenantId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:workflowId ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:scopeRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ScopeBoundary ;
+  ] ;
+  sh:property [
+    sh:path kern:targetSetRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TargetSet ;
+  ] ;
+  sh:property [
+    sh:path kern:actionRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ActionSpecification ;
+  ] ;
+  sh:property [
+    sh:path kern:effectRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:EffectSpecification ;
+  ] ;
+  sh:property [
+    sh:path kern:authorizationSemanticsRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:AuthorizationSemantic ;
+  ] ;
+  sh:property [
+    sh:path kern:eligibilitySemanticsRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:EligibilitySemantic ;
+  ] ;
+  sh:property [
+    sh:path kern:denialSemanticsRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:DenialSemantic ;
+  ] ;
+  sh:property [
+    sh:path kern:controlStateSemanticsRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:ControlStateSemantic ;
+  ] ;
+  sh:property [
+    sh:path kern:supportReleaseRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:SupportReleaseReference ;
+  ] ;
+  sh:property [
+    sh:path kern:sourceInputRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TenantWorkflowInput ;
+  ] ;
+  sh:property [
+    sh:path kern:compileReasonCodePolicyRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:CompileReasonCodePolicy ;
+  ] ;
+  sh:property [
+    sh:path kern:compileTraceRef ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:CompileTraceReference ;
+  ] ;
+  sh:property [
+    sh:path kern:constraints ;
+    sh:maxCount 0 ;
+  ] .
+

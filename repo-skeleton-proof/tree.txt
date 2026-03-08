@@ -1,0 +1,7 @@
+docs
+docs/specs
+fixtures
+schemas
+src
+tests
+tools

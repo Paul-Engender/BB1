@@ -1,0 +1,11 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+# A restriction stipulation on the target reference
+# This example assumes that ex:TargetRef_123 is defined in another file
+# and loaded into the same graph for validation.
+ex:Stipulation_456 a kern:Stipulation ;
+    kern:hasStipulationNature kern:Restriction ;
+    kern:stipulatesOn ex:TargetRef_123 ;
+    kern:ruleExpression "size < 100" .

@@ -1,0 +1,21 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix scr: <http://example.org/scr-tbox#> .
+@prefix so: <http://example.org/support-ontology#> .
+
+scr: a owl:Ontology ;
+    owl:imports so: ;
+    rdfs:label "Semantic Control Rules (SCR) TBox" ;
+    rdfs:comment "A minimal TBox for defining semantic control rules." .
+
+# A class for rules
+scr:Rule a rdfs:Class ;
+    rdfs:subClassOf so:Entity ;
+    rdfs:label "Rule" .
+
+# A property for the body of a rule
+scr:hasBody a rdf:Property ;
+    rdfs:label "has body" ;
+    rdfs:domain scr:Rule ;
+    rdfs:range rdfs:Literal .

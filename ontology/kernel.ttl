@@ -1,0 +1,676 @@
+# IMPORTANT: @en language tags are omitted from string literals in this file
+# due to an incompatibility with the rdflib parser (versions 6.3.2 and 7.5.0)
+# on Python 3.12, which causes BadSyntax errors. This is a temporary workaround.
+
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+ @prefix owl:    <http://www.w3.org/2002/07/owl#> .
+ @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+ @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+ @prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+ @prefix dcterms:<http://purl.org/dc/terms/> .
+ @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+ @prefix prov:   <http://www.w3.org/ns/prov#> .
+ @prefix bfo:    <http://purl.obolibrary.org/obo/> .
+ @prefix iao:    <http://purl.obolibrary.org/obo/IAO_> .
+ @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+
+<https://ontology.engender.co.za/kernel>
+  a owl:Ontology ;
+  rdfs:label "ENG Unified Operating Ontology Kernel" ;
+  dcterms:title "Meaning-First Semantic Kernel" ;
+  owl:versionInfo "kernel-vNext" .
+
+### Core classes
+kern:InformationContent a owl:Class ;
+  rdfs:label "Information Content" ;
+  skos:definition "An information artefact that expresses, records, specifies, or describes something, independent of whether it is true." ;
+  rdfs:subClassOf iao:0000030, prov:Entity .
+
+kern:Stipulation a owl:Class ;
+  rdfs:label "Stipulation" ;
+  skos:definition "A formally stated intent rule/constraint/permission/assertion/evaluation that can be evaluated against reality and/or used to control promotion." .
+
+kern:StipulationNature a owl:Class ;
+  rdfs:label "Stipulation Nature" ;
+  skos:definition "A controlled classifier indicating the semantic type of a stipulation." .
+
+kern:TargetReference a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Target Reference" ;
+  skos:definition "A stable, versionable reference node used as the primary target of stipulations, measurements, views, and truth assertions; it bridges to underlying domain entities without being a thin wrapper around live operational objects." .
+
+kern:ExternalIdentifier a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "External Identifier" ;
+  skos:definition "A structured identifier binding (scheme + value) used to map a TargetReference to external identity systems." .
+
+kern:Context a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Context" ;
+  skos:definition "An information artefact describing the conditions under which a stipulation or measurement applies." .
+
+kern:Configuration a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Configuration" ;
+  skos:definition "A versioned bundle of stipulations and associated artefacts asserted together as a coherent set of adopted intent." .
+
+kern:ConfigurationRequirement a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Configuration Requirement" ;
+  skos:definition "A structural requirement over a Configuration to ensure well-formedness." .
+
+kern:ArtifactLifecycleState a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Artifact Lifecycle State" ;
+  skos:definition "A controlled lifecycle state for normative/representational artefacts (e.g., Draft, Registered, Effective); not a statement about reality." .
+
+kern:EnforcementModality a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Enforcement Modality" ;
+  skos:definition "A controlled classifier describing how strongly a stipulation/configuration is enforced (e.g., Mandatory, Normative, Advisory)." .
+
+kern:Plan a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Plan" ;
+  skos:definition "Information content describing an intended future action or arrangement, without asserting it occurred." .
+
+kern:EvidenceActivity a owl:Class ;
+  rdfs:label "Evidence Activity" ;
+  skos:definition "An activity/event that occurred in the world and may be evidenced." ;
+  rdfs:subClassOf prov:Activity .
+
+kern:EvidenceRecord a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Evidence Record" ;
+  skos:definition "An information artefact recording something about an EvidenceActivity with provenance." .
+
+kern:MeasurementSpecification a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Measurement Specification" ;
+  skos:definition "A specification defining how a metric is computed/interpreted, including formula semantics and inclusion/exclusion semantics where provided." .
+
+kern:MeasurementRecord a owl:Class ;
+  rdfs:subClassOf kern:EvidenceRecord ;
+  rdfs:label "Measurement Record" ;
+  skos:definition "A specialized evidence record capturing an observed metric value, unit, time, and provenance." .
+
+kern:ViewProfile a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "View Profile" ;
+  skos:definition "A declared completeness contract for a view, including required fields, tolerances, and severity thresholds." .
+
+kern:PromotionRecord a owl:Class ;
+  rdfs:subClassOf kern:EvidenceRecord ;
+  rdfs:label "Promotion Record" ;
+  skos:definition "A record of a controlled decision that promotes candidate content into accepted truth under defined gates and validations." .
+
+kern:TruthAssertion a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Truth Assertion" ;
+  skos:definition "An information artefact that asserts accepted claims about a TargetReference; acceptance is established via PromotionRecord." .
+
+kern:Agent a owl:Class ;
+  rdfs:label "Agent" ;
+  skos:definition "A responsible actor capable of bearing roles and being accountable (human or system)." ;
+  rdfs:subClassOf prov:Agent, foaf:Agent .
+
+kern:Role a owl:Class ;
+  rdfs:label "Role" ;
+  skos:definition "A responsibility function borne by an Agent over an interval." ;
+  rdfs:subClassOf bfo:BFO_0000023 .
+
+kern:RoleAssignment a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Role Assignment" ;
+  skos:definition "A persistent assignment record that links an Agent to a Role with temporal validity, enabling 'who is responsible now' queries." .
+
+### Nature individuals (controlled set)
+kern:Restriction a kern:StipulationNature ; rdfs:label "Restriction" .
+kern:Grant       a kern:StipulationNature ; rdfs:label "Grant" .
+kern:Evaluator   a kern:StipulationNature ; rdfs:label "Evaluator" .
+kern:Assertion   a kern:StipulationNature ; rdfs:label "Assertion" .
+
+### Canonical properties (minimal kernel set)
+kern:isAbout a owl:ObjectProperty ;
+  rdfs:domain kern:InformationContent ;
+  rdfs:range  kern:TargetReference ;
+  rdfs:label "is about" .
+
+kern:isAboutEntity a owl:ObjectProperty ;
+  rdfs:domain kern:TargetReference ;
+  rdfs:range  owl:Thing ;
+  rdfs:label "is about entity" .
+
+kern:hasExternalIdentifier a owl:ObjectProperty ;
+  rdfs:domain kern:TargetReference ;
+  rdfs:range  kern:ExternalIdentifier ;
+  rdfs:label "has external identifier" .
+
+kern:identifierScheme a owl:DatatypeProperty ;
+  rdfs:domain kern:ExternalIdentifier ;
+  rdfs:range  xsd:anyURI ;
+  rdfs:label "identifier scheme" .
+
+kern:identifierValue a owl:DatatypeProperty ;
+  rdfs:domain kern:ExternalIdentifier ;
+  rdfs:range  xsd:string ;
+  rdfs:label "identifier value" .
+
+kern:hasStipulationNature a owl:ObjectProperty ;
+  rdfs:domain kern:Stipulation ;
+  rdfs:range  kern:StipulationNature ;
+  rdfs:label "has stipulation nature" .
+
+kern:stipulatesOn a owl:ObjectProperty ;
+  rdfs:domain kern:Stipulation ;
+  rdfs:range  kern:TargetReference ;
+  rdfs:label "stipulates on" .
+
+kern:usesMeasurementSpecification a owl:ObjectProperty ;
+  rdfs:domain kern:Stipulation ;
+  rdfs:range  kern:MeasurementSpecification ;
+  rdfs:label "uses measurement specification" .
+
+kern:ruleExpression a owl:DatatypeProperty ;
+  rdfs:domain kern:Stipulation ;
+  rdfs:range  xsd:string ;
+  rdfs:label "rule expression" .
+
+kern:promotesCandidate a owl:ObjectProperty ;
+  rdfs:domain kern:PromotionRecord ;
+  rdfs:range  kern:InformationContent ;
+  rdfs:label "promotes candidate" .
+
+kern:producesAcceptedAssertion a owl:ObjectProperty ;
+  rdfs:domain kern:PromotionRecord ;
+  rdfs:range  kern:TruthAssertion ;
+  rdfs:label "produces accepted assertion" .
+
+kern:acceptedByPromotion a owl:ObjectProperty ;
+  rdfs:domain kern:TruthAssertion ;
+  rdfs:range  kern:PromotionRecord ;
+  rdfs:label "accepted by promotion" ;
+  owl:inverseOf kern:producesAcceptedAssertion .
+### Runtime 2 compile-plane support classes
+kern:TenantWorkflowInput a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Tenant Workflow Input" ;
+  skos:definition "A tenant-scoped compile candidate envelope containing explicit workflow, target, scope, action, effect, and control semantics for Runtime 2 admissibility." .
+
+kern:TargetSet a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Target Set" ;
+  skos:definition "An explicitly identified and bounded compile-time target set used by Runtime 2 control derivation." .
+
+kern:ScopeBoundary a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Scope Boundary" ;
+  skos:definition "An explicit scope or domain boundary used to constrain compile-time target and action semantics." .
+
+kern:ActionSpecification a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Action Specification" ;
+  skos:definition "An explicit compile-time action semantic record required for Runtime 2 action typing." .
+
+kern:ActionKind a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Action Kind" ;
+  skos:definition "A controlled action-type anchor referenced by ActionSpecification records." .
+
+kern:EffectSpecification a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Effect Specification" ;
+  skos:definition "An explicit compile-time effect semantic record linked to executable actions." .
+
+kern:EffectKind a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Effect Kind" ;
+  skos:definition "A controlled effect-type anchor referenced by EffectSpecification records." .
+
+kern:ActionEffectBinding a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Action Effect Binding" ;
+  skos:definition "An explicit compile-time binding that links one action specification to one effect specification." .
+
+kern:AuthorizationSemantic a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Authorization Semantic" ;
+  skos:definition "A compile-plane authorization semantic record defining explicit allow or deny surfaces without creating operational Runtime 3 events." .
+
+kern:AuthorizationDecisionKind a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Authorization Decision Kind" ;
+  skos:definition "A controlled decision-kind anchor used by compile-plane authorization semantics." .
+
+kern:EligibilitySemantic a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Eligibility Semantic" ;
+  skos:definition "A compile-plane eligibility semantic record preserving explicit eligible, ineligible, and unknown status semantics." .
+
+kern:EligibilityStatus a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Eligibility Status" ;
+  skos:definition "A controlled eligibility-status anchor for compile-plane admissibility semantics." .
+
+kern:DenialSemantic a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Denial Semantic" ;
+  skos:definition "A compile-plane denial semantic record defining deterministic denial-class references for non-permissive outputs." .
+
+kern:DenialKind a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Denial Kind" ;
+  skos:definition "A controlled denial-category anchor used by compile-plane denial semantics." .
+
+kern:ControlStateSemantic a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Control State Semantic" ;
+  skos:definition "A compile-plane control-state semantic record defining explicit hard-stop, resume, and mode-transition semantics." .
+
+kern:ControlStateKind a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Control State Kind" ;
+  skos:definition "A controlled control-state anchor used by compile-plane control-state semantics." .
+
+### Runtime 2 compile-plane controlled individuals
+kern:AuthorizationAllow a kern:AuthorizationDecisionKind ;
+  rdfs:label "Authorization Allow" .
+
+kern:AuthorizationDeny a kern:AuthorizationDecisionKind ;
+  rdfs:label "Authorization Deny" .
+
+kern:EligibilityEligible a kern:EligibilityStatus ;
+  rdfs:label "Eligibility Eligible" .
+
+kern:EligibilityIneligible a kern:EligibilityStatus ;
+  rdfs:label "Eligibility Ineligible" .
+
+kern:EligibilityUnknown a kern:EligibilityStatus ;
+  rdfs:label "Eligibility Unknown" .
+
+kern:DenialAuthorization a kern:DenialKind ;
+  rdfs:label "Authorization Denial" .
+
+kern:DenialEligibility a kern:DenialKind ;
+  rdfs:label "Eligibility Denial" .
+
+kern:DenialQuarantine a kern:DenialKind ;
+  rdfs:label "Quarantine Denial" .
+
+kern:DenialAbort a kern:DenialKind ;
+  rdfs:label "Abort Denial" .
+
+kern:ControlStateHardStop a kern:ControlStateKind ;
+  rdfs:label "Hard Stop Control State" .
+
+kern:ControlStateResume a kern:ControlStateKind ;
+  rdfs:label "Resume Control State" .
+
+kern:ControlStateModeTransition a kern:ControlStateKind ;
+  rdfs:label "Mode Transition Control State" .
+
+### Runtime 2 compile-plane properties
+kern:tenantId a owl:DatatypeProperty ;
+  rdfs:domain kern:InformationContent ;
+  rdfs:range xsd:string ;
+  rdfs:label "tenant id" .
+
+kern:workflowId a owl:DatatypeProperty ;
+  rdfs:domain kern:InformationContent ;
+  rdfs:range xsd:string ;
+  rdfs:label "workflow id" .
+
+kern:workflowVersion a owl:DatatypeProperty ;
+  rdfs:domain kern:TenantWorkflowInput ;
+  rdfs:range xsd:string ;
+  rdfs:label "workflow version" .
+
+kern:domainId a owl:DatatypeProperty ;
+  rdfs:domain kern:TenantWorkflowInput ;
+  rdfs:range xsd:string ;
+  rdfs:label "domain id" .
+
+kern:routingPolicyId a owl:DatatypeProperty ;
+  rdfs:domain kern:TenantWorkflowInput ;
+  rdfs:range xsd:string ;
+  rdfs:label "routing policy id" .
+
+kern:aiOperable a owl:DatatypeProperty ;
+  rdfs:domain kern:TenantWorkflowInput ;
+  rdfs:range xsd:boolean ;
+  rdfs:label "AI operable" .
+
+kern:targetSetId a owl:DatatypeProperty ;
+  rdfs:domain kern:TargetSet ;
+  rdfs:range xsd:string ;
+  rdfs:label "target set id" .
+
+kern:targetSelectionBasis a owl:DatatypeProperty ;
+  rdfs:domain kern:TargetSet ;
+  rdfs:range xsd:string ;
+  rdfs:label "target selection basis" .
+
+kern:scopeId a owl:DatatypeProperty ;
+  rdfs:domain kern:ScopeBoundary ;
+  rdfs:range xsd:string ;
+  rdfs:label "scope id" .
+
+kern:actionId a owl:DatatypeProperty ;
+  rdfs:domain kern:ActionSpecification ;
+  rdfs:range xsd:string ;
+  rdfs:label "action id" .
+
+kern:effectId a owl:DatatypeProperty ;
+  rdfs:domain kern:EffectSpecification ;
+  rdfs:range xsd:string ;
+  rdfs:label "effect id" .
+
+kern:actionEffectBindingId a owl:DatatypeProperty ;
+  rdfs:domain kern:ActionEffectBinding ;
+  rdfs:range xsd:string ;
+  rdfs:label "action effect binding id" .
+
+kern:hasTargetMember a owl:ObjectProperty ;
+  rdfs:domain kern:TargetSet ;
+  rdfs:range kern:TargetReference ;
+  rdfs:label "has target member" .
+
+kern:targetSetRef a owl:ObjectProperty ;
+  rdfs:range kern:TargetSet ;
+  rdfs:label "target set ref" .
+
+kern:scopeRef a owl:ObjectProperty ;
+  rdfs:range kern:ScopeBoundary ;
+  rdfs:label "scope ref" .
+
+kern:actionRef a owl:ObjectProperty ;
+  rdfs:range kern:ActionSpecification ;
+  rdfs:label "action ref" .
+
+kern:effectRef a owl:ObjectProperty ;
+  rdfs:range kern:EffectSpecification ;
+  rdfs:label "effect ref" .
+
+kern:actionEffectBindingRef a owl:ObjectProperty ;
+  rdfs:range kern:ActionEffectBinding ;
+  rdfs:label "action effect binding ref" .
+
+kern:authorizationSemanticsRef a owl:ObjectProperty ;
+  rdfs:range kern:AuthorizationSemantic ;
+  rdfs:label "authorization semantics ref" .
+
+kern:eligibilitySemanticsRef a owl:ObjectProperty ;
+  rdfs:range kern:EligibilitySemantic ;
+  rdfs:label "eligibility semantics ref" .
+
+kern:denialSemanticsRef a owl:ObjectProperty ;
+  rdfs:range kern:DenialSemantic ;
+  rdfs:label "denial semantics ref" .
+
+kern:controlStateSemanticsRef a owl:ObjectProperty ;
+  rdfs:range kern:ControlStateSemantic ;
+  rdfs:label "control state semantics ref" .
+
+kern:actionKindRef a owl:ObjectProperty ;
+  rdfs:domain kern:ActionSpecification ;
+  rdfs:range kern:ActionKind ;
+  rdfs:label "action kind ref" .
+
+kern:effectKindRef a owl:ObjectProperty ;
+  rdfs:domain kern:EffectSpecification ;
+  rdfs:range kern:EffectKind ;
+  rdfs:label "effect kind ref" .
+
+kern:authorizationDecisionKindRef a owl:ObjectProperty ;
+  rdfs:domain kern:AuthorizationSemantic ;
+  rdfs:range kern:AuthorizationDecisionKind ;
+  rdfs:label "authorization decision kind ref" .
+
+kern:eligibilityStatusRef a owl:ObjectProperty ;
+  rdfs:domain kern:EligibilitySemantic ;
+  rdfs:range kern:EligibilityStatus ;
+  rdfs:label "eligibility status ref" .
+
+kern:denialKindRef a owl:ObjectProperty ;
+  rdfs:domain kern:DenialSemantic ;
+  rdfs:range kern:DenialKind ;
+  rdfs:label "denial kind ref" .
+
+kern:controlStateKindRef a owl:ObjectProperty ;
+  rdfs:domain kern:ControlStateSemantic ;
+  rdfs:range kern:ControlStateKind ;
+  rdfs:label "control state kind ref" .
+
+### Runtime 2 compile-plane output and provenance classes
+kern:CompiledControlPrimitive a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Compiled Control Primitive" ;
+  skos:definition "A tenant-scoped Runtime 2 compiled control record emitted into SCR_TBox_Release with explicit meaning and lineage references." .
+
+kern:TargetScopePrimitive a owl:Class ;
+  rdfs:subClassOf kern:CompiledControlPrimitive ;
+  rdfs:label "Target Scope Primitive" ;
+  skos:definition "A compiled primitive carrying normalized target-set and scope-boundary semantics." .
+
+kern:ActionEffectPrimitive a owl:Class ;
+  rdfs:subClassOf kern:CompiledControlPrimitive ;
+  rdfs:label "Action Effect Primitive" ;
+  skos:definition "A compiled primitive carrying explicit action and effect linkage semantics." .
+
+kern:AuthorizationPrimitive a owl:Class ;
+  rdfs:subClassOf kern:CompiledControlPrimitive ;
+  rdfs:label "Authorization Primitive" ;
+  skos:definition "A compiled primitive carrying compile-time authorization decision semantics." .
+
+kern:EligibilityPrimitive a owl:Class ;
+  rdfs:subClassOf kern:CompiledControlPrimitive ;
+  rdfs:label "Eligibility Primitive" ;
+  skos:definition "A compiled primitive carrying explicit eligibility semantics and non-permissive unknown handling." .
+
+kern:DenialPrimitive a owl:Class ;
+  rdfs:subClassOf kern:CompiledControlPrimitive ;
+  rdfs:label "Denial Primitive" ;
+  skos:definition "A compiled primitive carrying deterministic denial-class semantics." .
+
+kern:ControlStatePrimitive a owl:Class ;
+  rdfs:subClassOf kern:CompiledControlPrimitive ;
+  rdfs:label "Control State Primitive" ;
+  skos:definition "A compiled primitive carrying hard-stop, resume, and mode-control semantics without instantiating Runtime 3 events." .
+
+kern:TracePrimitive a owl:Class ;
+  rdfs:subClassOf kern:CompiledControlPrimitive ;
+  rdfs:label "Trace Primitive" ;
+  skos:definition "A compiled primitive carrying provenance and dependency lineage semantics for downstream load verification." .
+
+kern:CompiledPrimitiveType a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Compiled Primitive Type" ;
+  skos:definition "A controlled type anchor for compiled control primitive families." .
+
+kern:CompileTraceReference a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Compile Trace Reference" ;
+  skos:definition "A provenance bundle linking compiled primitives to admitted tenant input, dependency binding, and compile evidence surfaces." .
+
+kern:SupportReleaseReference a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Support Release Reference" ;
+  skos:definition "An explicit reference to the exact SupportOntologyRelease dependency used during Runtime 2 compilation." .
+
+kern:DependencyBindingRecord a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Dependency Binding Record" ;
+  skos:definition "A compile provenance record binding compiled output to exact upstream support release dependencies." .
+
+kern:GateExecutionRecord a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Gate Execution Record" ;
+  skos:definition "A record of deterministic gate execution over admitted Runtime 2 compile inputs." .
+
+kern:CompileDecisionRecord a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Compile Decision Record" ;
+  skos:definition "A record of the final Runtime 2 compile decision for a tenant-scoped candidate." .
+
+kern:EvidenceDigestRecord a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Evidence Digest Record" ;
+  skos:definition "A record of digests for compile evidence emitted with a tenant-scoped compiled output set." .
+
+kern:CompileOutcomeSummary a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Compile Outcome Summary" ;
+  skos:definition "A compact compile outcome record summarizing pass or non-permissive status across Runtime 2 gates." .
+
+kern:CompileReasonCodePolicy a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Compile Reason Code Policy" ;
+  skos:definition "A policy record defining the reason-code pattern and category surface used by compiled Runtime 2 outputs." .
+
+kern:ReasonCodeCategory a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Reason Code Category" ;
+  skos:definition "A controlled category anchor for deterministic Runtime 2 reason-code families." .
+
+### Runtime 2 compile-plane output controlled individuals
+kern:TargetScopePrimitiveType a kern:CompiledPrimitiveType ;
+  rdfs:label "Target Scope Primitive Type" .
+
+kern:ActionEffectPrimitiveType a kern:CompiledPrimitiveType ;
+  rdfs:label "Action Effect Primitive Type" .
+
+kern:AuthorizationPrimitiveType a kern:CompiledPrimitiveType ;
+  rdfs:label "Authorization Primitive Type" .
+
+kern:EligibilityPrimitiveType a kern:CompiledPrimitiveType ;
+  rdfs:label "Eligibility Primitive Type" .
+
+kern:DenialPrimitiveType a kern:CompiledPrimitiveType ;
+  rdfs:label "Denial Primitive Type" .
+
+kern:ControlStatePrimitiveType a kern:CompiledPrimitiveType ;
+  rdfs:label "Control State Primitive Type" .
+
+kern:TracePrimitiveType a kern:CompiledPrimitiveType ;
+  rdfs:label "Trace Primitive Type" .
+
+kern:ReasonCodeMissingIdentity a kern:ReasonCodeCategory ;
+  rdfs:label "Missing Identity Reason Category" .
+
+kern:ReasonCodeUnboundReference a kern:ReasonCodeCategory ;
+  rdfs:label "Unbound Reference Reason Category" .
+
+kern:ReasonCodeImplicitTarget a kern:ReasonCodeCategory ;
+  rdfs:label "Implicit Target Reason Category" .
+
+kern:ReasonCodeMissingScope a kern:ReasonCodeCategory ;
+  rdfs:label "Missing Scope Reason Category" .
+
+kern:ReasonCodeMissingEffectSemantics a kern:ReasonCodeCategory ;
+  rdfs:label "Missing Effect Semantics Reason Category" .
+
+kern:ReasonCodeUnknownPremise a kern:ReasonCodeCategory ;
+  rdfs:label "Unknown Premise Reason Category" .
+
+kern:ReasonCodeUnknownEligibility a kern:ReasonCodeCategory ;
+  rdfs:label "Unknown Eligibility Reason Category" .
+
+kern:ReasonCodeUnsupportedConstraint a kern:ReasonCodeCategory ;
+  rdfs:label "Unsupported Constraint Reason Category" .
+
+kern:ReasonCodeMissingEvidenceLink a kern:ReasonCodeCategory ;
+  rdfs:label "Missing Evidence Link Reason Category" .
+
+kern:ReasonCodeMissingReasonPolicy a kern:ReasonCodeCategory ;
+  rdfs:label "Missing Reason Policy Reason Category" .
+
+### Runtime 2 compile-plane output properties
+kern:primitiveId a owl:DatatypeProperty ;
+  rdfs:domain kern:CompiledControlPrimitive ;
+  rdfs:range xsd:string ;
+  rdfs:label "primitive id" .
+
+kern:compileTraceId a owl:DatatypeProperty ;
+  rdfs:domain kern:InformationContent ;
+  rdfs:range xsd:string ;
+  rdfs:label "compile trace id" .
+
+kern:releaseArtifactId a owl:DatatypeProperty ;
+  rdfs:domain kern:SupportReleaseReference ;
+  rdfs:range xsd:string ;
+  rdfs:label "release artifact id" .
+
+kern:releaseVersion a owl:DatatypeProperty ;
+  rdfs:domain kern:SupportReleaseReference ;
+  rdfs:range xsd:string ;
+  rdfs:label "release version" .
+
+kern:policyId a owl:DatatypeProperty ;
+  rdfs:domain kern:CompileReasonCodePolicy ;
+  rdfs:range xsd:string ;
+  rdfs:label "policy id" .
+
+kern:reasonCodePattern a owl:DatatypeProperty ;
+  rdfs:domain kern:CompileReasonCodePolicy ;
+  rdfs:range xsd:string ;
+  rdfs:label "reason code pattern" .
+
+kern:reasonCodeDetailToken a owl:DatatypeProperty ;
+  rdfs:domain kern:CompileReasonCodePolicy ;
+  rdfs:range xsd:string ;
+  rdfs:label "reason code detail token" .
+
+kern:constraints a owl:DatatypeProperty ;
+  rdfs:range xsd:string ;
+  rdfs:label "constraints" .
+
+kern:primitiveTypeRef a owl:ObjectProperty ;
+  rdfs:domain kern:CompiledControlPrimitive ;
+  rdfs:range kern:CompiledPrimitiveType ;
+  rdfs:label "primitive type ref" .
+
+kern:supportReleaseRef a owl:ObjectProperty ;
+  rdfs:range kern:SupportReleaseReference ;
+  rdfs:label "support release ref" .
+
+kern:sourceInputRef a owl:ObjectProperty ;
+  rdfs:range kern:TenantWorkflowInput ;
+  rdfs:label "source input ref" .
+
+kern:compileReasonCodePolicyRef a owl:ObjectProperty ;
+  rdfs:range kern:CompileReasonCodePolicy ;
+  rdfs:label "compile reason code policy ref" .
+
+kern:compileTraceRef a owl:ObjectProperty ;
+  rdfs:range kern:CompileTraceReference ;
+  rdfs:label "compile trace ref" .
+
+kern:dependencyBindingRef a owl:ObjectProperty ;
+  rdfs:range kern:DependencyBindingRecord ;
+  rdfs:label "dependency binding ref" .
+
+kern:gateExecutionRecordRef a owl:ObjectProperty ;
+  rdfs:range kern:GateExecutionRecord ;
+  rdfs:label "gate execution record ref" .
+
+kern:compileDecisionRecordRef a owl:ObjectProperty ;
+  rdfs:range kern:CompileDecisionRecord ;
+  rdfs:label "compile decision record ref" .
+
+kern:evidenceDigestRecordRef a owl:ObjectProperty ;
+  rdfs:range kern:EvidenceDigestRecord ;
+  rdfs:label "evidence digest record ref" .
+
+kern:compileOutcomeSummaryRef a owl:ObjectProperty ;
+  rdfs:range kern:CompileOutcomeSummary ;
+  rdfs:label "compile outcome summary ref" .
+
+kern:reasonCodeCategoryRef a owl:ObjectProperty ;
+  rdfs:range kern:ReasonCodeCategory ;
+  rdfs:label "reason code category ref" .
+
+kern:supersedesPrimitiveRef a owl:ObjectProperty ;
+  rdfs:domain kern:CompiledControlPrimitive ;
+  rdfs:range kern:CompiledControlPrimitive ;
+  rdfs:label "supersedes primitive ref" .
+

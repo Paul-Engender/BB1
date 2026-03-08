@@ -1,0 +1,14 @@
+{
+  "manifest_version": "1.0",
+  "release_id": "v0.1.0-alpha",
+  "contents": {
+    "kernel_ontology": {
+      "path": "ontology/kernel.ttl",
+      "cid": "cid:uuid-for-kernel-ttl-hash-for-kernel-ttl"
+    },
+    "main_service": {
+      "path": "bin/service",
+      "cid": "cid:uuid-for-service-binary-hash-for-service-binary"
+    }
+  }
+}

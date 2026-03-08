@@ -1,0 +1,11 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+
+ex:ActionKind_Provision a kern:ActionKind .
+
+ex:Action_001 a kern:ActionSpecification ;
+    kern:actionId "action-001" ;
+    kern:actionKindRef ex:ActionKind_Provision .
+
+ex:EligibilitySemantic_Invalid a kern:EligibilitySemantic ;
+    kern:actionRef ex:Action_001 .

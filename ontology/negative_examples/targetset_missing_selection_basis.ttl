@@ -1,0 +1,5 @@
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix ex:     <https://ontology.engender.co.za/example#> .
+
+ex:TargetSet_Invalid a kern:TargetSet ;
+    kern:targetSetId "ts-invalid" .

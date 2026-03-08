@@ -1,0 +1,19 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix so: <http://example.org/support-ontology#> .
+
+so: a owl:Ontology ;
+    rdfs:label "Support Ontology" ;
+    rdfs:comment "A minimal ontology providing foundational concepts for the bootstrap phase." .
+
+# A class for basic entities
+so:Entity a rdfs:Class ;
+    rdfs:label "Entity" ;
+    rdfs:comment "A generic entity in the system." .
+
+# A property to link entities
+so:relatesTo a rdf:Property ;
+    rdfs:label "relates to" ;
+    rdfs:domain so:Entity ;
+    rdfs:range so:Entity .

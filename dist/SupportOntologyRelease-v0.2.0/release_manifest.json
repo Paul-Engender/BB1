@@ -1,0 +1,70 @@
+{
+  "manifest_version": "2.0",
+  "release_id": "SupportOntologyRelease-v0.2.0",
+  "release_cid": "cid:b5ab78f2-227f-79f7-bc97-f105527fe2d4-98d6d7d18535407c5cb0f2d707fb46dfafb62fef5ab24dbaccaf07988757c260",
+  "artifact_type": "SupportOntologyRelease",
+  "artifact_version": "0.2.0",
+  "tenant_scope": "global",
+  "released_at": "1970-01-01T00:00:00+00:00",
+  "primary_file": "ontology/kernel.ttl",
+  "dependencies": [],
+  "files": [
+    {
+      "path": "ontology/kernel.ttl",
+      "sha256": "9d73af5a5e57d2bea0c7becc33906ad0e420935e6b63d3cdad662b1be190139f",
+      "cid": "cid:04ce0570-9416-74d9-aca8-36378590edc0-9d73af5a5e57d2bea0c7becc33906ad0e420935e6b63d3cdad662b1be190139f",
+      "mime_type": "application/octet-stream",
+      "role": "payload",
+      "size_bytes": 8398
+    },
+    {
+      "path": "ontology/kernel.shacl.ttl",
+      "sha256": "fc204d5cee47c7ae6ec41b24d8409c019daaeb98e886b5bdcc7e9aa42781d526",
+      "cid": "cid:6659e5fb-afe8-7c92-80e7-95d55e8ae615-fc204d5cee47c7ae6ec41b24d8409c019daaeb98e886b5bdcc7e9aa42781d526",
+      "mime_type": "application/octet-stream",
+      "role": "payload",
+      "size_bytes": 2946
+    },
+    {
+      "path": "evidence/release_candidate_checks.jsonl",
+      "sha256": "151cb2e521627392b12510869d15e6eac8731e648682fc9f01207cac546093c7",
+      "cid": "cid:40cf0a7a-6e33-788d-bf0a-faccbe507cba-151cb2e521627392b12510869d15e6eac8731e648682fc9f01207cac546093c7",
+      "mime_type": "application/octet-stream",
+      "role": "evidence",
+      "size_bytes": 2327
+    },
+    {
+      "path": "evidence/release_candidate_evaluation.json",
+      "sha256": "75979b01e0979068d1a7f8dbe19c08722956c9405646d905ffffda20f3993ff6",
+      "cid": "cid:be85b861-3190-7711-8df7-6264fe56a902-75979b01e0979068d1a7f8dbe19c08722956c9405646d905ffffda20f3993ff6",
+      "mime_type": "application/json",
+      "role": "evidence",
+      "size_bytes": 3084
+    }
+  ],
+  "contents": [
+    {
+      "path": "ontology/kernel.ttl",
+      "cid": "cid:04ce0570-9416-74d9-aca8-36378590edc0-9d73af5a5e57d2bea0c7becc33906ad0e420935e6b63d3cdad662b1be190139f",
+      "mime_type": "application/octet-stream"
+    },
+    {
+      "path": "evidence/release_candidate_checks.jsonl",
+      "cid": "cid:40cf0a7a-6e33-788d-bf0a-faccbe507cba-151cb2e521627392b12510869d15e6eac8731e648682fc9f01207cac546093c7",
+      "mime_type": "application/octet-stream"
+    },
+    {
+      "path": "evidence/release_candidate_evaluation.json",
+      "cid": "cid:be85b861-3190-7711-8df7-6264fe56a902-75979b01e0979068d1a7f8dbe19c08722956c9405646d905ffffda20f3993ff6",
+      "mime_type": "application/json"
+    },
+    {
+      "path": "ontology/kernel.shacl.ttl",
+      "cid": "cid:6659e5fb-afe8-7c92-80e7-95d55e8ae615-fc204d5cee47c7ae6ec41b24d8409c019daaeb98e886b5bdcc7e9aa42781d526",
+      "mime_type": "application/octet-stream"
+    }
+  ],
+  "build_deterministic": true,
+  "content_digest_sha256": "98d6d7d18535407c5cb0f2d707fb46dfafb62fef5ab24dbaccaf07988757c260",
+  "artifact_id": "cid:48fb4637-c2c5-7bef-994f-953a95e849e6-7195c6a4349cdc12c8ad9eb52e396c555323647251c8747c4dcbb6676cf49ef7"
+}

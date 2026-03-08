@@ -1,0 +1,38 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <h1>Snake</h1>
+      <div class="hud">
+        <p>Score: <span id="score">0</span></p>
+        <p id="status">Running</p>
+      </div>
+
+      <div id="board" class="board" aria-label="Snake game board"></div>
+
+      <div class="controls">
+        <button id="pauseButton" type="button">Pause</button>
+        <button id="restartButton" type="button">Restart</button>
+      </div>
+
+      <div class="touch-controls" aria-label="Direction controls">
+        <div></div>
+        <button data-direction="up" type="button">Up</button>
+        <div></div>
+        <button data-direction="left" type="button">Left</button>
+        <button data-direction="down" type="button">Down</button>
+        <button data-direction="right" type="button">Right</button>
+      </div>
+
+      <p class="help">Arrow keys/WASD to move. Space to pause.</p>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

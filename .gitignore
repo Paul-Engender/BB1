@@ -1,0 +1,38 @@
+# Python cache and build output
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+site/
+.eggs/
+*.egg-info/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# JavaScript dependencies
+node_modules/
+
+# Editor and OS noise
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local test and runtime scratch space
+.tmp_tests/
+tmp_work/
+tests/_tmp/
+tests/_tmp_*/
+dist/tmp_load_*/
