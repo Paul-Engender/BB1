@@ -53,8 +53,7 @@ Backlog-to-plan/task mapping is recorded in:
 
 ## Active Workstreams
 
-- P2-002 Runtime 1 productization (successor WS-02)
-- P2-003 Runtime 2 compiler implementation (successor WS-03)
+- none (successor WS-02 and WS-03 are complete)
 
 ## Queued Workstreams
 
@@ -70,6 +69,14 @@ Backlog-to-plan/task mapping is recorded in:
 - Follow-on work after `P1-026` should treat the support ontology as uplift-complete and move into Runtime 2 compiler implementation rather than reopening support contract scope without an approved change.
 - `P2-002` uses the retained Runtime 1 baseline plus explicit successor closure criteria; TASK-28.1..28.3 are complete and EP-28 is ready for verification.
 - `P2-003` decomposition and compiler-control package is complete; `EP-29` remains open until executable compiler outputs and evidence are added.
+
+## Bridge-Control Note
+
+This plan remains a bridge control surface.
+
+- Pre-`C0` rows remain historical execution truth.
+- Post-`C0` forward PM authority is bundle-first under `bootstrap/kernel_pm/bundles/`.
+- Forward `P2-004+` CSV/plan rows must match deterministic projections and are validator-locked.
 
 ## Program References
 

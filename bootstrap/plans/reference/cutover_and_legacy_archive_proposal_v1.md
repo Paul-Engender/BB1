@@ -1,6 +1,6 @@
 ﻿# Cutover and Legacy Archive Proposal v1
 
-Status: PROPOSED
+Status: SUPERSEDED
 Owner: paul
 Date: 2026-03-08
 Plane: implementation
@@ -147,3 +147,10 @@ This should capture:
 - exact pre-cutover artifact hashes
 - exact legacy freeze declaration
 - exact forward instantiation start marker
+
+
+## Merged Into
+
+- `bootstrap/plans/active/cutover_c0_snapshot_record_v1.md`
+- `bootstrap/plans/active/cutover_execution_transition_plan_v1.md`
+- `bootstrap/plans/active/kernel_pm_authority_switch_policy_v1.md`

@@ -1,6 +1,6 @@
 ﻿# Kernel-Aligned Project Execution Method v1
 
-Status: PROPOSED
+Status: SUPERSEDED
 Owner: paul
 Date: 2026-03-08
 Plane: implementation
@@ -134,3 +134,11 @@ ex:rec1 a kern:TaskExecutionRecord ;
 
 If representation requires contextual guessing, the project is not correctly
 instantiated against the kernel.
+
+
+## Merged Into
+
+- `specs/kernel_project_execution_profile_v1.md`
+- `schemas/kernel_project_bundle.schema.json`
+- `schemas/kernel_project_validation_rules_v1.json`
+- `tools/validate_kernel_project_bundle.py`
