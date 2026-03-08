@@ -24,7 +24,7 @@ readiness evidence.
 - `specs/support_ontology_reasoncode_evidence_contract_v1.md`
 - `specs/support_to_tbox_dependency_provenance_v1.md`
 - `specs/support_ontology_provenance_traceability_review_v1.md`
-- `bootstrap/plans/proposed_support_ontology_full_layer_backlog_v1.md`
+- `bootstrap/plans/reference/proposed_support_ontology_full_layer_backlog_v1.md`
 
 ## Scope Boundary
 
@@ -78,3 +78,4 @@ are complete, cross-consistent, and executable via strict validation methods.
 - Execute `TASK-23.3`
 - Execute `TASK-23.4`
 - Execute `TASK-23.5`
+

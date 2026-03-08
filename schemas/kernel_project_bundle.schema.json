@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Kernel Project Bundle",
+  "description": "Machine-readable bundle for kernel-aligned project-management records.",
+  "type": "object",
+  "required": ["bundle_id", "generated_at", "objects"],
+  "properties": {
+    "bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/objectRecord"
+      }
+    }
+  },
+  "definitions": {
+    "objectRecord": {
+      "type": "object",
+      "required": ["id", "kind", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ProgramPlan",
+            "WorkstreamPlan",
+            "WorkPackagePlan",
+            "TaskSpecification",
+            "CheckpointSpecification",
+            "DependencyRelation",
+            "DependencyKind",
+            "ValidationSpecification",
+            "RoleAssignment",
+            "HumanAgent",
+            "SystemAgent",
+            "Role",
+            "TaskExecutionActivity",
+            "TaskExecutionRecord",
+            "CheckpointRecord",
+            "EvidenceRecord",
+            "RiskRecord",
+            "IssueRecord",
+            "MitigationPlan",
+            "ChangeRequest",
+            "ImpactAssessment"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["IS", "OUGHT", "UNKNOWN"]
+        },
+        "label": {
+          "type": "string"
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["predicate", "target_id"],
+            "properties": {
+              "predicate": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._:-]+$"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean", "null"]
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]+$"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

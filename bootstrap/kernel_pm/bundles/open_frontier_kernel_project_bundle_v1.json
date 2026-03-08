@@ -1,0 +1,328 @@
+{
+  "bundle_id": "kernel-pm-open-frontier-c0-v1",
+  "generated_at": "2026-03-08T22:15:00+02:00",
+  "objects": [
+    {
+      "id": "depkind.predecessor",
+      "kind": "DependencyKind",
+      "status": "IS",
+      "label": "PredecessorDependency"
+    },
+    {
+      "id": "agent.paul",
+      "kind": "HumanAgent",
+      "status": "IS"
+    },
+    {
+      "id": "role.owner",
+      "kind": "Role",
+      "status": "IS"
+    },
+    {
+      "id": "program.p2",
+      "kind": "ProgramPlan",
+      "status": "IS",
+      "refs": [
+        {"predicate": "hasSubPlan", "target_id": "workstream.p2-004"},
+        {"predicate": "hasSubPlan", "target_id": "workstream.p2-005"},
+        {"predicate": "hasSubPlan", "target_id": "workstream.p2-006"}
+      ]
+    },
+    {
+      "id": "workstream.p2-004",
+      "kind": "WorkstreamPlan",
+      "status": "OUGHT",
+      "attributes": {
+        "plan_item_id": "P2-004",
+        "title": "Runtime 3 minimum viable tenant runtime (successor WS-04)",
+        "owner": "paul",
+        "notes": "Tenant-scoped runtime baseline for first vertical slice"
+      },
+      "refs": [
+        {"predicate": "hasSubPlan", "target_id": "workpackage.p2-004.wp13-16"}
+      ]
+    },
+    {
+      "id": "workstream.p2-005",
+      "kind": "WorkstreamPlan",
+      "status": "OUGHT",
+      "attributes": {
+        "plan_item_id": "P2-005",
+        "title": "Boundary objects and load discipline closure (successor WS-05)",
+        "owner": "paul",
+        "notes": "Cross-runtime manifest/dependency/load enforcement closure from approved boundary baseline; no blanket boundary-object rewrite"
+      },
+      "refs": [
+        {"predicate": "hasSubPlan", "target_id": "workpackage.p2-005.wp17-20"}
+      ]
+    },
+    {
+      "id": "workstream.p2-006",
+      "kind": "WorkstreamPlan",
+      "status": "OUGHT",
+      "attributes": {
+        "plan_item_id": "P2-006",
+        "title": "First complex vertical slice proof (successor WS-06)",
+        "owner": "paul",
+        "notes": "Reproducible and auditable three-runtime proving slice"
+      },
+      "refs": [
+        {"predicate": "hasSubPlan", "target_id": "workpackage.p2-006.wp21-24"}
+      ]
+    },
+    {
+      "id": "workpackage.p2-004.wp13-16",
+      "kind": "WorkPackagePlan",
+      "status": "OUGHT",
+      "refs": [
+        {"predicate": "hasSubPlan", "target_id": "task.spec.30.1"}
+      ]
+    },
+    {
+      "id": "workpackage.p2-005.wp17-20",
+      "kind": "WorkPackagePlan",
+      "status": "OUGHT",
+      "refs": [
+        {"predicate": "hasSubPlan", "target_id": "task.spec.31.1"}
+      ]
+    },
+    {
+      "id": "workpackage.p2-006.wp21-24",
+      "kind": "WorkPackagePlan",
+      "status": "OUGHT",
+      "refs": [
+        {"predicate": "hasSubPlan", "target_id": "task.spec.32.1"}
+      ]
+    },
+    {
+      "id": "task.spec.30.1",
+      "kind": "TaskSpecification",
+      "status": "OUGHT",
+      "attributes": {
+        "task_id": "TASK-30.1",
+        "plan_item_id": "P2-004",
+        "owner": "paul",
+        "output_path": "bootstrap/plans/programs/p2_004_runtime3_baseline_decomposition_v1.md",
+        "notes": "Defines minimal Runtime 3 tenant runtime baseline decomposition for first slice."
+      },
+      "refs": [
+        {"predicate": "hasValidationSpecification", "target_id": "validation.spec.30.1"}
+      ]
+    },
+    {
+      "id": "task.spec.31.1",
+      "kind": "TaskSpecification",
+      "status": "OUGHT",
+      "attributes": {
+        "task_id": "TASK-31.1",
+        "plan_item_id": "P2-005",
+        "owner": "paul",
+        "output_path": "bootstrap/plans/programs/p2_005_boundary_load_discipline_decomposition_v1.md",
+        "notes": "Defines strict boundary/load closure sequence across Runtime 1/2/3 transitions."
+      },
+      "refs": [
+        {"predicate": "hasValidationSpecification", "target_id": "validation.spec.31.1"}
+      ]
+    },
+    {
+      "id": "task.spec.32.1",
+      "kind": "TaskSpecification",
+      "status": "OUGHT",
+      "attributes": {
+        "task_id": "TASK-32.1",
+        "plan_item_id": "P2-006",
+        "owner": "paul",
+        "output_path": "specs/three_runtime_vertical_slice_proving_case_v1.md",
+        "notes": "Defines auditable end-to-end proving case and replay closure conditions."
+      },
+      "refs": [
+        {"predicate": "hasValidationSpecification", "target_id": "validation.spec.32.1"}
+      ]
+    },
+    {
+      "id": "task.spec.27.1",
+      "kind": "TaskSpecification",
+      "status": "IS",
+      "attributes": {
+        "task_id": "TASK-27.1",
+        "plan_item_id": "P2-001",
+        "owner": "paul"
+      },
+      "refs": [
+        {"predicate": "hasValidationSpecification", "target_id": "validation.spec.27.1"}
+      ]
+    },
+    {
+      "id": "task.spec.29.1",
+      "kind": "TaskSpecification",
+      "status": "IS",
+      "attributes": {
+        "task_id": "TASK-29.1",
+        "plan_item_id": "P2-003",
+        "owner": "paul"
+      },
+      "refs": [
+        {"predicate": "hasValidationSpecification", "target_id": "validation.spec.29.1"}
+      ]
+    },
+    {
+      "id": "validation.spec.30.1",
+      "kind": "ValidationSpecification",
+      "status": "OUGHT",
+      "attributes": {
+        "validationMethod": "python tools/bootstrap_validate.py --execute-validation-methods dry-run",
+        "passCondition": "exit code 0"
+      },
+      "refs": [
+        {"predicate": "expectsEvidenceRecord", "target_id": "evidence.ep30"}
+      ]
+    },
+    {
+      "id": "validation.spec.31.1",
+      "kind": "ValidationSpecification",
+      "status": "OUGHT",
+      "attributes": {
+        "validationMethod": "python tools/bootstrap_validate.py --execute-validation-methods dry-run",
+        "passCondition": "exit code 0"
+      },
+      "refs": [
+        {"predicate": "expectsEvidenceRecord", "target_id": "evidence.ep31"}
+      ]
+    },
+    {
+      "id": "validation.spec.32.1",
+      "kind": "ValidationSpecification",
+      "status": "OUGHT",
+      "attributes": {
+        "validationMethod": "python tools/bootstrap_validate.py --execute-validation-methods dry-run",
+        "passCondition": "exit code 0"
+      },
+      "refs": [
+        {"predicate": "expectsEvidenceRecord", "target_id": "evidence.ep32"}
+      ]
+    },
+    {
+      "id": "validation.spec.27.1",
+      "kind": "ValidationSpecification",
+      "status": "IS",
+      "attributes": {
+        "validationMethod": "python tools/bootstrap_validate.py --execute-validation-methods dry-run",
+        "passCondition": "exit code 0"
+      },
+      "refs": [
+        {"predicate": "expectsEvidenceRecord", "target_id": "evidence.ep27"}
+      ]
+    },
+    {
+      "id": "validation.spec.29.1",
+      "kind": "ValidationSpecification",
+      "status": "IS",
+      "attributes": {
+        "validationMethod": "python tools/bootstrap_validate.py --execute-validation-methods dry-run",
+        "passCondition": "exit code 0"
+      },
+      "refs": [
+        {"predicate": "expectsEvidenceRecord", "target_id": "evidence.ep29"}
+      ]
+    },
+    {
+      "id": "evidence.ep27",
+      "kind": "EvidenceRecord",
+      "status": "IS",
+      "attributes": {
+        "evidence_row_id": "EP-27",
+        "gate_criterion": "M1 contract translation complete"
+      },
+      "evidence_refs": ["ep27_verified_2026-03-08"]
+    },
+    {
+      "id": "evidence.ep29",
+      "kind": "EvidenceRecord",
+      "status": "IS",
+      "attributes": {
+        "evidence_row_id": "EP-29",
+        "gate_criterion": "M3 Runtime 2 compiler baseline executable"
+      },
+      "evidence_refs": ["ep29_verified_2026-03-08"]
+    },
+    {
+      "id": "evidence.ep30",
+      "kind": "EvidenceRecord",
+      "status": "OUGHT",
+      "attributes": {
+        "evidence_row_id": "EP-30",
+        "gate_criterion": "M4 Runtime 3 executes deterministic tenant-scoped operational flow"
+      }
+    },
+    {
+      "id": "evidence.ep31",
+      "kind": "EvidenceRecord",
+      "status": "OUGHT",
+      "attributes": {
+        "evidence_row_id": "EP-31",
+        "gate_criterion": "M5 cross-runtime boundary objects and load discipline are strict"
+      }
+    },
+    {
+      "id": "evidence.ep32",
+      "kind": "EvidenceRecord",
+      "status": "OUGHT",
+      "attributes": {
+        "evidence_row_id": "EP-32",
+        "gate_criterion": "M6 first complex three-runtime vertical slice is reproducible"
+      }
+    },
+    {
+      "id": "dependency.30.1.on.29.1",
+      "kind": "DependencyRelation",
+      "status": "IS",
+      "refs": [
+        {"predicate": "dependencySource", "target_id": "task.spec.30.1"},
+        {"predicate": "dependencyTarget", "target_id": "task.spec.29.1"},
+        {"predicate": "hasDependencyKind", "target_id": "depkind.predecessor"}
+      ]
+    },
+    {
+      "id": "dependency.31.1.on.27.1",
+      "kind": "DependencyRelation",
+      "status": "IS",
+      "refs": [
+        {"predicate": "dependencySource", "target_id": "task.spec.31.1"},
+        {"predicate": "dependencyTarget", "target_id": "task.spec.27.1"},
+        {"predicate": "hasDependencyKind", "target_id": "depkind.predecessor"}
+      ]
+    },
+    {
+      "id": "dependency.32.1.on.29.1",
+      "kind": "DependencyRelation",
+      "status": "IS",
+      "refs": [
+        {"predicate": "dependencySource", "target_id": "task.spec.32.1"},
+        {"predicate": "dependencyTarget", "target_id": "task.spec.29.1"},
+        {"predicate": "hasDependencyKind", "target_id": "depkind.predecessor"}
+      ]
+    },
+    {
+      "id": "dependency.32.1.on.30.1",
+      "kind": "DependencyRelation",
+      "status": "IS",
+      "refs": [
+        {"predicate": "dependencySource", "target_id": "task.spec.32.1"},
+        {"predicate": "dependencyTarget", "target_id": "task.spec.30.1"},
+        {"predicate": "hasDependencyKind", "target_id": "depkind.predecessor"}
+      ]
+    },
+    {
+      "id": "role.assignment.open-frontier",
+      "kind": "RoleAssignment",
+      "status": "IS",
+      "refs": [
+        {"predicate": "assignsAgent", "target_id": "agent.paul"},
+        {"predicate": "assignsRole", "target_id": "role.owner"},
+        {"predicate": "assignmentScopePlan", "target_id": "workstream.p2-004"},
+        {"predicate": "assignmentScopePlan", "target_id": "workstream.p2-005"},
+        {"predicate": "assignmentScopePlan", "target_id": "workstream.p2-006"}
+      ]
+    }
+  ]
+}

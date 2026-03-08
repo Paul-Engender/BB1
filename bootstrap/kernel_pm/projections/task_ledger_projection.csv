@@ -1,0 +1,6 @@
+task_id,plan_item_id,status,owner,validation_method,evidence_row_ids,dependencies,output_path,notes,source_object_id
+TASK-27.1,P2-001,DONE,paul,python tools/bootstrap_validate.py --execute-validation-methods dry-run,EP-27,,,,task.spec.27.1
+TASK-29.1,P2-003,DONE,paul,python tools/bootstrap_validate.py --execute-validation-methods dry-run,EP-29,,,,task.spec.29.1
+TASK-30.1,P2-004,TO_DO,paul,python tools/bootstrap_validate.py --execute-validation-methods dry-run,EP-30,TASK-29.1,bootstrap/plans/programs/p2_004_runtime3_baseline_decomposition_v1.md,Defines minimal Runtime 3 tenant runtime baseline decomposition for first slice.,task.spec.30.1
+TASK-31.1,P2-005,TO_DO,paul,python tools/bootstrap_validate.py --execute-validation-methods dry-run,EP-31,TASK-27.1,bootstrap/plans/programs/p2_005_boundary_load_discipline_decomposition_v1.md,Defines strict boundary/load closure sequence across Runtime 1/2/3 transitions.,task.spec.31.1
+TASK-32.1,P2-006,TO_DO,paul,python tools/bootstrap_validate.py --execute-validation-methods dry-run,EP-32,TASK-29.1;TASK-30.1,specs/three_runtime_vertical_slice_proving_case_v1.md,Defines auditable end-to-end proving case and replay closure conditions.,task.spec.32.1

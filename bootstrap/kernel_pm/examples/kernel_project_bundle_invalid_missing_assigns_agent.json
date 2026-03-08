@@ -1,0 +1,51 @@
+{
+  "bundle_id": "pm-bundle-invalid-001",
+  "generated_at": "2026-03-08T21:05:00+02:00",
+  "objects": [
+    {
+      "id": "agent.paul",
+      "kind": "HumanAgent",
+      "status": "IS"
+    },
+    {
+      "id": "role.owner",
+      "kind": "Role",
+      "status": "IS"
+    },
+    {
+      "id": "task.spec.1",
+      "kind": "TaskSpecification",
+      "status": "OUGHT",
+      "refs": [
+        {"predicate": "hasValidationSpecification", "target_id": "validation.spec.1"}
+      ]
+    },
+    {
+      "id": "validation.spec.1",
+      "kind": "ValidationSpecification",
+      "status": "OUGHT",
+      "attributes": {
+        "validationMethod": "python -m unittest tests.test_runtime2_engine -v",
+        "passCondition": "exit code 0"
+      },
+      "refs": [
+        {"predicate": "expectsEvidenceRecord", "target_id": "evidence.task1"}
+      ]
+    },
+    {
+      "id": "evidence.task1",
+      "kind": "EvidenceRecord",
+      "status": "IS",
+      "evidence_refs": ["artifact.hash.task1"]
+    },
+    {
+      "id": "role.assignment.bad",
+      "kind": "RoleAssignment",
+      "status": "IS",
+      "refs": [
+        {"predicate": "assignsRole", "target_id": "role.owner"},
+        {"predicate": "assignmentScopePlan", "target_id": "task.spec.1"}
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# P1-026 Support Ontology Priority-2 Uplift Decomposition v1
+﻿# P1-026 Support Ontology Priority-2 Uplift Decomposition v1
 
 Status: APPROVED
 Owner: paul
@@ -47,7 +47,7 @@ P1-026 closes the remaining support-ontology uplift backlog by defining the comp
 ### TASK-26.1 Define Priority-2 uplift execution decomposition controls
 
 Output:
-- `bootstrap/plans/p1_026_support_ontology_priority2_uplift_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_026_support_ontology_priority2_uplift_decomposition_v1.md`
 
 Intent:
 - register the Priority-2 uplift wave explicitly
@@ -107,3 +107,4 @@ When this workstream is complete:
 - `EP-26` moves to `VERIFIED`
 - the support-ontology uplift backlog is fully closed
 - the repo is ready for a dedicated Runtime 2 compiler implementation workstream
+

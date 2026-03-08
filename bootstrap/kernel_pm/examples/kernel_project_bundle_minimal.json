@@ -1,0 +1,128 @@
+{
+  "bundle_id": "pm-bundle-001",
+  "generated_at": "2026-03-08T21:00:00+02:00",
+  "objects": [
+    {
+      "id": "depkind.predecessor",
+      "kind": "DependencyKind",
+      "status": "IS",
+      "label": "PredecessorDependency"
+    },
+    {
+      "id": "agent.paul",
+      "kind": "HumanAgent",
+      "status": "IS"
+    },
+    {
+      "id": "role.owner",
+      "kind": "Role",
+      "status": "IS"
+    },
+    {
+      "id": "evidence.task1",
+      "kind": "EvidenceRecord",
+      "status": "IS",
+      "evidence_refs": ["artifact.hash.task1"]
+    },
+    {
+      "id": "program.p2",
+      "kind": "ProgramPlan",
+      "status": "IS",
+      "refs": [
+        {"predicate": "hasSubPlan", "target_id": "workstream.ws-runtime2"}
+      ]
+    },
+    {
+      "id": "workstream.ws-runtime2",
+      "kind": "WorkstreamPlan",
+      "status": "IS",
+      "refs": [
+        {"predicate": "hasSubPlan", "target_id": "workpackage.wp-runtime2-impl"}
+      ]
+    },
+    {
+      "id": "workpackage.wp-runtime2-impl",
+      "kind": "WorkPackagePlan",
+      "status": "IS",
+      "refs": [
+        {"predicate": "hasSubPlan", "target_id": "task.spec.1"},
+        {"predicate": "hasSubPlan", "target_id": "task.spec.2"}
+      ]
+    },
+    {
+      "id": "task.spec.1",
+      "kind": "TaskSpecification",
+      "status": "IS",
+      "refs": [
+        {"predicate": "hasValidationSpecification", "target_id": "validation.spec.1"}
+      ]
+    },
+    {
+      "id": "task.spec.2",
+      "kind": "TaskSpecification",
+      "status": "OUGHT",
+      "refs": [
+        {"predicate": "hasValidationSpecification", "target_id": "validation.spec.2"}
+      ]
+    },
+    {
+      "id": "validation.spec.1",
+      "kind": "ValidationSpecification",
+      "status": "IS",
+      "attributes": {
+        "validationMethod": "python -m unittest tests.test_runtime2_engine.Runtime2EngineTests.test_compile_smoke -v",
+        "passCondition": "exit code 0"
+      },
+      "refs": [
+        {"predicate": "expectsEvidenceRecord", "target_id": "evidence.task1"}
+      ]
+    },
+    {
+      "id": "validation.spec.2",
+      "kind": "ValidationSpecification",
+      "status": "OUGHT",
+      "attributes": {
+        "validationMethod": "python -m unittest tests.test_runtime2_engine -v",
+        "passCondition": "exit code 0"
+      },
+      "refs": [
+        {"predicate": "expectsEvidenceRecord", "target_id": "evidence.task1"}
+      ]
+    },
+    {
+      "id": "role.assignment.1",
+      "kind": "RoleAssignment",
+      "status": "IS",
+      "refs": [
+        {"predicate": "assignsAgent", "target_id": "agent.paul"},
+        {"predicate": "assignsRole", "target_id": "role.owner"},
+        {"predicate": "assignmentScopePlan", "target_id": "task.spec.1"}
+      ]
+    },
+    {
+      "id": "dependency.1",
+      "kind": "DependencyRelation",
+      "status": "IS",
+      "refs": [
+        {"predicate": "dependencySource", "target_id": "task.spec.1"},
+        {"predicate": "dependencyTarget", "target_id": "task.spec.2"},
+        {"predicate": "hasDependencyKind", "target_id": "depkind.predecessor"}
+      ]
+    },
+    {
+      "id": "activity.exec.1",
+      "kind": "TaskExecutionActivity",
+      "status": "IS"
+    },
+    {
+      "id": "record.exec.1",
+      "kind": "TaskExecutionRecord",
+      "status": "IS",
+      "evidence_refs": ["evidence.task1"],
+      "refs": [
+        {"predicate": "recordsExecutionOf", "target_id": "task.spec.1"},
+        {"predicate": "evidencesActivity", "target_id": "activity.exec.1"}
+      ]
+    }
+  ]
+}

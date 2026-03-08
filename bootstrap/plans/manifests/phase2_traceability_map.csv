@@ -1,0 +1,7 @@
+﻿"plan_item_id","workstream_id","milestone_id","work_package_ids","start_gate_ep_ids","exit_gate_ep_id","primary_contract_outputs"
+"P2-001","WS-01","M1","WP-01;WP-02;WP-03;WP-04","EP-11;EP-12","EP-27","specs/p2_contract_translation_review_v1.md;specs/p2_contract_delta_register_v1.md;specs/product_tenant_scope_rules_v1.md;specs/p2_contract_translation_closure_v1.md"
+"P2-002","WS-02","M2","WP-05;WP-06;WP-07;WP-08","EP-27;EP-13;EP-14","EP-28","specs/runtime1_support_release_engine_v2.md;specs/runtime1_successor_release_stability_review_v1.md;specs/runtime1_productization_closure_note_v1.md"
+"P2-003","WS-03","M3","WP-09;WP-10;WP-11;WP-12","EP-27;EP-20;EP-23","EP-29","bootstrap/plans/programs/p2_003_runtime2_compiler_decomposition_v1.md;specs/runtime2_compiler_module_boundary_v1.md;specs/runtime2_ingest_admissibility_contract_v1.md;specs/runtime2_compiled_primitive_emission_contract_v1.md;specs/runtime2_compiler_decomposition_closure_v1.md"
+"P2-004","WS-04","M4","WP-13;WP-14;WP-15;WP-16","EP-29;EP-31","EP-30","specs/runtime3_tenant_runtime_baseline_v1.md"
+"P2-005","WS-05","M5","WP-17;WP-18;WP-19;WP-20","EP-27;EP-12","EP-31","specs/runtime_boundary_load_discipline_closure_v1.md;schemas/runtime_load_manifest.schema.json"
+"P2-006","WS-06","M6","WP-21;WP-22;WP-23;WP-24","EP-28;EP-29;EP-30;EP-31","EP-32","specs/three_runtime_vertical_slice_proving_case_v1.md"

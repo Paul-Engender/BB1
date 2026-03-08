@@ -49,7 +49,7 @@ This workstream does not:
 ### TASK-24.1 Define post-review hardening controls
 
 Output:
-- `bootstrap/plans/p1_024_support_ontology_post_review_hardening_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_024_support_ontology_post_review_hardening_decomposition_v1.md`
 
 Intent:
 - register the bounded execution wave
@@ -110,3 +110,4 @@ When this workstream is complete:
 ## Follow-On Workstream
 
 `P1-025` is reserved for implementation of the approved uplift backlog in `specs/support_ontology_validation_uplift_v1.md`.
+

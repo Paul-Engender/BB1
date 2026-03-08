@@ -1,0 +1,63 @@
+@prefix kern: <https://ontology.engender.co.za/kernel#> .
+@prefix ex:   <https://example.org/project/> .
+
+ex:Program_1 a kern:ProgramPlan ;
+  kern:hasSubPlan ex:Workstream_1 ;
+  kern:hasCheckpoint ex:Checkpoint_1 .
+
+ex:Workstream_1 a kern:WorkstreamPlan ;
+  kern:hasSubPlan ex:WorkPackage_1 ;
+  kern:hasCheckpoint ex:Checkpoint_1 .
+
+ex:WorkPackage_1 a kern:WorkPackagePlan ;
+  kern:hasSubPlan ex:Task_1, ex:Task_2 ;
+  kern:hasCheckpoint ex:Checkpoint_1 .
+
+ex:Checkpoint_1 a kern:CheckpointSpecification .
+
+ex:TaskOutput_1 a kern:InformationContent .
+ex:TaskOutput_2 a kern:InformationContent .
+
+ex:Task_1 a kern:TaskSpecification ;
+  kern:hasValidationSpecification ex:ValidationSpec_1 ;
+  kern:plannedOutput ex:TaskOutput_1 .
+
+ex:Task_2 a kern:TaskSpecification ;
+  kern:hasValidationSpecification ex:ValidationSpec_2 ;
+  kern:plannedOutput ex:TaskOutput_2 ;
+  kern:dependsOnPlan ex:Task_1 .
+
+ex:TaskActivity_1 a kern:TaskExecutionActivity .
+
+ex:TaskRecord_1 a kern:TaskExecutionRecord ;
+  kern:recordsExecutionOf ex:Task_1 ;
+  kern:evidencesActivity ex:TaskActivity_1 .
+
+ex:TaskActivity_2 a kern:TaskExecutionActivity .
+
+ex:TaskRecord_2 a kern:TaskExecutionRecord ;
+  kern:recordsExecutionOf ex:Task_2 ;
+  kern:evidencesActivity ex:TaskActivity_2 .
+
+ex:ValidationSpec_1 a kern:ValidationSpecification ;
+  kern:validationMethod "python tools/bootstrap_validate.py" ;
+  kern:passCondition "exit code 0" ;
+  kern:expectsEvidenceRecord ex:TaskRecord_1 .
+
+ex:ValidationSpec_2 a kern:ValidationSpecification ;
+  kern:validationMethod "python -m unittest tests.test_bootstrap_validate -v" ;
+  kern:passCondition "all tests pass" ;
+  kern:expectsEvidenceRecord ex:TaskRecord_2 .
+
+ex:Dependency_1 a kern:DependencyRelation ;
+  kern:dependencySource ex:Task_1 ;
+  kern:dependencyTarget ex:Task_2 ;
+  kern:hasDependencyKind kern:PredecessorDependency .
+
+ex:Human_1 a kern:HumanAgent .
+ex:Role_1 a kern:ResponsibleRole .
+
+ex:RoleAssignment_1 a kern:RoleAssignment ;
+  kern:assignsAgent ex:Human_1 ;
+  kern:assignsRole ex:Role_1 ;
+  kern:assignmentScopePlan ex:Task_1 .

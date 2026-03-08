@@ -1,0 +1,7 @@
+"milestone_id","title","status","entry_criteria","exit_criteria","gate_evidence_id","notes"
+"M1","Contract baseline and delta set approved","DONE","Successor program opened, P2 plan items registered, and P1 contract baselines available","Existing runtime/event/boundary baselines reviewed, required P2 deltas approved, and downstream contract gaps reduced to explicit successor items","EP-27","Verified 2026-03-08 via EP-27; baseline and delta-resolution package complete."
+"M2","Runtime 1 release-stable","DONE","M1 complete and boundary controls available","Runtime 1 emits evidence-bound downstream-loadable release","EP-28","Verified 2026-03-08 via EP-28; Runtime 1 successor release-stable gate is closed."
+"M3","Runtime 2 compiler baseline executable","DONE","M2 complete and input/admissibility contracts active","Runtime 2 deterministic compile baseline with evidence packaging","EP-29","Verified 2026-03-08 via EP-29; Runtime 2 compiler baseline executable gate is closed."
+"M4","Runtime 3 tenant runtime baseline executable","PLANNED","M3 complete and load discipline ready","Runtime 3 executes deterministic tenant-scoped operational flow","EP-30","Minimum viable Runtime 3"
+"M5","Boundary object and load discipline closed","PLANNED","M1 contracts and runtime boundaries active","Cross-runtime loading rejects evidence-free or tenant-mismatched inputs","EP-31","Strict boundary enforcement"
+"M6","First complex vertical slice proven","PLANNED","M2+M3+M4+M5 complete","Reproducible and auditable end-to-end proving slice","EP-32","Full lineage proof milestone"

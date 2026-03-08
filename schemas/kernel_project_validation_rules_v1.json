@@ -1,0 +1,57 @@
+{
+  "profile_id": "kernel-project-validation-rules-v1",
+  "status": "ACTIVE",
+  "date": "2026-03-08",
+  "rules": [
+    {
+      "rule_id": "KPM-R01",
+      "severity": "error",
+      "description": "Every object must have exactly one primary kind from the allowed kind set."
+    },
+    {
+      "rule_id": "KPM-R02",
+      "severity": "error",
+      "description": "Object IDs must be unique within a bundle."
+    },
+    {
+      "rule_id": "KPM-R03",
+      "severity": "error",
+      "description": "All relation targets must exist and satisfy the required target-kind constraints."
+    },
+    {
+      "rule_id": "KPM-R04",
+      "severity": "error",
+      "description": "TaskSpecification must reference exactly one ValidationSpecification via hasValidationSpecification."
+    },
+    {
+      "rule_id": "KPM-R05",
+      "severity": "error",
+      "description": "DependencyRelation must contain exactly one source task, one target task, one dependency kind, and source must not equal target."
+    },
+    {
+      "rule_id": "KPM-R06",
+      "severity": "error",
+      "description": "RoleAssignment must include assignsAgent, assignsRole, and assignmentScopePlan relations."
+    },
+    {
+      "rule_id": "KPM-R07",
+      "severity": "error",
+      "description": "ValidationSpecification must include validationMethod and passCondition attributes and must expect at least one EvidenceRecord."
+    },
+    {
+      "rule_id": "KPM-R08",
+      "severity": "error",
+      "description": "TaskExecutionRecord must reference one TaskSpecification and one TaskExecutionActivity."
+    },
+    {
+      "rule_id": "KPM-R09",
+      "severity": "error",
+      "description": "Execution-bearing records with status IS must include evidence_refs."
+    },
+    {
+      "rule_id": "KPM-R10",
+      "severity": "error",
+      "description": "Status must be one of IS, OUGHT, UNKNOWN."
+    }
+  ]
+}

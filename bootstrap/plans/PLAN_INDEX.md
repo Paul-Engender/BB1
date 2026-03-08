@@ -23,11 +23,14 @@ This file is the single orientation point for planning artifacts.
 - Authoritative file: `bootstrap/plans/phase1_execution_plan.md`
 - Program control archive: `bootstrap/plans/archive/support_ontology_execution_program_v1.completed_2026-03-07.md`
 - Plan item index: `bootstrap/plans/phase1_plan_items.csv`
-- Product-spec implementation plan: `bootstrap/plans/of03_product_spec_implementation_plan.md`
+- Product-spec implementation plan: `bootstrap/plans/reference/of03_product_spec_implementation_plan.md`
+- Planning target operating model: `bootstrap/plans/active/planning_target_operating_model_v1.md`
+- Cutover snapshot record: `bootstrap/plans/active/cutover_c0_snapshot_record_v1.md`
+- Planning manifest: `bootstrap/plans/manifests/plans_manifest.csv`
 
 3. Traceability from source backlogs to active execution
 - Location: `bootstrap/plans/`
-- File: `bootstrap/plans/phase0_backlog_alignment.md`
+- File: `bootstrap/plans/reference/phase0_backlog_alignment.md`
 - Role: Maps source BR work items to active `TASK-*` / `BPL-*` items and current task status.
 
 4. Archived text versions of source backlogs
@@ -47,24 +50,47 @@ This file is the single orientation point for planning artifacts.
 ## Current Decomposition Level
 
 Decomposition currently in use:
-- Workstream level: `P1-001` ... `P1-026` in `phase1_plan_items.csv`
+- Workstream level: `P1-001` ... `P1-026` plus successor `P2-001` ... `P2-006` in `phase1_plan_items.csv`
 - Task level: `TASK-*` (implementation) and `BPL-*` (bootstrap coordination) in `task_ledger.csv`, each mapped to one `plan_item_id`
 - Evidence level: `EP-*` rows in `evidence_register.csv`
 - Artifact level: `ART-*` rows in `artifact_registry.csv`
 
-This is a 4-layer decomposition stack:
-- `P1` (workstream) -> `TASK/BPL` (task) -> `EP` (evidence criterion) -> `ART` (artifact proof)
+This is a 4-layer machine-enforced stack:
+- `P*` (workstream) -> `TASK/BPL` (task) -> `EP` (evidence criterion) -> `ART` (artifact proof)
+
+Phase-2 also tracks advisory hierarchy metadata in dedicated controls:
+- `Program -> Milestone -> Workstream -> Work Package -> Task -> Evidence -> Artifact`
+- `bootstrap/plans/programs/post_p1_026_full_solution_program_plan_v1.md`
+- `bootstrap/plans/manifests/phase2_milestones.csv`
+- `bootstrap/plans/manifests/phase2_work_packages.csv`
+- `bootstrap/plans/manifests/phase2_traceability_map.csv`
+- `bootstrap/plans/manifests/plans_manifest.csv`
 
 ## Current Status Snapshot
 
-- Active workstreams:
-  - none
-- Next queued workstreams:
-  - none
+- Completed successor workstreams:
+  - `P2-001`
+  - `P2-002`
+  - `P2-003`
+- Open frontier workstreams:
+  - `P2-004`
+  - `P2-005`
+  - `P2-006`
 - Open task frontier:
-  - none
+  - `TASK-30.1`
+  - `TASK-31.1`
+  - `TASK-32.1`
 - Open evidence rows:
-  - none
+  - `EP-30`
+  - `EP-31`
+  - `EP-32`
+- Verified milestone evidence:
+  - `EP-27`
+  - `EP-28`
+  - `EP-29`
+- Forward PM authority mode:
+  - Bundle-first records under `bootstrap/kernel_pm/bundles/`
+  - Deterministic projections under `bootstrap/kernel_pm/projections/`
 
 ## Enforcement Rules (active)
 
@@ -81,9 +107,19 @@ Validation commands:
 
 ## When You Add New Work
 
-1. Add a new `P1-xxx` row to `phase1_plan_items.csv`.
+1. Add a new `P*-xxx` row to `phase1_plan_items.csv` (use `P2-xxx` for successor program work).
 2. Add task row(s) to `task_ledger.csv` with that `plan_item_id`.
 3. Link evidence via `evidence_row_ids`.
 4. Add artifact rows with SHA256 to `artifact_registry.csv`.
 5. If future work introduces a new execution program, create a new `bootstrap/plans/*execution_program*.md` and archive prior program controls.
 6. Run validator and regenerate snapshot.
+
+## Proposal Intake Backlog
+
+- Location: `bootstrap/plans/proposals_backlog/`
+- Role: Hold incoming descriptive implementation proposals until triage.
+- Intake index: `bootstrap/plans/proposals_backlog/proposals_index.csv`
+- Template: `bootstrap/plans/proposals_backlog/TEMPLATE_proposal.md`
+- Current entries are non-binding and do not imply approval/scheduling.
+
+

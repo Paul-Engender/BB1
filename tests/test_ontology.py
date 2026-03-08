@@ -68,6 +68,32 @@ class TestOntology(unittest.TestCase):
         self.assertFalse(violations, "\n" + "\n".join(violations))
 
 
+
+    def test_project_execution_pm_properties_exist(self):
+        tbox_graph, shacl_graph = get_kernel_graphs()
+
+        required_object_properties = [
+            self.KERN.assignsAgent,
+            self.KERN.assignsRole,
+            self.KERN.assignmentScopePlan,
+            self.KERN.expectsEvidenceRecord,
+        ]
+        required_datatype_properties = [
+            self.KERN.validationMethod,
+            self.KERN.passCondition,
+            self.KERN.failCondition,
+            self.KERN.assignmentValidFrom,
+            self.KERN.assignmentValidTo,
+        ]
+
+        owl = Namespace("http://www.w3.org/2002/07/owl#")
+        for prop in required_object_properties:
+            self.assertIn((prop, None, owl.ObjectProperty), tbox_graph)
+        for prop in required_datatype_properties:
+            self.assertIn((prop, None, owl.DatatypeProperty), tbox_graph)
+
+        self.assertIn((self.KERN.RoleAssignmentShape, None, None), shacl_graph)
 if __name__ == "__main__":
     unittest.main()
+
 

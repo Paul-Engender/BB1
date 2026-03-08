@@ -1,0 +1,4 @@
+plan_item_id,title,status,owner,notes,source_object_id
+P2-004,Runtime 3 minimum viable tenant runtime (successor WS-04),PLANNED,paul,Tenant-scoped runtime baseline for first vertical slice,workstream.p2-004
+P2-005,Boundary objects and load discipline closure (successor WS-05),PLANNED,paul,Cross-runtime manifest/dependency/load enforcement closure from approved boundary baseline; no blanket boundary-object rewrite,workstream.p2-005
+P2-006,First complex vertical slice proof (successor WS-06),PLANNED,paul,Reproducible and auditable three-runtime proving slice,workstream.p2-006

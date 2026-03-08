@@ -674,3 +674,332 @@ kern:supersedesPrimitiveRef a owl:ObjectProperty ;
   rdfs:range kern:CompiledControlPrimitive ;
   rdfs:label "supersedes primitive ref" .
 
+
+### Project-planning and execution support (refactored to preserve kernel kind-discipline)
+# NOTE:
+# - plan/specification, record, and world activity are kept distinct
+# - local workflow status labels are intentionally excluded from kernel
+# - local register nouns such as PlanItem are intentionally excluded from kernel
+
+kern:HumanAgent a owl:Class ;
+  rdfs:subClassOf kern:Agent ;
+  rdfs:label "Human Agent" ;
+  skos:definition "An agent that is a human bearer of roles and responsibilities." .
+
+kern:SystemAgent a owl:Class ;
+  rdfs:subClassOf kern:Agent ;
+  rdfs:label "System Agent" ;
+  skos:definition "An agent that is a software or automated system bearer of roles and responsibilities." .
+
+kern:AccountableRole a owl:Class ;
+  rdfs:subClassOf kern:Role ;
+  rdfs:label "Accountable Role" ;
+  skos:definition "A role whose bearer is answerable for an assigned scope of work or decision." .
+
+kern:ResponsibleRole a owl:Class ;
+  rdfs:subClassOf kern:Role ;
+  rdfs:label "Responsible Role" ;
+  skos:definition "A role whose bearer performs assigned work within a declared scope." .
+
+kern:ConsultedRole a owl:Class ;
+  rdfs:subClassOf kern:Role ;
+  rdfs:label "Consulted Role" ;
+  skos:definition "A role whose bearer is explicitly consulted on a declared scope of work or decision." .
+
+kern:InformedRole a owl:Class ;
+  rdfs:subClassOf kern:Role ;
+  rdfs:label "Informed Role" ;
+  skos:definition "A role whose bearer is explicitly informed about a declared scope of work or decision." .
+
+kern:ValidationSpecification a owl:Class ;
+  rdfs:subClassOf kern:MeasurementSpecification ;
+  rdfs:label "Validation Specification" ;
+  skos:definition "A measurement specification defining the checks, expected outcomes, and evidence conditions under which a candidate output is treated as validated." .
+
+kern:ProgramPlan a owl:Class ;
+  rdfs:subClassOf kern:Plan ;
+  rdfs:label "Program Plan" ;
+  skos:definition "A plan describing a coordinated set of related workstreams and checkpoints intended to achieve a larger outcome." .
+
+kern:WorkstreamPlan a owl:Class ;
+  rdfs:subClassOf kern:Plan ;
+  rdfs:label "Workstream Plan" ;
+  skos:definition "A plan describing a bounded stream of related work within a larger program or delivery context." .
+
+kern:WorkPackagePlan a owl:Class ;
+  rdfs:subClassOf kern:Plan ;
+  rdfs:label "Work Package Plan" ;
+  skos:definition "A plan describing a grouped package of intended work within a workstream." .
+
+kern:TaskSpecification a owl:Class ;
+  rdfs:subClassOf kern:Plan ;
+  rdfs:label "Task Specification" ;
+  skos:definition "Information content describing intended work, required inputs, expected outputs, dependencies, and validation targets without asserting execution occurred." .
+
+kern:TaskExecutionRecord a owl:Class ;
+  rdfs:subClassOf kern:EvidenceRecord ;
+  rdfs:label "Task Execution Record" ;
+  skos:definition "An evidence record stating that task execution activity occurred, progressed, or was assessed, with provenance and evidence links." .
+
+kern:TaskExecutionActivity a owl:Class ;
+  rdfs:subClassOf kern:EvidenceActivity ;
+  rdfs:label "Task Execution Activity" ;
+  skos:definition "A world activity in which intended task work is actually performed." .
+
+kern:CheckpointSpecification a owl:Class ;
+  rdfs:subClassOf kern:Plan ;
+  rdfs:label "Checkpoint Specification" ;
+  skos:definition "A planned gate, checkpoint, or target condition used to assess intended progress or readiness." .
+
+kern:CheckpointRecord a owl:Class ;
+  rdfs:subClassOf kern:EvidenceRecord ;
+  rdfs:label "Checkpoint Record" ;
+  skos:definition "An evidence record stating that a checkpoint was assessed, reached, missed, or otherwise recorded." .
+
+kern:DependencyKind a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Dependency Kind" ;
+  skos:definition "A controlled classifier indicating the semantic type of a declared dependency relation." .
+
+kern:DependencyRelation a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Dependency Relation" ;
+  skos:definition "An information artefact declaring that one planned item depends on another under an explicit dependency kind and optional lag semantics." .
+
+kern:RiskRecord a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Risk Record" ;
+  skos:definition "An information artefact recording a potential adverse condition with explicit likelihood, impact, scope, and mitigation linkage." .
+
+kern:IssueRecord a owl:Class ;
+  rdfs:subClassOf kern:EvidenceRecord ;
+  rdfs:label "Issue Record" ;
+  skos:definition "An evidence record of a realized problem, impediment, or deviation observed in execution." .
+
+kern:MitigationPlan a owl:Class ;
+  rdfs:subClassOf kern:Plan ;
+  rdfs:label "Mitigation Plan" ;
+  skos:definition "A plan describing intended action to reduce the likelihood, impact, or exposure of a recorded risk or issue." .
+
+kern:ChangeRequest a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Change Request" ;
+  skos:definition "An information artefact proposing a controlled change to planned work, managed scope, or related governed content." .
+
+kern:ImpactAssessment a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Impact Assessment" ;
+  skos:definition "An information artefact evaluating the projected effects of a proposed change, issue, or risk across declared scopes." .
+
+kern:EffortEstimate a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Effort Estimate" ;
+  skos:definition "An information artefact recording an estimated amount of effort for intended work under explicit assumptions and units." .
+
+kern:ResourceAllocation a owl:Class ;
+  rdfs:subClassOf kern:InformationContent ;
+  rdfs:label "Resource Allocation" ;
+  skos:definition "An information artefact assigning declared resources to intended work under explicit scope, quantity, and time conditions." .
+
+kern:PredecessorDependency a kern:DependencyKind ;
+  rdfs:label "Predecessor Dependency" .
+
+kern:SuccessorDependency a kern:DependencyKind ;
+  rdfs:label "Successor Dependency" .
+
+kern:BlockingDependency a kern:DependencyKind ;
+  rdfs:label "Blocking Dependency" .
+
+kern:ConsultationDependency a kern:DependencyKind ;
+  rdfs:label "Consultation Dependency" .
+
+kern:plannedInput a owl:ObjectProperty ;
+  rdfs:domain kern:Plan ;
+  rdfs:range kern:InformationContent ;
+  rdfs:label "planned input" .
+
+kern:plannedOutput a owl:ObjectProperty ;
+  rdfs:domain kern:Plan ;
+  rdfs:range kern:InformationContent ;
+  rdfs:label "planned output" .
+
+kern:hasValidationSpecification a owl:ObjectProperty ;
+  rdfs:domain kern:Plan ;
+  rdfs:range kern:ValidationSpecification ;
+  rdfs:label "has validation specification" .
+
+kern:validationMethod a owl:DatatypeProperty ;
+  rdfs:domain kern:ValidationSpecification ;
+  rdfs:range xsd:string ;
+  rdfs:label "validation method" .
+
+kern:passCondition a owl:DatatypeProperty ;
+  rdfs:domain kern:ValidationSpecification ;
+  rdfs:range xsd:string ;
+  rdfs:label "pass condition" .
+
+kern:failCondition a owl:DatatypeProperty ;
+  rdfs:domain kern:ValidationSpecification ;
+  rdfs:range xsd:string ;
+  rdfs:label "fail condition" .
+
+kern:expectsEvidenceRecord a owl:ObjectProperty ;
+  rdfs:domain kern:ValidationSpecification ;
+  rdfs:range kern:EvidenceRecord ;
+  rdfs:label "expects evidence record" .
+
+kern:assignsAgent a owl:ObjectProperty ;
+  rdfs:domain kern:RoleAssignment ;
+  rdfs:range kern:Agent ;
+  rdfs:label "assigns agent" .
+
+kern:assignsRole a owl:ObjectProperty ;
+  rdfs:domain kern:RoleAssignment ;
+  rdfs:range kern:Role ;
+  rdfs:label "assigns role" .
+
+kern:assignmentScopePlan a owl:ObjectProperty ;
+  rdfs:domain kern:RoleAssignment ;
+  rdfs:range kern:Plan ;
+  rdfs:label "assignment scope plan" .
+
+kern:assignmentValidFrom a owl:DatatypeProperty ;
+  rdfs:domain kern:RoleAssignment ;
+  rdfs:range xsd:dateTime ;
+  rdfs:label "assignment valid from" .
+
+kern:assignmentValidTo a owl:DatatypeProperty ;
+  rdfs:domain kern:RoleAssignment ;
+  rdfs:range xsd:dateTime ;
+  rdfs:label "assignment valid to" .
+
+kern:hasCheckpoint a owl:ObjectProperty ;
+  rdfs:domain kern:Plan ;
+  rdfs:range kern:CheckpointSpecification ;
+  rdfs:label "has checkpoint" .
+
+kern:hasSubPlan a owl:ObjectProperty ;
+  rdfs:domain kern:Plan ;
+  rdfs:range kern:Plan ;
+  rdfs:label "has sub plan" .
+
+kern:dependsOnPlan a owl:ObjectProperty ;
+  rdfs:domain kern:Plan ;
+  rdfs:range kern:Plan ;
+  rdfs:label "depends on plan" .
+
+kern:dependencySource a owl:ObjectProperty ;
+  rdfs:domain kern:DependencyRelation ;
+  rdfs:range kern:Plan ;
+  rdfs:label "dependency source" .
+
+kern:dependencyTarget a owl:ObjectProperty ;
+  rdfs:domain kern:DependencyRelation ;
+  rdfs:range kern:Plan ;
+  rdfs:label "dependency target" .
+
+kern:hasDependencyKind a owl:ObjectProperty ;
+  rdfs:domain kern:DependencyRelation ;
+  rdfs:range kern:DependencyKind ;
+  rdfs:label "has dependency kind" .
+
+kern:hasLagValue a owl:DatatypeProperty ;
+  rdfs:domain kern:DependencyRelation ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "has lag value" .
+
+kern:lagUnit a owl:DatatypeProperty ;
+  rdfs:domain kern:DependencyRelation ;
+  rdfs:range xsd:string ;
+  rdfs:label "lag unit" .
+
+kern:recordsExecutionOf a owl:ObjectProperty ;
+  rdfs:domain kern:TaskExecutionRecord ;
+  rdfs:range kern:TaskSpecification ;
+  rdfs:label "records execution of" .
+
+kern:evidencesActivity a owl:ObjectProperty ;
+  rdfs:domain kern:TaskExecutionRecord ;
+  rdfs:range kern:TaskExecutionActivity ;
+  rdfs:label "evidences activity" .
+
+kern:assessesCheckpoint a owl:ObjectProperty ;
+  rdfs:domain kern:CheckpointRecord ;
+  rdfs:range kern:CheckpointSpecification ;
+  rdfs:label "assesses checkpoint" .
+
+kern:threatensPlan a owl:ObjectProperty ;
+  rdfs:domain kern:RiskRecord ;
+  rdfs:range kern:Plan ;
+  rdfs:label "threatens plan" .
+
+kern:threatensCheckpoint a owl:ObjectProperty ;
+  rdfs:domain kern:RiskRecord ;
+  rdfs:range kern:CheckpointSpecification ;
+  rdfs:label "threatens checkpoint" .
+
+kern:realizesRisk a owl:ObjectProperty ;
+  rdfs:domain kern:IssueRecord ;
+  rdfs:range kern:RiskRecord ;
+  rdfs:label "realizes risk" .
+
+kern:mitigatesRisk a owl:ObjectProperty ;
+  rdfs:domain kern:MitigationPlan ;
+  rdfs:range kern:RiskRecord ;
+  rdfs:label "mitigates risk" .
+
+kern:mitigatesIssue a owl:ObjectProperty ;
+  rdfs:domain kern:MitigationPlan ;
+  rdfs:range kern:IssueRecord ;
+  rdfs:label "mitigates issue" .
+
+kern:hasImpactAssessment a owl:ObjectProperty ;
+  rdfs:domain kern:ChangeRequest ;
+  rdfs:range kern:ImpactAssessment ;
+  rdfs:label "has impact assessment" .
+
+kern:requestsChangeTo a owl:ObjectProperty ;
+  rdfs:domain kern:ChangeRequest ;
+  rdfs:range kern:InformationContent ;
+  rdfs:label "requests change to" .
+
+kern:hasEffortEstimate a owl:ObjectProperty ;
+  rdfs:domain kern:Plan ;
+  rdfs:range kern:EffortEstimate ;
+  rdfs:label "has effort estimate" .
+
+kern:hasResourceAllocation a owl:ObjectProperty ;
+  rdfs:domain kern:Plan ;
+  rdfs:range kern:ResourceAllocation ;
+  rdfs:label "has resource allocation" .
+
+kern:estimatedValue a owl:DatatypeProperty ;
+  rdfs:domain kern:EffortEstimate ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "estimated value" .
+
+kern:estimateUnit a owl:DatatypeProperty ;
+  rdfs:domain kern:EffortEstimate ;
+  rdfs:range xsd:string ;
+  rdfs:label "estimate unit" .
+
+kern:allocationQuantity a owl:DatatypeProperty ;
+  rdfs:domain kern:ResourceAllocation ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "allocation quantity" .
+
+kern:allocationUnit a owl:DatatypeProperty ;
+  rdfs:domain kern:ResourceAllocation ;
+  rdfs:range xsd:string ;
+  rdfs:label "allocation unit" .
+
+kern:likelihoodValue a owl:DatatypeProperty ;
+  rdfs:domain kern:RiskRecord ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "likelihood value" .
+
+kern:impactValue a owl:DatatypeProperty ;
+  rdfs:domain kern:RiskRecord ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "impact value" .
+

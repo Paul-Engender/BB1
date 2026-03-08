@@ -1,9 +1,10 @@
-# Proposed Support Ontology Full-Layer Backlog v1
+﻿# Proposed Support Ontology Full-Layer Backlog v1
 
-Status: APPROVED
+Status: REFERENCE (approved backlog source; not active execution plan)
 Owner: paul
 Date: 2026-03-07
 Approval: approved for protocol activation on 2026-03-07
+Execution state: delivered through P1-015 .. P1-026; retained for traceability only
 Purpose: Define the full body of work required for the Support Ontology layer to become the real upstream semantic contract for Runtime 2, not just a Runtime 1 packaging/runtime service.
 
 ## Primary Source Basis
@@ -588,6 +589,7 @@ Not included here:
 - bootstrap ledger updates, task ledger rows, or evidence rows
 
 Those should follow only after this proposed backlog is reviewed and accepted.
+
 
 
 

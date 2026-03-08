@@ -1,0 +1,15 @@
+@prefix kern: <https://ontology.engender.co.za/kernel#> .
+@prefix ex:   <https://example.org/project/negative/> .
+
+ex:Task_1 a kern:TaskSpecification ;
+  kern:hasValidationSpecification ex:ValidationSpec_Bad .
+
+ex:TaskActivity_1 a kern:TaskExecutionActivity .
+
+ex:TaskRecord_1 a kern:TaskExecutionRecord ;
+  kern:recordsExecutionOf ex:Task_1 ;
+  kern:evidencesActivity ex:TaskActivity_1 .
+
+ex:ValidationSpec_Bad a kern:ValidationSpecification ;
+  kern:passCondition "exit code 0" ;
+  kern:expectsEvidenceRecord ex:TaskRecord_1 .

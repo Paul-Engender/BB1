@@ -1,4 +1,4 @@
-# P1-025 Support Ontology Priority-1 Uplift Decomposition v1
+﻿# P1-025 Support Ontology Priority-1 Uplift Decomposition v1
 
 Status: APPROVED
 Owner: paul
@@ -49,7 +49,7 @@ P1-025 closes the approved minimum uplift required to move the support ontology 
 ### TASK-25.1 Define Priority-1 uplift execution decomposition controls
 
 Output:
-- `bootstrap/plans/p1_025_support_ontology_priority1_uplift_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_025_support_ontology_priority1_uplift_decomposition_v1.md`
 
 Intent:
 - register the implementation wave explicitly
@@ -112,3 +112,4 @@ When this workstream is complete:
 - `EP-25` moves to `VERIFIED`
 - the support ontology carries the approved minimum Runtime 2 compile-plane baseline
 - the next workstream can be defined against the now-hardened uplift baseline
+

@@ -24,7 +24,7 @@ for Runtime 2 support-contract admissibility and evidence discipline.
 - `specs/runtime2_compiled_control_primitives_v1.md`
 - `specs/runtime2_support_admissibility_matrix_v1.md`
 - `specs/runtime2_compiler_contract_baseline_review_v1.md`
-- `bootstrap/plans/proposed_support_ontology_full_layer_backlog_v1.md`
+- `bootstrap/plans/reference/proposed_support_ontology_full_layer_backlog_v1.md`
 
 ## Scope Boundary
 
@@ -77,3 +77,4 @@ cross-consistent.
 - Execute `TASK-21.3`
 - Execute `TASK-21.4`
 - Execute `TASK-21.5`
+

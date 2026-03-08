@@ -86,5 +86,18 @@ class TestNegativeSHACL(unittest.TestCase):
         self.assertIn("kern:aiOperable", results_text)
 
 
+
+    def test_roleassignment_missing_assignsagent_fails(self):
+        data = self._read_example("roleassignment_missing_assignsagent.ttl")
+        conforms, _, results_text = validate_abox(data)
+        self.assertFalse(conforms, f"Expected validation failure, got success:\n{results_text}")
+        self.assertIn("kern:assignsAgent", results_text)
+
+    def test_validationspec_missing_method_fails(self):
+        data = self._read_example("validationspec_missing_method.ttl")
+        conforms, _, results_text = validate_abox(data)
+        self.assertFalse(conforms, f"Expected validation failure, got success:\n{results_text}")
+        self.assertIn("kern:validationMethod", results_text)
 if __name__ == "__main__":
     unittest.main()
+

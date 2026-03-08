@@ -1,0 +1,6 @@
+evidence_row_id,status,gate_criterion,source_task_ids,notes,source_object_id
+EP-27,VERIFIED,M1 contract translation complete,TASK-27.1,,evidence.ep27
+EP-29,VERIFIED,M3 Runtime 2 compiler baseline executable,TASK-29.1,,evidence.ep29
+EP-30,TO_DO,M4 Runtime 3 executes deterministic tenant-scoped operational flow,TASK-30.1,,evidence.ep30
+EP-31,TO_DO,M5 cross-runtime boundary objects and load discipline are strict,TASK-31.1,,evidence.ep31
+EP-32,TO_DO,M6 first complex three-runtime vertical slice is reproducible,TASK-32.1,,evidence.ep32

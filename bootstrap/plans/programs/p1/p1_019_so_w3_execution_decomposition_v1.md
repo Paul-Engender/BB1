@@ -19,7 +19,7 @@ semantic vocabulary subset required for compile-safe typing and admissibility.
 - `specs/product_runtime_instantiation_clarification_addendum_2026-03-07.md`
 - `specs/product_event_model_v1.md`
 - `specs/support_ontology_machine_contract_map_v1.md`
-- `bootstrap/plans/proposed_support_ontology_full_layer_backlog_v1.md`
+- `bootstrap/plans/reference/proposed_support_ontology_full_layer_backlog_v1.md`
 
 
 ## Support-Ontology Input Coverage
@@ -96,3 +96,4 @@ cross-consistent, and explicitly bounded to Runtime-2 compile semantics.
 - Execute `TASK-19.3`
 - Execute `TASK-19.4`
 - Execute `TASK-19.5`
+

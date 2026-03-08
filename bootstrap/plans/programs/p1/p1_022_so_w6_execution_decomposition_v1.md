@@ -24,7 +24,7 @@ audit/replay from Runtime 3 back to Runtime 1 boundary artifacts.
 - `specs/runtime2_compiled_control_primitives_v1.md`
 - `specs/runtime2_semantic_gate_requirements_v1.md`
 - `specs/support_ontology_validation_gate_review_v1.md`
-- `bootstrap/plans/proposed_support_ontology_full_layer_backlog_v1.md`
+- `bootstrap/plans/reference/proposed_support_ontology_full_layer_backlog_v1.md`
 
 ## Scope Boundary
 
@@ -78,3 +78,4 @@ and executable via deterministic validation methods.
 - Execute `TASK-22.3`
 - Execute `TASK-22.4`
 - Execute `TASK-22.5`
+

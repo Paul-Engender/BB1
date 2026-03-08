@@ -1,6 +1,6 @@
 @prefix sh:     <http://www.w3.org/ns/shacl#> .
- @prefix kern:   <https://ontology.engender.co.za/kernel#> .
- @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix kern:   <https://ontology.engender.co.za/kernel#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
 kern:TargetReferenceShape a sh:NodeShape ;
   sh:targetClass kern:TargetReference ;
@@ -40,10 +40,9 @@ kern:StipulationShape a sh:NodeShape ;
     sh:class kern:TargetReference ;
   ] .
 
-kern:EvaluatorStipulationShape a sh:NodeShape;
+kern:EvaluatorStipulationShape a sh:NodeShape ;
   sh:targetClass kern:Stipulation ;
   sh:or (
-    # Condition 1: The stipulation is NOT an evaluator
     [
       sh:not [
         sh:property [
@@ -52,7 +51,6 @@ kern:EvaluatorStipulationShape a sh:NodeShape;
         ]
       ]
     ]
-    # Condition 2: The stipulation IS an evaluator AND has the required property
     [
       sh:property [
         sh:path kern:hasStipulationNature ;
@@ -496,15 +494,7 @@ kern:CompiledControlPrimitiveShape a sh:NodeShape ;
   sh:property [
     sh:path kern:primitiveTypeRef ;
     sh:minCount 1 ; sh:maxCount 1 ;
-    sh:in (
-      kern:TargetScopePrimitiveType
-      kern:ActionEffectPrimitiveType
-      kern:AuthorizationPrimitiveType
-      kern:EligibilityPrimitiveType
-      kern:DenialPrimitiveType
-      kern:ControlStatePrimitiveType
-      kern:TracePrimitiveType
-    ) ;
+    sh:class kern:CompiledPrimitiveType ;
   ] ;
   sh:property [
     sh:path kern:tenantId ;
@@ -580,4 +570,252 @@ kern:CompiledControlPrimitiveShape a sh:NodeShape ;
     sh:path kern:constraints ;
     sh:maxCount 0 ;
   ] .
+
+# PM branch shapes aligned to kernel_fixed.ttl
+
+kern:ValidationSpecificationShape a sh:NodeShape ;
+  sh:targetClass kern:ValidationSpecification ;
+  sh:property [
+    sh:path kern:validationMethod ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:passCondition ;
+    sh:minCount 1 ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:failCondition ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path kern:expectsEvidenceRecord ;
+    sh:minCount 1 ;
+    sh:class kern:EvidenceRecord ;
+  ] .
+
+kern:ProgramPlanShape a sh:NodeShape ;
+  sh:targetClass kern:ProgramPlan ;
+  sh:property [
+    sh:path kern:hasSubPlan ;
+    sh:class kern:Plan ;
+  ] ;
+  sh:property [
+    sh:path kern:hasCheckpoint ;
+    sh:class kern:CheckpointSpecification ;
+  ] .
+
+kern:WorkstreamPlanShape a sh:NodeShape ;
+  sh:targetClass kern:WorkstreamPlan ;
+  sh:property [
+    sh:path kern:hasSubPlan ;
+    sh:class kern:Plan ;
+  ] ;
+  sh:property [
+    sh:path kern:hasCheckpoint ;
+    sh:class kern:CheckpointSpecification ;
+  ] .
+
+kern:WorkPackagePlanShape a sh:NodeShape ;
+  sh:targetClass kern:WorkPackagePlan ;
+  sh:property [
+    sh:path kern:hasSubPlan ;
+    sh:class kern:Plan ;
+  ] ;
+  sh:property [
+    sh:path kern:hasCheckpoint ;
+    sh:class kern:CheckpointSpecification ;
+  ] .
+
+kern:TaskSpecificationShape a sh:NodeShape ;
+  sh:targetClass kern:TaskSpecification ;
+  sh:property [
+    sh:path kern:hasValidationSpecification ;
+    sh:minCount 1 ;
+    sh:class kern:ValidationSpecification ;
+  ] ;
+  sh:property [
+    sh:path kern:plannedInput ;
+    sh:class kern:InformationContent ;
+  ] ;
+  sh:property [
+    sh:path kern:plannedOutput ;
+    sh:class kern:InformationContent ;
+  ] ;
+  sh:property [
+    sh:path kern:dependsOnPlan ;
+    sh:class kern:Plan ;
+  ] .
+
+kern:TaskExecutionRecordShape a sh:NodeShape ;
+  sh:targetClass kern:TaskExecutionRecord ;
+  sh:property [
+    sh:path kern:recordsExecutionOf ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TaskSpecification ;
+  ] ;
+  sh:property [
+    sh:path kern:evidencesActivity ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:TaskExecutionActivity ;
+  ] .
+
+kern:TaskExecutionActivityShape a sh:NodeShape ;
+  sh:targetClass kern:TaskExecutionActivity .
+
+kern:CheckpointSpecificationShape a sh:NodeShape ;
+  sh:targetClass kern:CheckpointSpecification .
+
+kern:CheckpointRecordShape a sh:NodeShape ;
+  sh:targetClass kern:CheckpointRecord ;
+  sh:property [
+    sh:path kern:assessesCheckpoint ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:CheckpointSpecification ;
+  ] .
+
+kern:DependencyRelationShape a sh:NodeShape ;
+  sh:targetClass kern:DependencyRelation ;
+  sh:property [
+    sh:path kern:dependencySource ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:Plan ;
+  ] ;
+  sh:property [
+    sh:path kern:dependencyTarget ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:Plan ;
+  ] ;
+  sh:property [
+    sh:path kern:hasDependencyKind ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:DependencyKind ;
+  ] .
+
+kern:DependencyLagConsistencyShape a sh:NodeShape ;
+  sh:targetClass kern:DependencyRelation ;
+  sh:or (
+    [
+      sh:not [ sh:property [ sh:path kern:hasLagValue ; sh:minCount 1 ] ]
+    ]
+    [
+      sh:property [
+        sh:path kern:hasLagValue ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+      ] ;
+      sh:property [
+        sh:path kern:lagUnit ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+      ]
+    ]
+  ) .
+
+kern:RiskRecordShape a sh:NodeShape ;
+  sh:targetClass kern:RiskRecord ;
+  sh:property [
+    sh:path kern:likelihoodValue ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:decimal ;
+  ] ;
+  sh:property [
+    sh:path kern:impactValue ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:decimal ;
+  ] .
+
+kern:RiskThreatBindingShape a sh:NodeShape ;
+  sh:targetClass kern:RiskRecord ;
+  sh:or (
+    [ sh:property [ sh:path kern:threatensPlan ; sh:minCount 1 ; sh:class kern:Plan ] ]
+    [ sh:property [ sh:path kern:threatensCheckpoint ; sh:minCount 1 ; sh:class kern:CheckpointSpecification ] ]
+  ) .
+
+kern:IssueRecordShape a sh:NodeShape ;
+  sh:targetClass kern:IssueRecord .
+
+kern:MitigationPlanShape a sh:NodeShape ;
+  sh:targetClass kern:MitigationPlan ;
+  sh:or (
+    [ sh:property [ sh:path kern:mitigatesRisk ; sh:minCount 1 ; sh:class kern:RiskRecord ] ]
+    [ sh:property [ sh:path kern:mitigatesIssue ; sh:minCount 1 ; sh:class kern:IssueRecord ] ]
+  ) .
+
+kern:ChangeRequestShape a sh:NodeShape ;
+  sh:targetClass kern:ChangeRequest ;
+  sh:property [
+    sh:path kern:requestsChangeTo ;
+    sh:minCount 1 ;
+    sh:class kern:InformationContent ;
+  ] ;
+  sh:property [
+    sh:path kern:hasImpactAssessment ;
+    sh:minCount 1 ;
+    sh:class kern:ImpactAssessment ;
+  ] .
+
+kern:ImpactAssessmentShape a sh:NodeShape ;
+  sh:targetClass kern:ImpactAssessment .
+
+kern:EffortEstimateShape a sh:NodeShape ;
+  sh:targetClass kern:EffortEstimate ;
+  sh:property [
+    sh:path kern:estimatedValue ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:decimal ;
+  ] ;
+  sh:property [
+    sh:path kern:estimateUnit ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] .
+
+kern:ResourceAllocationShape a sh:NodeShape ;
+  sh:targetClass kern:ResourceAllocation ;
+  sh:property [
+    sh:path kern:allocationQuantity ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:decimal ;
+  ] ;
+  sh:property [
+    sh:path kern:allocationUnit ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ] .
+
+kern:RoleAssignmentShape a sh:NodeShape ;
+  sh:targetClass kern:RoleAssignment ;
+  sh:property [
+    sh:path kern:assignsAgent ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:Agent ;
+  ] ;
+  sh:property [
+    sh:path kern:assignsRole ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:class kern:Role ;
+  ] ;
+  sh:property [
+    sh:path kern:assignmentScopePlan ;
+    sh:minCount 1 ;
+    sh:class kern:Plan ;
+  ] ;
+  sh:property [
+    sh:path kern:assignmentValidFrom ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:dateTime ;
+  ] ;
+  sh:property [
+    sh:path kern:assignmentValidTo ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:dateTime ;
+  ] .
+
+kern:HumanAgentShape a sh:NodeShape ;
+  sh:targetClass kern:HumanAgent .
+
+kern:SystemAgentShape a sh:NodeShape ;
+  sh:targetClass kern:SystemAgent .
 

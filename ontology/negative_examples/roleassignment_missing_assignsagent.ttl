@@ -1,0 +1,22 @@
+@prefix kern: <https://ontology.engender.co.za/kernel#> .
+@prefix ex:   <https://example.org/project/negative/> .
+
+ex:Task_1 a kern:TaskSpecification ;
+  kern:hasValidationSpecification ex:ValidationSpec_1 .
+
+ex:TaskRecord_1 a kern:TaskExecutionRecord ;
+  kern:recordsExecutionOf ex:Task_1 ;
+  kern:evidencesActivity ex:TaskActivity_1 .
+
+ex:TaskActivity_1 a kern:TaskExecutionActivity .
+
+ex:ValidationSpec_1 a kern:ValidationSpecification ;
+  kern:validationMethod "python tools/bootstrap_validate.py" ;
+  kern:passCondition "exit code 0" ;
+  kern:expectsEvidenceRecord ex:TaskRecord_1 .
+
+ex:Role_1 a kern:ResponsibleRole .
+
+ex:RoleAssignment_Bad a kern:RoleAssignment ;
+  kern:assignsRole ex:Role_1 ;
+  kern:assignmentScopePlan ex:Task_1 .

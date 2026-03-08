@@ -36,3 +36,6 @@ tmp_work/
 tests/_tmp/
 tests/_tmp_*/
 dist/tmp_load_*/
+dist/runtime2_support_verify_*/
+tests/_tmp_kernel_pm_projection/
+bootstrap/kernel_pm/_test_projection_output/

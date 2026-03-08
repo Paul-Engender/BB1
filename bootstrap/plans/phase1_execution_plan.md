@@ -1,4 +1,4 @@
-# Phase-1 Execution Plan (Authoritative)
+﻿# Phase-1 Execution Plan (Authoritative)
 
 Status: ACTIVE
 Plan ID: PHASE1-EXEC
@@ -12,7 +12,7 @@ This plan incorporates and supersedes execution tracking from:
 - `specs/ontoForge_91_Build-Readiness Backlog v0.1.md`
 
 Backlog-to-plan/task mapping is recorded in:
-- `bootstrap/plans/phase0_backlog_alignment.md`
+- `bootstrap/plans/reference/phase0_backlog_alignment.md`
 
 ## Rules
 
@@ -49,38 +49,51 @@ Backlog-to-plan/task mapping is recorded in:
 - P1-024 Support ontology post-review hardening and status normalization
 - P1-025 Support ontology Priority-1 uplift implementation
 - P1-026 Support ontology Priority-2 uplift implementation
+- P2-001 Contract baseline review and delta resolution (successor WS-01)
 
 ## Active Workstreams
 
-- None
+- P2-002 Runtime 1 productization (successor WS-02)
+- P2-003 Runtime 2 compiler implementation (successor WS-03)
 
 ## Queued Workstreams
 
-- None
+- P2-004 Runtime 3 minimum viable tenant runtime (successor WS-04)
+- P2-005 Boundary objects and load discipline closure (successor WS-05)
+- P2-006 First complex vertical slice proof (successor WS-06)
 
 ## Execution Rule
 
-- No active workstream is currently open in `phase1_plan_items.csv`.
-- Next execution should define and activate the successor to `P1-026` before task updates.
+- Successor to `P1-026` has been defined and M1 contract translation concluded under `P2-001`.
 - `P1-018` remains the completed addendum-alignment program governing runtime-boundary interpretation.
 - Implementation work that changes Runtime 1 or Runtime 3 boundary behavior must respect the distinction between internal lifecycle candidates, runtime lifecycle instances, boundary objects, and Runtime 3 operational instantiation.
 - Follow-on work after `P1-026` should treat the support ontology as uplift-complete and move into Runtime 2 compiler implementation rather than reopening support contract scope without an approved change.
+- `P2-002` uses the retained Runtime 1 baseline plus explicit successor closure criteria; TASK-28.1..28.3 are complete and EP-28 is ready for verification.
+- `P2-003` decomposition and compiler-control package is complete; `EP-29` remains open until executable compiler outputs and evidence are added.
 
 ## Program References
 
-- `bootstrap/plans/p1_019_so_w3_execution_decomposition_v1.md`
-- `bootstrap/plans/p1_020_so_w4_execution_decomposition_v1.md`
-- `bootstrap/plans/p1_021_so_w5_execution_decomposition_v1.md`
-- `bootstrap/plans/p1_022_so_w6_execution_decomposition_v1.md`
-- `bootstrap/plans/p1_023_so_w7_execution_decomposition_v1.md`
-- `bootstrap/plans/p1_024_support_ontology_post_review_hardening_decomposition_v1.md`
-- `bootstrap/plans/p1_025_support_ontology_priority1_uplift_decomposition_v1.md`
-- `bootstrap/plans/p1_026_support_ontology_priority2_uplift_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_019_so_w3_execution_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_020_so_w4_execution_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_021_so_w5_execution_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_022_so_w6_execution_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_023_so_w7_execution_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_024_support_ontology_post_review_hardening_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_025_support_ontology_priority1_uplift_decomposition_v1.md`
+- `bootstrap/plans/programs/p1/p1_026_support_ontology_priority2_uplift_decomposition_v1.md`
 - `bootstrap/plans/archive/support_ontology_execution_program_v1.completed_2026-03-07.md`
-- `bootstrap/plans/of03_product_spec_implementation_plan.md`
-- `bootstrap/plans/proposed_support_ontology_full_layer_backlog_v1.md`
+- `bootstrap/plans/reference/of03_product_spec_implementation_plan.md`
+- `bootstrap/plans/reference/proposed_support_ontology_full_layer_backlog_v1.md`
 - `specs/support_ontology_validation_uplift_v1.md`
+- `bootstrap/plans/programs/post_p1_026_full_solution_program_plan_v1.md`
+- `bootstrap/plans/programs/p2_003_runtime2_compiler_decomposition_v1.md`
+- `bootstrap/plans/manifests/phase2_milestones.csv`
+- `bootstrap/plans/manifests/phase2_work_packages.csv`
+- `bootstrap/plans/manifests/phase2_traceability_map.csv`
+- `bootstrap/plans/active/p2_contract_supersession_policy_v1.md`
 
 ## Archival Rule
 
 Superseded plans move to `bootstrap/plans/archive/` and must include a replacement reference.
+
+

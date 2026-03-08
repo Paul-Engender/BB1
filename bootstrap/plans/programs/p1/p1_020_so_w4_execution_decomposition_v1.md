@@ -24,7 +24,7 @@ outputs.
 - `specs/support_ontology_machine_contract_map_v1.md`
 - `specs/support_ontology_release_payload_contract_v1.md`
 - `specs/support_ontology_w3_compiler_vocabulary_review_v1.md`
-- `bootstrap/plans/proposed_support_ontology_full_layer_backlog_v1.md`
+- `bootstrap/plans/reference/proposed_support_ontology_full_layer_backlog_v1.md`
 
 ## Scope Boundary
 
@@ -76,3 +76,4 @@ and explicit on admissibility and output semantics for Runtime-2 compilation.
 - Execute `TASK-20.3`
 - Execute `TASK-20.4`
 - Execute `TASK-20.5`
+
