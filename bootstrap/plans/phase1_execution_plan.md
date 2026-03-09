@@ -1,4 +1,4 @@
-﻿# Phase-1 Execution Plan (Authoritative)
+# Phase-1 Execution Plan (Authoritative)
 
 Status: ACTIVE
 Plan ID: PHASE1-EXEC
@@ -12,11 +12,11 @@ This plan incorporates and supersedes execution tracking from:
 - `specs/ontoForge_91_Build-Readiness Backlog v0.1.md`
 
 Backlog-to-plan/task mapping is recorded in:
-- `bootstrap/plans/reference/phase0_backlog_alignment.md`
+- `bootstrap/plans/inactive/reference/phase0_backlog_alignment.md`
 
 ## Rules
 
-- Every task in `bootstrap/task_ledger.csv` must include a `plan_item_id`.
+- Every task in `bootstrap/bridge/task_ledger.csv` must include a `plan_item_id`.
 - `plan_item_id` must exist in `bootstrap/plans/phase1_plan_items.csv`.
 - `DONE` requires validation evidence and output artifact existence.
 - No orphan execution work outside plan items.
@@ -67,8 +67,8 @@ Backlog-to-plan/task mapping is recorded in:
 - `P1-018` remains the completed addendum-alignment program governing runtime-boundary interpretation.
 - Implementation work that changes Runtime 1 or Runtime 3 boundary behavior must respect the distinction between internal lifecycle candidates, runtime lifecycle instances, boundary objects, and Runtime 3 operational instantiation.
 - Follow-on work after `P1-026` should treat the support ontology as uplift-complete and move into Runtime 2 compiler implementation rather than reopening support contract scope without an approved change.
-- `P2-002` uses the retained Runtime 1 baseline plus explicit successor closure criteria; TASK-28.1..28.3 are complete and EP-28 is ready for verification.
-- `P2-003` decomposition and compiler-control package is complete; `EP-29` remains open until executable compiler outputs and evidence are added.
+- `P2-002` uses the retained Runtime 1 baseline plus explicit successor closure criteria; TASK-28.1..28.3 are complete and `EP-28` was verified on 2026-03-08.
+- `P2-003` runtime2 compiler implementation is complete; TASK-29.1..29.8 are complete and `EP-29` was verified on 2026-03-08.
 
 ## Bridge-Control Note
 
@@ -80,17 +80,17 @@ This plan remains a bridge control surface.
 
 ## Program References
 
-- `bootstrap/plans/programs/p1/p1_019_so_w3_execution_decomposition_v1.md`
-- `bootstrap/plans/programs/p1/p1_020_so_w4_execution_decomposition_v1.md`
-- `bootstrap/plans/programs/p1/p1_021_so_w5_execution_decomposition_v1.md`
-- `bootstrap/plans/programs/p1/p1_022_so_w6_execution_decomposition_v1.md`
-- `bootstrap/plans/programs/p1/p1_023_so_w7_execution_decomposition_v1.md`
-- `bootstrap/plans/programs/p1/p1_024_support_ontology_post_review_hardening_decomposition_v1.md`
-- `bootstrap/plans/programs/p1/p1_025_support_ontology_priority1_uplift_decomposition_v1.md`
-- `bootstrap/plans/programs/p1/p1_026_support_ontology_priority2_uplift_decomposition_v1.md`
+- `bootstrap/plans/archive/p1/p1_019_so_w3_execution_decomposition_v1.md`
+- `bootstrap/plans/archive/p1/p1_020_so_w4_execution_decomposition_v1.md`
+- `bootstrap/plans/archive/p1/p1_021_so_w5_execution_decomposition_v1.md`
+- `bootstrap/plans/archive/p1/p1_022_so_w6_execution_decomposition_v1.md`
+- `bootstrap/plans/archive/p1/p1_023_so_w7_execution_decomposition_v1.md`
+- `bootstrap/plans/archive/p1/p1_024_support_ontology_post_review_hardening_decomposition_v1.md`
+- `bootstrap/plans/archive/p1/p1_025_support_ontology_priority1_uplift_decomposition_v1.md`
+- `bootstrap/plans/archive/p1/p1_026_support_ontology_priority2_uplift_decomposition_v1.md`
 - `bootstrap/plans/archive/support_ontology_execution_program_v1.completed_2026-03-07.md`
-- `bootstrap/plans/reference/of03_product_spec_implementation_plan.md`
-- `bootstrap/plans/reference/proposed_support_ontology_full_layer_backlog_v1.md`
+- `bootstrap/plans/inactive/reference/of03_product_spec_implementation_plan.md`
+- `bootstrap/plans/inactive/reference/proposed_support_ontology_full_layer_backlog_v1.md`
 - `specs/support_ontology_validation_uplift_v1.md`
 - `bootstrap/plans/programs/post_p1_026_full_solution_program_plan_v1.md`
 - `bootstrap/plans/programs/p2_003_runtime2_compiler_decomposition_v1.md`
@@ -102,5 +102,8 @@ This plan remains a bridge control surface.
 ## Archival Rule
 
 Superseded plans move to `bootstrap/plans/archive/` and must include a replacement reference.
+
+
+
 
 

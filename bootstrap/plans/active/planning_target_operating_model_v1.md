@@ -1,4 +1,4 @@
-﻿# Planning Target Operating Model v1
+# Planning Target Operating Model v1
 
 Status: ACTIVE
 Owner: paul
@@ -34,9 +34,9 @@ Planning authority resolves in this order:
 2. `bootstrap/plans/PLAN_INDEX.md`
 3. `bootstrap/plans/phase1_execution_plan.md`
 4. `bootstrap/plans/phase1_plan_items.csv`
-5. `bootstrap/task_ledger.csv`
-6. `bootstrap/evidence_register.csv`
-7. `bootstrap/artifact_registry.csv`
+5. `bootstrap/bridge/task_ledger.csv`
+6. `bootstrap/bridge/evidence_register.csv`
+7. `bootstrap/bridge/artifact_registry.csv`
 8. `bootstrap/plans/manifests/plans_manifest.csv`
 
 ## Document classes
@@ -69,15 +69,15 @@ Target structure for `bootstrap/plans/`:
 
 - `active/`: active execution controls and orientation surfaces
 - `programs/`: program and workstream decomposition documents
-- `reference/`: retained backlog sources, alignment notes, and supporting interpretation docs
+- `inactive/reference/`: retained backlog sources, alignment notes, and supporting interpretation docs
 - `manifests/`: machine-readable planning manifests
-- `proposals_backlog/`: non-binding proposal intake
+- `inactive/proposals_backlog/`: non-binding proposal intake
 - `archive/`: archived and superseded records
 
-Immediate implementation note:
+Implementation status note:
 
-- Existing files remain in place until controlled relocation is approved.
-- New structure is introduced first as classification and manifest discipline, not a disruptive file move.
+- Controlled relocation completed on 2026-03-09; inactive planning surfaces now live under `inactive/`.
+- Validation, manifests, and cross-references were updated to match the inactive-folder structure.
 
 ## Naming convention
 
@@ -122,8 +122,8 @@ Markdown plans are permitted, but they are views over these records and must not
 
 - `bootstrap/plans/phase1_execution_plan.md` is the active execution-plan control.
 - `bootstrap/plans/programs/post_p1_026_full_solution_program_plan_v1.md` is the active successor program control for P2 scope.
-- `bootstrap/plans/reference/proposed_support_ontology_full_layer_backlog_v1.md` is a superseded reference backlog, not active execution control.
-- `bootstrap/plans/proposals_backlog/` holds non-binding proposal intake only.
+- `bootstrap/plans/inactive/reference/proposed_support_ontology_full_layer_backlog_v1.md` is a superseded reference backlog, not active execution control.
+- `bootstrap/plans/inactive/proposals_backlog/` holds non-binding proposal intake only.
 
 ## Migration plan
 
@@ -145,5 +145,6 @@ Phase C:
 
 - extend validation tooling to check planning-manifest consistency
 - fail closed on conflicting active documents for the same scope
+
 
 

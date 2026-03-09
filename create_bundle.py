@@ -4,10 +4,10 @@ bundle_filename = "verification_artifacts_bundle.txt"
 
 files_to_include = [
     "verification_report.md",
-    "bootstrap/task_ledger.csv",
-    "bootstrap/artifact_registry.csv",
-    "bootstrap/evidence_register.csv",
-    "bootstrap/reports/daily_state_snapshot.md",
+    "bootstrap/bridge/task_ledger.csv",
+    "bootstrap/bridge/artifact_registry.csv",
+    "bootstrap/bridge/evidence_register.csv",
+    "bootstrap/bridge/daily_state_snapshot.md",
     "docs/specs/identity_cid_uuidv7.md",
     "docs/specs/ledger_api_and_ordering.md",
     "docs/specs/issuerproof_v1.md",

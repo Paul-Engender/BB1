@@ -66,7 +66,7 @@ EP-05,Minimal releases produced (SupportOntologyRelease + SCR_TBox_Release),,Rel
 
 ===== END FILE: bootstrap/evidence_register.csv =====
 
-===== BEGIN FILE: bootstrap/reports/daily_state_snapshot.md =====
+===== BEGIN FILE: bootstrap/bridge/daily_state_snapshot.md =====
 # Daily State Snapshot
 
 *Generated on: 2026-03-06*
@@ -113,7 +113,7 @@ EP-05,Minimal releases produced (SupportOntologyRelease + SCR_TBox_Release),,Rel
 
 *(None)*
 
-===== END FILE: bootstrap/reports/daily_state_snapshot.md =====
+===== END FILE: bootstrap/bridge/daily_state_snapshot.md =====
 
 ===== BEGIN FILE: docs/specs/identity_cid_uuidv7.md =====
 # Identity CID Specification (cid:)

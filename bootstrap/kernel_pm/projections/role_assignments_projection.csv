@@ -1,0 +1,2 @@
+role_assignment_id,status,agent_ids,role_ids,scope_plan_ids,source_object_id
+role.assignment.open-frontier,DONE,agent.paul,role.owner,workstream.p2-004;workstream.p2-005;workstream.p2-006,role.assignment.open-frontier

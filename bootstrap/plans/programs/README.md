@@ -1,8 +1,11 @@
-﻿# Program Controls
+# Program Controls
 
-Target folder for program-level and decomposition-level planning documents.
+This folder contains active program plans and decomposition controls.
 
-Current state:
+Current contents:
+- active successor program control
+- active runtime2 compiler decomposition control
+- historical completed P1 decomposition records are archived under
+  `bootstrap/plans/archive/p1/`
 
-- Existing program documents remain in `bootstrap/plans/` until controlled relocation is approved.
-- This folder is created now to make the target filing model explicit.
+Use this folder for active program-level and workstream-level execution controls.

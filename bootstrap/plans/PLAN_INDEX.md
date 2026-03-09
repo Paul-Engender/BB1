@@ -23,14 +23,15 @@ This file is the single orientation point for planning artifacts.
 - Authoritative file: `bootstrap/plans/phase1_execution_plan.md`
 - Program control archive: `bootstrap/plans/archive/support_ontology_execution_program_v1.completed_2026-03-07.md`
 - Plan item index: `bootstrap/plans/phase1_plan_items.csv`
-- Product-spec implementation plan: `bootstrap/plans/reference/of03_product_spec_implementation_plan.md`
+- Product-spec implementation plan: `bootstrap/plans/inactive/reference/of03_product_spec_implementation_plan.md`
 - Planning target operating model: `bootstrap/plans/active/planning_target_operating_model_v1.md`
+- Kernel PM v1 scope decision: `bootstrap/plans/active/kernel_pm_v1_scope_decision_full_profile_operations_v1.md`
 - Cutover snapshot record: `bootstrap/plans/active/cutover_c0_snapshot_record_v1.md`
 - Planning manifest: `bootstrap/plans/manifests/plans_manifest.csv`
 
 3. Traceability from source backlogs to active execution
 - Location: `bootstrap/plans/`
-- File: `bootstrap/plans/reference/phase0_backlog_alignment.md`
+- File: `bootstrap/plans/inactive/reference/phase0_backlog_alignment.md`
 - Role: Maps source BR work items to active `TASK-*` / `BPL-*` items and current task status.
 
 4. Archived text versions of source backlogs
@@ -40,20 +41,20 @@ This file is the single orientation point for planning artifacts.
   - `ontoForge_91_Build-Readiness_Backlog.v0.1.md`
 
 5. Operational execution state
-- Location: `bootstrap/`
+- Location: `bootstrap/bridge/`
 - Files:
-  - `task_ledger.csv`
-  - `artifact_registry.csv`
-  - `evidence_register.csv`
-  - `reports/daily_state_snapshot.md`
+  - `bootstrap/bridge/task_ledger.csv`
+  - `bootstrap/bridge/artifact_registry.csv`
+  - `bootstrap/bridge/evidence_register.csv`
+  - `bootstrap/bridge/daily_state_snapshot.md`
 
 ## Current Decomposition Level
 
 Decomposition currently in use:
 - Workstream level: `P1-001` ... `P1-026` plus successor `P2-001` ... `P2-006` in `phase1_plan_items.csv`
-- Task level: `TASK-*` (implementation) and `BPL-*` (bootstrap coordination) in `task_ledger.csv`, each mapped to one `plan_item_id`
-- Evidence level: `EP-*` rows in `evidence_register.csv`
-- Artifact level: `ART-*` rows in `artifact_registry.csv`
+- Task level: `TASK-*` (implementation) and `BPL-*` (bootstrap coordination) in `bootstrap/bridge/task_ledger.csv`, each mapped to one `plan_item_id`
+- Evidence level: `EP-*` rows in `bootstrap/bridge/evidence_register.csv`
+- Artifact level: `ART-*` rows in `bootstrap/bridge/artifact_registry.csv`
 
 This is a 4-layer machine-enforced stack:
 - `P*` (workstream) -> `TASK/BPL` (task) -> `EP` (evidence criterion) -> `ART` (artifact proof)
@@ -91,6 +92,9 @@ Phase-2 also tracks advisory hierarchy metadata in dedicated controls:
 - Forward PM authority mode:
   - Bundle-first records under `bootstrap/kernel_pm/bundles/`
   - Deterministic projections under `bootstrap/kernel_pm/projections/`
+- Kernel PM v1 scope mode:
+  - Existing operations: bridge subset
+  - Approved target: full profile operations (decision active 2026-03-09)
 
 ## Enforcement Rules (active)
 
@@ -108,18 +112,20 @@ Validation commands:
 ## When You Add New Work
 
 1. Add a new `P*-xxx` row to `phase1_plan_items.csv` (use `P2-xxx` for successor program work).
-2. Add task row(s) to `task_ledger.csv` with that `plan_item_id`.
+2. Add task row(s) to `bootstrap/bridge/task_ledger.csv` with that `plan_item_id`.
 3. Link evidence via `evidence_row_ids`.
-4. Add artifact rows with SHA256 to `artifact_registry.csv`.
+4. Add artifact rows with SHA256 to `bootstrap/bridge/artifact_registry.csv`.
 5. If future work introduces a new execution program, create a new `bootstrap/plans/*execution_program*.md` and archive prior program controls.
 6. Run validator and regenerate snapshot.
 
 ## Proposal Intake Backlog
 
-- Location: `bootstrap/plans/proposals_backlog/`
+- Location: `bootstrap/plans/inactive/proposals_backlog/`
 - Role: Hold incoming descriptive implementation proposals until triage.
-- Intake index: `bootstrap/plans/proposals_backlog/proposals_index.csv`
-- Template: `bootstrap/plans/proposals_backlog/TEMPLATE_proposal.md`
+- Intake index: `bootstrap/plans/inactive/proposals_backlog/proposals_index.csv`
+- Template: `bootstrap/plans/inactive/proposals_backlog/TEMPLATE_proposal.md`
 - Current entries are non-binding and do not imply approval/scheduling.
+
+
 
 

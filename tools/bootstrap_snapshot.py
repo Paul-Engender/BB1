@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Generate daily bootstrap state snapshot from ledgers."""
 
 from __future__ import annotations
@@ -109,10 +109,10 @@ def generate_snapshot(task_rows: list[dict[str, str]], artifact_rows: list[dict[
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate daily snapshot from bootstrap ledgers")
-    parser.add_argument("--task-ledger", default="bootstrap/task_ledger.csv")
-    parser.add_argument("--artifact-registry", default="bootstrap/artifact_registry.csv")
-    parser.add_argument("--evidence-register", default="bootstrap/evidence_register.csv")
-    parser.add_argument("--output", default="bootstrap/reports/daily_state_snapshot.md")
+    parser.add_argument("--task-ledger", default="bootstrap/bridge/task_ledger.csv")
+    parser.add_argument("--artifact-registry", default="bootstrap/bridge/artifact_registry.csv")
+    parser.add_argument("--evidence-register", default="bootstrap/bridge/evidence_register.csv")
+    parser.add_argument("--output", default="bootstrap/bridge/daily_state_snapshot.md")
     parser.add_argument("--repo-root", default=".")
     args = parser.parse_args()
 
@@ -131,4 +131,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 

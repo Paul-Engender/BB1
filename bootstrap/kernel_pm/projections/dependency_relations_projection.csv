@@ -1,0 +1,5 @@
+dependency_id,status,source_task_ids,target_task_ids,dependency_kind_ids,source_object_id
+dependency.30.1.on.29.1,DONE,TASK-30.1,TASK-29.1,depkind.predecessor,dependency.30.1.on.29.1
+dependency.31.1.on.27.1,DONE,TASK-31.1,TASK-27.1,depkind.predecessor,dependency.31.1.on.27.1
+dependency.32.1.on.29.1,DONE,TASK-32.1,TASK-29.1,depkind.predecessor,dependency.32.1.on.29.1
+dependency.32.1.on.30.1,DONE,TASK-32.1,TASK-30.1,depkind.predecessor,dependency.32.1.on.30.1

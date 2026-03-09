@@ -1,4 +1,4 @@
-﻿# Unified Operating Ontology Kernel
+# Unified Operating Ontology Kernel
 
 This project implements the core components of the ENG Unified Operating Ontology Kernel, including the TBox (ontology), SHACL shapes for validation, and a FastAPI-based Kernel Gate service.
 
@@ -50,7 +50,7 @@ To start the FastAPI service:
 Phase-0 execution is coordinated through a temporary Bootstrap Project Ledger (BPL).
 
 Operational docs and commands:
-- See [bootstrap/README.md](bootstrap/README.md)
+- See [bootstrap/bridge/README.md](bootstrap/bridge/README.md)
 - Validate ledgers: `python tools/bootstrap_validate.py`
 - Regenerate snapshot: `python tools/bootstrap_snapshot.py`
 - Enforce gate closure: `python tools/bootstrap_validate.py --require-phase0-closed`
@@ -59,4 +59,5 @@ CI enforcement:
 - `.github/workflows/bootstrap-integrity.yml`
 - `.github/workflows/phase0-gate-check.yml`
 
-Phase-0 is considered closed only when every row in `bootstrap/evidence_register.csv` is `VERIFIED`.
+Phase-0 is considered closed only when every row in `bootstrap/bridge/evidence_register.csv` is `VERIFIED`.
+

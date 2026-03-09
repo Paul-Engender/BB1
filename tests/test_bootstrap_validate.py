@@ -24,8 +24,8 @@ class PlanningControlsValidationTests(unittest.TestCase):
             "bootstrap/plans/archive",
             "bootstrap/plans/manifests",
             "bootstrap/plans/programs",
-            "bootstrap/plans/proposals_backlog",
-            "bootstrap/plans/reference",
+            "bootstrap/plans/inactive/proposals_backlog",
+            "bootstrap/plans/inactive/reference",
         ):
             (self.repo_root / rel_dir).mkdir(parents=True, exist_ok=True)
 

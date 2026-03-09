@@ -19,9 +19,9 @@ Program -> Milestone -> Workstream -> Work Package -> Task -> Evidence -> Artifa
 To align with current bootstrap controls, machine enforcement remains anchored to:
 
 - plan item: `P2-00x` in `bootstrap/plans/phase1_plan_items.csv`
-- task: `TASK-*` rows in `bootstrap/task_ledger.csv`
-- evidence: `EP-*` rows in `bootstrap/evidence_register.csv`
-- artifact: `ART-*` rows in `bootstrap/artifact_registry.csv`
+- task: `TASK-*` rows in `bootstrap/bridge/task_ledger.csv`
+- evidence: `EP-*` rows in `bootstrap/bridge/evidence_register.csv`
+- artifact: `ART-*` rows in `bootstrap/bridge/artifact_registry.csv`
 
 Additional hierarchy layers are registered in:
 
@@ -61,7 +61,7 @@ M1 is a delta-resolution milestone, not a blanket rewrite lane.
 
 ## EP gate model
 
-Milestone gates are mapped to `EP-27` through `EP-32` in `bootstrap/evidence_register.csv`.
+Milestone gates are mapped to `EP-27` through `EP-32` in `bootstrap/bridge/evidence_register.csv`.
 Milestone completion requires required EP rows to be `VERIFIED`.
 
 ## Critical path
@@ -71,6 +71,8 @@ WS-01 -> WS-05 -> WS-02 -> WS-03 -> WS-04 -> WS-06
 ## Activation
 
 - M1 closed under `P2-001` and `EP-27` is verified.
-- `P2-002` is active for Runtime 1 successor closure criteria and verification.
-- `P2-003` is active for compiler decomposition and control definition.
-- `EP-29` remains implementation-gated; decomposition completion alone does not close M3.
+- `P2-002` is closed; Runtime 1 successor closure criteria were completed and `EP-28` was verified on 2026-03-08.
+- `P2-003` is closed; compiler decomposition and implementation tasks `TASK-29.1..29.8` are complete.
+- `EP-29` was verified on 2026-03-08; the open frontier is now `P2-004` through `P2-006` under bundle-first forward PM control.
+
+

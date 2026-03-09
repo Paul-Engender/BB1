@@ -1,4 +1,4 @@
-﻿# Cutover C0 Snapshot Record v1
+# Cutover C0 Snapshot Record v1
 
 Status: ACTIVE
 Owner: paul
@@ -25,7 +25,7 @@ by prose. Execution truth remains evidence-bound through explicit records.
 
 ## Source Inputs
 
-- `bootstrap/plans/reference/cutover_and_legacy_archive_proposal_v1.md`
+- `bootstrap/plans/inactive/reference/cutover_and_legacy_archive_proposal_v1.md`
 - `bootstrap/plans/phase1_execution_plan.md`
 - `bootstrap/plans/phase1_plan_items.csv`
 - `bootstrap/task_ledger.csv`

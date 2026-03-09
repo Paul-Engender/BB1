@@ -19,7 +19,7 @@ PLAN_ITEM_STATUSES = {"PLANNED", "ACTIVE", "BLOCKED", "DONE", "ARCHIVED"}
 PLAN_DOC_LIFECYCLE_STATES = {"DRAFT", "PROPOSED", "ACTIVE", "SUPERSEDED", "ARCHIVED"}
 PLAN_DOC_ROLES = {"ORIENTATION", "ACTIVE_CONTROL", "REFERENCE", "PROPOSAL", "ARCHIVE", "TEMPLATE"}
 ALLOWED_PLAN_ROOT_FILES = {"PLAN_INDEX.md", "phase1_execution_plan.md", "phase1_plan_items.csv"}
-ALLOWED_PLAN_ROOT_DIRS = {"active", "archive", "manifests", "programs", "proposals_backlog", "reference"}
+ALLOWED_PLAN_ROOT_DIRS = {"active", "archive", "inactive", "manifests", "programs"}
 
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 EXEC_CMD_RE = re.compile(r"^(python|python3|pytest|pwsh|powershell|bash)\b.+")
@@ -160,9 +160,9 @@ def _validate_planning_controls(
                 f"{manifest_path.name}:{i}: ARCHIVED rows must live under bootstrap/plans/archive/"
             )
 
-        if operational_role == "PROPOSAL" and "/proposals_backlog/" not in f"/{normalized_path}":
+        if operational_role == "PROPOSAL" and "/inactive/proposals_backlog/" not in f"/{normalized_path}":
             errors.append(
-                f"{manifest_path.name}:{i}: PROPOSAL rows must live under bootstrap/plans/proposals_backlog/"
+                f"{manifest_path.name}:{i}: PROPOSAL rows must live under bootstrap/plans/inactive/proposals_backlog/"
             )
 
         if operational_role == "ACTIVE_CONTROL":
@@ -635,9 +635,9 @@ def validate(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate bootstrap ledgers and planning controls")
-    parser.add_argument("--task-ledger", default="bootstrap/task_ledger.csv")
-    parser.add_argument("--artifact-registry", default="bootstrap/artifact_registry.csv")
-    parser.add_argument("--evidence-register", default="bootstrap/evidence_register.csv")
+    parser.add_argument("--task-ledger", default="bootstrap/bridge/task_ledger.csv")
+    parser.add_argument("--artifact-registry", default="bootstrap/bridge/artifact_registry.csv")
+    parser.add_argument("--evidence-register", default="bootstrap/bridge/evidence_register.csv")
     parser.add_argument("--plan-items", default="bootstrap/plans/phase1_plan_items.csv")
     parser.add_argument("--plans-manifest", default="bootstrap/plans/manifests/plans_manifest.csv")
     parser.add_argument("--repo-root", default=".")
@@ -717,6 +717,7 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
 
 
 
